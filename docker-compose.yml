@@ -1,0 +1,8 @@
+version: "3.3"
+services:
+  rest-service:
+    build: ./rest-service
+    ports: ["8080:8080"]
+  ui-service:
+    build: ./ui-service
+    ports: ["5000:5000"]
