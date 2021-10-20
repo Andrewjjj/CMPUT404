@@ -10,7 +10,7 @@
 3. Check if the containers are running by
 `docker ps`
 
-React ui-service should run on port `3000` and our back-end rest api endpoints should be running on `8080`.
+React ui-service should run on port `5000` and our back-end rest api endpoints should be running on `8080`.
 
 
 - To run it locally
