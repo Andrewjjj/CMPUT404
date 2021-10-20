@@ -1,8 +1,8 @@
 # CMPUT404
 
-### For development:
+## For development:
 
-- To run it in a container:
+### To run it in a container:
 
 1. Make sure Docker is installed
 2. Run:
@@ -13,21 +13,21 @@
 React ui-service should run on port `5000` and our back-end rest api endpoints should be running on `8080`.
 
 
-- To run it locally
+### To run it locally
 
-rest-service:
+#### rest-service:
 1. Make sure npm and node is installed
 2. Check whether they are installed by running 
-3. ```npm --version```
-4. cd to rest-service/
-5. Install all dependencies by doing:
+```npm --version```
+3. cd to rest-service/
+4. Install all dependencies by doing:
 ```npm install```
 5. Install nodemon globally (optional, but highly recommended)
 ```npm install -g nodemon```
 6. Run nodemon
 ```nodemon```
 
-ui-service:
+#### ui-service:
 1. Make sure npm and node is installed
 2. Check whether they are installed by running `npm --version`
 3. cd to ui-service/
