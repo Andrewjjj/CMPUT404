@@ -1,4 +1,5 @@
 module.exports.getAuthor = (req, res, next) => {
+    console.log("Get Author Page")
     let exampleJson = [{
         "postID": "36131c25-c05f-4a58-9012-0d2e03b73a5b",
         "title": "title221",

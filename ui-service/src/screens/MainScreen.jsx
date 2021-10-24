@@ -16,6 +16,8 @@ export const MainScreen = () => {
             let response = await axios.get("http://localhost:8080/service/author")
             let data = response.data
             console.log(data)
+            console.log("fetching posts")
+            
             setPosts(data)
         }
         catch(err){
@@ -61,14 +63,16 @@ export const MainScreen = () => {
     
     return(
         <>
+       
         <CreatePostModal isVisible={showModal} setVisible={setShowModal} submitPostHandler={createNewPostHandler}></CreatePostModal>
         <div className="text-center my-5">
             <button className="btn btn-primary btn-lg w-50" onClick={() => setShowModal(true)}>Create New Post</button>
             {posts.map((post, i) => 
-            <div className="shadow w-50 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2 bg-white" key={"post"+i}>
+            <div className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2 bg-white" key={"post"+i}>
                 {/* Title Section */}
                 <div className="row">
-                    <h5><b>{post.title}</b>: {post.username}</h5>
+                    <h5><b>{post.title}</b></h5>
+                    <h6 style={{fontStyle: "italic"}}>{post.username}</h6>
                 </div>
                 {/* Content Section */}
                 <div className="row rounded rounded-5 py-2 px-4" style={{backgroundColor: "rgb(245, 245, 255)"}}>
