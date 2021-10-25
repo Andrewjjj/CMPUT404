@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import { CreatePostModal } from '../components/CreatePostModal';
+import { Link } from 'react-router-dom'
 
 export const MainScreen = () => {
     const [posts, setPosts] = useState([]);
@@ -63,7 +64,18 @@ export const MainScreen = () => {
     
     return(
         <>
-       
+        <Link to="/Friend">
+            <button className="btn btn-md btn-secondary">Go to Friend</button>
+        </Link>
+        <Link to="/Post">
+            <button className="btn btn-md btn-secondary" href="/Post">Go to Post</button>
+        </Link>
+
+        <Link to="/Inbox">
+            <button className="btn btn-md btn-secondary" href="/Inbox">Go to Inbox</button>
+        </Link>
+
+
         <CreatePostModal isVisible={showModal} setVisible={setShowModal} submitPostHandler={createNewPostHandler}></CreatePostModal>
         <div className="text-center my-5">
             <button className="btn btn-primary btn-lg w-50" onClick={() => setShowModal(true)}>Create New Post</button>
