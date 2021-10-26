@@ -41,15 +41,37 @@ export const InboxScreen = (props) => {
             
         ]
 
+        setPosts(parsePosts(testjson))
+    }
 
+    const parsePosts = function(postsArray){
 
-        setPosts(testjson)
+        var displayArray = []
+
+        for(var i = 0;i < postsArray.length; i++){
+            var postType = postsArray[i].type
+            if (postType === "friendRequest") {
+                //TODO: ADD BUTTONS TO ACCEPT/DENY THE FRIEND REQUEST HERE
+                //TODO: HAVE THE BUTTONS THAT ACCEPT/DENY DELETE THE REQUEST
+                displayArray[i] = postsArray[i].sender + " would like to be your friend!"
+            } else if (postType === "like") {
+                //TODO: ADD  link to the post that was liked
+                displayArray[i] = postsArray[i].sender + " liked your post!"
+            } else if (postType === "comment") {
+                //TODO: ADD  link to the post that was COMMENTED ON
+                displayArray[i] = postsArray[i].sender + " said '" + postsArray[i].content + "'"
+            } else{
+                //TODO: Throw a proper error here
+            }
+        }
+
+        return displayArray
     }
 
     return (
         <>
             <div>
-                This is an Inbox Screen!
+                This is an Inbox Screen! {posts}
             </div>
             <Link to="/">
                 <button className="btn btn-danger" href="/">Go Back to Main Menu</button>
