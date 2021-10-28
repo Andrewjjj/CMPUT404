@@ -73,7 +73,7 @@ export const PostFeed = (props) => {
     }
 
     return (
-        <div>
+        <div id={PostFeed}>
              {posts.map((post, i) => 
             <div className=" w-50 mt-3 mx-auto border p-4 rounded-5 z-depth-2 text-white"
             style={{backgroundColor: "rgb(30,47,65)"}} key={"post"+i}>
@@ -85,6 +85,29 @@ export const PostFeed = (props) => {
                 {/* Content Section */}
                 <div className="row rounded rounded-5 py-2 px-4" style={{backgroundColor: "rgb(30,47,65)"}}>
                     {post.content}
+                </div>
+                {/* React Section */}
+                <div className="row my-2">
+                    <div class="btn-group-sm shadow-0 col" role="group">
+                        <button type="button" class="btn btn-dark shadow-0" style={{backgroundColor: "rgb(30,47,65)"}}data-mdb-color="dark"
+                        onClick={() => {
+                                reactionClickHandler(post.postID, "like")
+                            }}>
+                            <i className="far fa-thumbs-up fa-1x"></i>+{post.reaction.like}</button>
+                        <button type="button" class="btn btn-dark shadow-0" style={{backgroundColor: "rgb(30,47,65)"}}data-mdb-color="dark"
+                             onClick={() => {
+                                reactionClickHandler(post.postID, "love")
+                            }}>
+                            <i className="far fa-heart fa-1x"></i>+{post.reaction.love}
+                            </button>
+                        <button type="button" class="btn btn-dark shadow-0" style={{backgroundColor: "rgb(30,47,65)"}}data-mdb-color="dark"
+                        onClick={() => {
+                                reactionClickHandler(post.postID, "rocket")
+                            }}>
+                            <i className="fas fa-rocket fa-1x"></i>+{post.reaction.rocket}
+                        </button>
+                    </div>
+
                 </div>
                 
                 {/* Comment Section */}
@@ -123,29 +146,7 @@ export const PostFeed = (props) => {
                     )}
                     </p>
                 </div>
-                {/* React Section */}
-                <div className="row my-2">
-                    <div className="col mx-0">
-                        <button className="btn btn-sm btn-primary mx-1"
-                            onClick={() => {
-                                reactionClickHandler(post.postID, "like")
-                            }}>
-                            <i className="far fa-thumbs-up fa-1x"></i>+{post.reaction.like}
-                        </button>
-                        <button className="btn btn-sm btn-danger mx-1"
-                            onClick={() => {
-                                reactionClickHandler(post.postID, "love")
-                            }}>
-                            <i className="far fa-heart fa-1x"></i>+{post.reaction.love}
-                        </button>
-                        <button className="btn btn-sm btn-secondary mx-1"
-                            onClick={() => {
-                                reactionClickHandler(post.postID, "rocket")
-                            }}>
-                            <i className="fas fa-rocket fa-1x"></i>+{post.reaction.rocket}
-                        </button>
-                    </div>
-                </div>
+                
                 </div>
             </div>
             )}

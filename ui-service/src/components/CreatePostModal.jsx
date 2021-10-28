@@ -6,9 +6,11 @@ Modal.setAppElement('#root');
 
 const customStyles = {
     content: {
-        width: '60%',
+        width: '45%',
         marginLeft: "auto",
         marginRight: "auto",
+        
+        
     },
 };
 
