@@ -1,9 +1,24 @@
 {
-    "name": "cmput404-proj",
+    "name": "CMPUT404",
     "version": "1.0.0",
-    "description": "",
+    "description": "## For development:",
     "scripts": {
-        "start-client": "cd ui-service && npm start",
-        "start": "cd rest-service && node server.js"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "cd rest-service && npm install && node server.js",
+        "start-client": "cd ui-service && npm install && npm start"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/wonbinjeong/CMPUT404.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/wonbinjeong/CMPUT404/issues"
+    },
+    "homepage": "https://github.com/wonbinjeong/CMPUT404#readme",
+    "engines": {
+        "node": "14.14.0"
     }
 }
