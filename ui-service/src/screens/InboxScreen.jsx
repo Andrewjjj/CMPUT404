@@ -13,7 +13,8 @@ export const InboxScreen = (props) => {
         let testjson = [
             {
                 "type": "friendRequest",
-                "sender": "October Snake",
+                "senderName": "October Snake",
+                "senderID": "somegobbeldygookhere",
                 "recipent": "Madeline Noodle",
                 "senderHost": "inserturlhere",
                 "date": "2021-10-09T13:07:04+00:00"
@@ -21,18 +22,21 @@ export const InboxScreen = (props) => {
 
             {
                 "type": "like",
-                "sender": "October Snake",
+                "senderName": "October Snake",
+                "senderID": "somegobbeldygookhere",
                 "recipent": "Madeline Noodle",
                 "senderHost": "inserturlhere",
-                "postID": "insertpostIDhere",
+                "postURL": "insertpostIDhere",
                 "date": "2021-10-09T13:07:04+00:00"
             },
 
             {
                 "type": "comment",
-                "sender": "Jill Yukon",
+                "senderName": "Jill Yukon",
+                "senderID": "somegobbeldygookhere",
                 "recipient": "Madeleine Noodle",
                 "senderHost": "inserturlhere",
+                "postURL": "insertpostIDhere",
                 "date": "2021-10-09T13:07:04+00:00",
                 "contentType": "text/plain",
                 "content": "Nice cat! But it could be better...."
@@ -47,25 +51,36 @@ export const InboxScreen = (props) => {
     const parsePosts = function(postsArray){
 
         var displayArray = []
+        var buttonArray= []
 
         for(var i = 0;i < postsArray.length; i++){
             var postType = postsArray[i].type
             if (postType === "friendRequest") {
                 //TODO: ADD BUTTONS TO ACCEPT/DENY THE FRIEND REQUEST HERE
                 //TODO: HAVE THE BUTTONS THAT ACCEPT/DENY DELETE THE REQUEST
-                displayArray[i] = postsArray[i].sender + " would like to be your friend!"
+                displayArray[i] = " would like to be your friend!"
+                buttonArray[i] = ["","Accept Friend Request"]
             } else if (postType === "like") {
                 //TODO: ADD  link to the post that was liked
-                displayArray[i] = postsArray[i].sender + " liked your post!"
+                displayArray[i] = " liked your post!"
+                buttonArray[i] = ["","See liked post"]
             } else if (postType === "comment") {
                 //TODO: ADD  link to the post that was COMMENTED ON
-                displayArray[i] = postsArray[i].sender + " said '" + postsArray[i].content + "'"
+                displayArray[i] = " commented '" + postsArray[i].content + "'!"
+                buttonArray[i] = ["","See commented post"]
             } else{
                 //TODO: Throw a proper error here
             }
         }
 
-        return displayArray
+        return displayArray.map((post, i) => 
+            
+            <div className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2 bg-white" key={"post"+i}>
+                <a href={postsArray[i].senderHost + "/author/" + postsArray[i].senderID} >{postsArray[i].senderName}</a> {post}
+                <br></br><button className = "btn btn-primary"> {buttonArray[i][1]} </button> <button className="btn btn-danger"> Dismiss> </button>
+            </div>
+            
+        )
     }
 
     return (
