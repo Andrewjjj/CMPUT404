@@ -93,10 +93,11 @@ export const InboxScreen = (props) => {
                 </div>
     }
 
+    //TODO: ADD A SPECIAL SCREEN FOR IF THERE ARE NO POSTS IN THE
     return (
         <>
-            <div>
-                This is an Inbox Screen! {posts}
+            <div className="bg-grey">
+                {posts}
             </div>
             <Link to="/">
                 <button className="btn btn-danger" href="/">Go Back to Main Menu</button>
