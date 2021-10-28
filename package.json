@@ -4,6 +4,6 @@
     "description": "",
     "scripts": {
         "start-client": "cd ui-service && npm start",
-        "start-rest": "cd rest-service && node server.js"
+        "start": "cd rest-service && node server.js"
     }
 }
