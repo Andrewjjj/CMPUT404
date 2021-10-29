@@ -1,7 +1,7 @@
 const db = require("../database/database");
 
 module.exports.getAllPosts = async(req, res, next) => {
-    console.log("get posts");
+    // console.log("get posts");
     try {
         let posts = await db.getAllPosts();
         return res.status(200).json(posts);
@@ -12,7 +12,7 @@ module.exports.getAllPosts = async(req, res, next) => {
 
 // TODO: Add Author
 module.exports.createPost = async(req, res, next) => {
-    console.log("create post");
+    // console.log("create post");
     let title = req.body.title;
     let content = req.body.content;
     let tags = req.body.tags;
@@ -27,7 +27,7 @@ module.exports.createPost = async(req, res, next) => {
 
 module.exports.getAllComments = async(req, res, next) => {
     let postID = req.params.postID;
-    console.log("get comments");
+    // console.log("get comments");
     try {
         let comments = await db.getAllComments(postID);
         return res.status(200).json(comments);
@@ -37,7 +37,7 @@ module.exports.getAllComments = async(req, res, next) => {
 }
 
 module.exports.createComment = async(req, res, next) => {
-    console.log("create comment")
+    // console.log("create comment")
     let comment = req.body.comment;
     let postID = req.params.postID;
     let authorID = "b3b71bd4-e8d4-4ac5-a682-1fb0b97fe7c9" // TODO
