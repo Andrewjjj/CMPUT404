@@ -28,6 +28,91 @@
   color: #61dafb;
 }
 
+.container {
+  max-width: 425px;
+  margin: 10px auto;
+  min-height: 700px;
+  border: 3px solid white;
+  background-color: #15202B;
+  padding: 10px;
+  align-items: left;
+  text-align: left;
+  overflow-y: auto;
+  height: 500px;
+}
+
+.container::-webkit-scrollbar
+{
+  width: 10px;
+}
+
+.container::-webkit-scrollbar-track
+{
+  background-color: transparent;
+}
+
+.container::-webkit-scrollbar-thumb
+{
+  background-color: #FF7A00;
+  border-radius: 5px;
+  
+}
+
+.friend {
+  background: #1E2F41;
+  border-radius: 5px;
+  margin: 5px;
+  max-height: 150px;
+  padding: 10px 20px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 2fr 1fr
+
+}
+
+.headerc {
+  text-align: center;
+  margin-bottom: 10px;
+  background-color:#FF7A00 ;
+  border-radius: 5px;
+  color: white;
+  display:flexbox;
+
+}
+.friendDivRight
+{
+  padding: 20px 0px 20px 0px;
+  color: white;
+  
+}
+
+.friendDivLeft
+{
+  padding: 40px 0px 20px 0px;
+  
+}
+
+.friendButton
+{
+  background-color:#1E2F41 ;
+  color: white;
+  border-radius: 5px;
+}
+
+.friendDivButton
+{
+  background-color:#FF7A00 ;
+  color: white;
+  border-radius: 5px;
+}
+
+.profileImage
+{
+  width: 50px;
+  height:auto;
+  
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
