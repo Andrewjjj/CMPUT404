@@ -4,7 +4,7 @@
     "description": "## For development:",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "cd rest-service && npm install && node server.js",
+        "start": "cd rest-service && npm install && node server.js && cd ../ui-service && npm install && npm start",
         "start-client": "cd ui-service && npm install && npm start"
     },
     "repository": {
