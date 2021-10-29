@@ -6,9 +6,11 @@ Modal.setAppElement('#root');
 
 const customStyles = {
     content: {
-        width: '60%',
+        width: '45%',
         marginLeft: "auto",
         marginRight: "auto",
+        
+        
     },
 };
 
@@ -68,34 +70,34 @@ export const CreatePostModal = (props) => {
 
     return (
         <Modal
-            isOpen={props.isVisible}
-            style={customStyles}>
-            <div className="text-center">
-                Create a Post
-            </div>
-            <div className="row">
-                title: <input type="text" className="form-control" onInput={e => setTitleHandler(e.target.value)}></input>
-            </div>
-            <div className="row">
-                content: <textarea type="text" className="form-control" onInput={e => setContentHandler(e.target.value)}></textarea>
-            </div>
-            <div className="row my-3">
-                Tags: <ReactTags
-                    tags={tags}
-                    // suggestions={suggestions}
-                    delimiters={delimiters}
-                    handleDelete={handleDelete}
-                    handleAddition={handleAddition}
-                    handleDrag={handleDrag}
-                    handleTagClick={handleTagClick}
-                    inputFieldPosition="bottom"
-                    autocomplete
-                />
-            </div>
-            <button className="btn btn-primary"
-                onClick={createPostHandler}>Create Post</button>
-            <button className="btn btn-danger"
-                onClick={() => props.setVisible(false)}>Close</button>
-        </Modal>
+        isOpen={props.isVisible}
+        style={customStyles}>
+        <div className="text-center">
+            Create a Post
+        </div>
+        <div className="row">
+            title: <input type="text" className="form-control" onInput={e => setTitleHandler(e.target.value)}></input>
+        </div>
+        <div className="row">
+            content: <textarea type="text" className="form-control" onInput={e => setContentHandler(e.target.value)}></textarea>
+        </div>
+        <div className="row my-3">
+            Tags: <ReactTags
+                tags={tags}
+                // suggestions={suggestions}
+                delimiters={delimiters}
+                handleDelete={handleDelete}
+                handleAddition={handleAddition}
+                handleDrag={handleDrag}
+                handleTagClick={handleTagClick}
+                inputFieldPosition="bottom"
+                autocomplete
+            />
+        </div>
+        <button className="btn btn-primary"
+            onClick={createPostHandler}>Create Post</button>
+        <button className="btn btn-danger"
+            onClick={() => props.setVisible(false)}>Close</button>
+    </Modal>
     );
 }
