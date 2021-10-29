@@ -64,8 +64,8 @@ export const MainScreen = () => {
     
     return(
         <>
-        <Link to="/Friend">
-            <button className="btn btn-md btn-secondary">Go to Friend</button>
+        <Link to="/Friends">
+            <button className="btn btn-md btn-secondary" href="/Friends">Go to Friends</button>
         </Link>
         <Link to="/Post">
             <button className="btn btn-md btn-secondary" href="/Post">Go to Post</button>
