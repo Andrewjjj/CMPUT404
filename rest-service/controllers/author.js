@@ -1,4 +1,6 @@
-module.exports.getAuthor = (req, res, next) => {
+const db = require("../database/database");
+
+module.exports.getAuthor = async(req, res, next) => {
     console.log("Get Author Page")
     let exampleJson = [{
         "postID": "36131c25-c05f-4a58-9012-0d2e03b73a5b",
@@ -16,8 +18,7 @@ module.exports.getAuthor = (req, res, next) => {
             "love": 1,
             "rocket": 2
         },
-        "comments": [
-            {
+        "comments": [{
                 "username": "as444dn",
                 "message": "newl 124124added comment"
             },
@@ -77,7 +78,7 @@ module.exports.getAuthor = (req, res, next) => {
     res.status(200).json(exampleJson)
 }
 
-exports.getAuthoByAuthorID = (req, res, next) => {
+exports.getAuthorByAuthorID = (req, res, next) => {
     let authorID = req.params.authorID;
     let exampleJson = {
         "type": "author",
