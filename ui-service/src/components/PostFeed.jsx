@@ -68,7 +68,7 @@ export const PostFeed = (props) => {
                 comment: comment,
                 username: username,
             }).then(res => {
-                alert(res)
+                alert("success")
             })
         }
         catch(err){
@@ -79,7 +79,15 @@ export const PostFeed = (props) => {
     }
 
     const reactionClickHandler = async (postID, reactionType) => {
-        alert("Reaction Clicked!")
+        try {
+            await axios.post(`http://localhost:8080/service/post/${postID}/like`)
+            .then(res => {
+                alert("success")
+            })
+        } catch(err) {
+            console.log(err)
+            alert(err)
+        }
         fetchPosts();
     }
 
