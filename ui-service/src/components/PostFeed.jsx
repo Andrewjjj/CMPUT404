@@ -37,6 +37,8 @@ export const PostFeed = (props) => {
             await Promise.all(posts.map(async post => {
                 response = await axios.get(`http://localhost:8080/service/post/${post.PostID}/comment`)
                 post.Comments = response.data;
+                response = await axios.get(`http://localhost:8080/service/author/${post.AuthorID}`)
+                post.AuthorName = await response.data[0].Name;
                 post.Tags = ["awesome", "good"]
             }))
 
@@ -89,7 +91,7 @@ export const PostFeed = (props) => {
                 {/* Title Section */}
                 <div className="row" style={{textAlign: 'left'}}>
                     <h5><b>{post.Title}</b></h5>
-                    <h6 style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>{post.AuthorID} </h6>
+                    <h6 style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>{post.AuthorName} </h6>
                 </div>
                 {/* Content Section */}
                 <div className="row rounded rounded-5 py-2 px-4" style={{backgroundColor: "rgb(30,47,65)"}}>

@@ -20,6 +20,12 @@ async function getAllAuthors() {
         .catch(e => console.log(e));
 }
 
+async function getAuthorByAuthorID(authorID) {
+    return await pool.query('SELECT * FROM public."Author" WHERE "AuthorID" = $1;', [authorID])
+        .then(res => {return res.rows})
+        .catch(e => console.log(e0));
+}
+
 async function getAllComments(postID) {
     return await pool.query('SELECT * FROM public."Comment" WHERE "PostID" = $1;', [postID])
         .then(res => { return res.rows })
@@ -54,6 +60,7 @@ async function createPost(title, content, authorID) {
 }
 
 module.exports.getAllAuthors = getAllAuthors;
+module.exports.getAuthorByAuthorID = getAuthorByAuthorID;
 
 module.exports.getAllComments = getAllComments;
 module.exports.createComment = createComment;
