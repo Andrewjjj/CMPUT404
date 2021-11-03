@@ -4,6 +4,7 @@ const postController = require("../controllers/post")
 
 router.get("/", postController.getAllPosts);
 router.post("/", postController.createPost);
+router.post("/:postID/like", postController.likePost);
 
 router.get("/:postID/comment", postController.getAllComments);
 router.post("/:postID/comment", postController.createComment);

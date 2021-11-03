@@ -25,6 +25,16 @@ module.exports.createPost = async(req, res, next) => {
     }
 }
 
+module.exports.likePost = async (req, res) => {
+    let postID = req.params.postID;
+    try {
+        await db.likePost(postID);
+        return res.status(200).send("success");
+    } catch(err) {
+        return res.status(500).send(err);
+    }
+}
+
 module.exports.getAllComments = async(req, res, next) => {
     let postID = req.params.postID;
     // console.log("get comments");
@@ -47,8 +57,4 @@ module.exports.createComment = async(req, res, next) => {
     } catch (err) {
         return res.status(500).send(err)
     }
-}
-
-module.exports.postLike = (req, res) => {
-    let postID = req.params.postID;
 }
