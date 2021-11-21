@@ -10,6 +10,10 @@ const dbConfig = {
 
 const promisePool = mysql.createPool(dbConfig).promise()
 
+const generateNewId = () => {
+    return uuidv4().replaceAll("-", "")
+}
+// Author
 async function getAllAuthors() {
     return await promisePool.execute(
     `SELECT Username as displayName, GithubURL as github, Host as host, AuthorID as id, ProfileImageURL as profileImage
@@ -30,17 +34,18 @@ async function getAuthorByAuthorID(authorID) {
 }
 
 async function createAuthor(username, password, host, githubUrl, profileImageURL){
-    let uuid = uuidv4().replaceAll("-", "")
     return await promisePool.execute(`
     INSERT INTO 
     author (AuthorID, Username, Password, Host, GithubURL, ProfileImageURL)
     VALUES (?, ?, ?, ?, ?)`, 
-    [uuid, username, password, host, githubUrl, profileImageURL])
+    [generateNewId(), username, password, host, githubUrl, profileImageURL])
     .then(([result]) => {
         return result.insertId
     })
 }
 
+
+// Follower
 async function getAllFollowersByAuthorUID(authorID){
     return await promisePool.execute(`
     SELECT * FROM follow
@@ -77,6 +82,91 @@ async function checkFollower(followerID, authorID){
     .then(([res]) => {
         return res.length == 1
     })
+}
+
+
+// Friend Request
+async function sendFriendRequest(targetID, requesterID){
+    return await promisePool.execute(`
+    INSERT INTO friend_request (TargetID, RequesterID)
+    VALUES (?, ?)`, 
+    [targetID, requesterID])
+    .then(([res]) => {
+        return res.insertId
+    })
+}
+
+async function approveFriendRequest(targetID, requesterID){
+    try{
+        const connection = await promisePool.getConnection()
+        
+        await connection.beginTransaction()
+        connection.query(`
+        DELETE FROM friend_request
+        WHERE RequesterID = ? AND TargetID = ?
+        `, [requesterID, targetID])
+        
+        await promisePool.query(`
+        INSERT INTO friend (TargetID, FriendID)
+        VALUES (?, ?)`, 
+        [targetID, requesterID])
+        
+        await connection.commit()
+        return;
+    }
+    catch(err){
+        throw err;
+    }
+}
+
+async function rejectFriendRequest(targetID, requesterID){
+    return await promisePool.execute(`
+    DELETE FROM friend_request
+    WHERE RequesterID = ? AND TargetID = ?`, 
+    [requesterID, targetID])
+}
+
+async function getAllFriendRequestFromID(targetID){
+    return await promisePool.execute(`
+    SELECT Username as displayName, GithubURL as github, Host as host, AuthorID as id, ProfileImageURL as profileImage
+    FROM friend_request
+    LEFT JOIN author
+    ON friend_request.targetID = author.AuthorID
+    WHERE friend_request.targetID = ?`,
+    [targetID])
+    .then(([res]) => {
+        return res;
+    })
+}
+
+
+// Comments
+async function getAllCommentsByPostID(postID){
+    return await promisePool.execute(`
+    SELECT CommentID as id, Content as comment, ContentType as contentType, PublishedTime as published, AuthorID
+    FROM post
+    LEFT JOIN comment
+    ON post.PostID = comment.PostID
+    WHERE PostID = ?`,
+    [postID])
+    .then(([res]) => {
+        return res
+    })
+}
+
+async function addCommentsToPost(postID, authorID, content, contentType, publishedTime){
+    return await promisePool.execute(`
+    INSERT INTO comment (CommentID, PostID, AuthorID, Content, ContentType, PublichsedTime)
+    VALUES (?, ?, ?, ?, ?, ?)`, 
+    [generateNewId(), postID, authorID, content, contentType, publishedTime])
+    .then(([res]) => {
+        return res
+    })
+}
+
+// Likes
+async function sendLikeToPost(authorID, postID){
+    
 }
 
 // =============== TODO: Remake below
@@ -124,6 +214,13 @@ module.exports.removeFollower = removeFollower;
 module.exports.addFollower = addFollower;
 module.exports.checkFollower = checkFollower;
 
+module.exports.sendFriendRequest = sendFriendRequest;
+module.exports.approveFriendRequest = approveFriendRequest;
+module.exports.rejectFriendRequest = rejectFriendRequest;
+module.exports.getAllFriendRequestFromID = getAllFriendRequestFromID;
+
+module.exports.getAllCommentsByPostID = getAllCommentsByPostID;
+module.exports.addCommentsToPost = addCommentsToPost;
 
 module.exports.getAllComments = getAllComments;
 module.exports.createComment = createComment;
