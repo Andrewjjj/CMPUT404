@@ -10,12 +10,19 @@ app.use(bodyParser.json())
 
 const authorRoutes = require('./routes/author')
 const postRoutes = require('./routes/post');
-app.use("/service/author", authorRoutes);
-app.use("/service/post", postRoutes);
+app.use(authorRoutes);
+app.use("/post", postRoutes);
 
 app.use('/', (req, res, next) => {
     res.status(404).send('404 Page Not Found');
 });
+
+// const db = require('./database/database')
+// db.createAuthor("Aaron", "1234", "https://github.com/AaronTrip", "https://i.imgur.com/k7XVwpB.jpeg")
+// db.createAuthor("Andrew", "1234", "https://github.com/Andrewjjj", "https://i.imgur.com/k7XVwpB.jpeg")
+// db.createAuthor("Jane", "1234", "https://github.com/janhavi0210", "https://i.imgur.com/k7XVwpB.jpeg")
+// db.createAuthor("Wonbin", "1234", "https://github.com/wonbinjeong", "https://i.imgur.com/k7XVwpB.jpeg")
+// db.createAuthor("Simon", "1234", "https://github.com/snhumphr", "https://i.imgur.com/k7XVwpB.jpeg")
 
 app.listen(process.env.PORT, () => {
     console.log(`Server Running on ${process.env.PORT}`);
