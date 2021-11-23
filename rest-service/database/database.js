@@ -14,10 +14,12 @@ const generateNewId = () => {
     return uuidv4().replaceAll("-", "")
 }
 // Author
-async function getAllAuthors() {
+async function getAllAuthors(limit, offset) {
     return await promisePool.execute(
-    `SELECT Username as displayName, GithubURL as github, Host as host, AuthorID as id, ProfileImageURL as profileImage
-    FROM author`)
+    `SELECT Username as displayName, GithubURL as github, AuthorID as id, ProfileImageURL as profileImage
+    FROM author
+    LIMIT ? OFFSET ?
+    `, [limit, offset])
     .then(([row]) => { 
         return row
     })
@@ -25,7 +27,7 @@ async function getAllAuthors() {
 
 async function getAuthorByAuthorID(authorID) {
     return await promisePool.execute(
-    `SELECT Username as displayName, GithubURL as github, Host as host, AuthorID as id, ProfileImageURL as profileImage
+    `SELECT Username as displayName, GithubURL as github, AuthorID as id, ProfileImageURL as profileImage
     FROM author
     WHERE AuthorID = (?)`, [authorID])
     .then(([row]) => { 
@@ -33,52 +35,61 @@ async function getAuthorByAuthorID(authorID) {
     })
 }
 
-async function createAuthor(username, password, host, githubUrl, profileImageURL){
+async function createAuthor(username, password, githubUrl, profileImageURL){
     return await promisePool.execute(`
     INSERT INTO 
-    author (AuthorID, Username, Password, Host, GithubURL, ProfileImageURL)
+    author (AuthorID, Username, Password, GithubURL, ProfileImageURL)
     VALUES (?, ?, ?, ?, ?)`, 
-    [generateNewId(), username, password, host, githubUrl, profileImageURL])
+    [generateNewId(), username, password, githubUrl, profileImageURL])
     .then(([result]) => {
         return result.insertId
     })
+}
+
+async function updateAuthor(authorID, displayName, githubLink, profileImageURL){
+    return await promisePool.execute(`
+    UPDATE author
+    SET Username = ?, GithubURL = ?, ProfileImageURL = ?
+    WHERE AuthorID = ?`, 
+    [displayName, githubLink, profileImageURL, authorID])
 }
 
 
 // Follower
 async function getAllFollowersByAuthorUID(authorID){
     return await promisePool.execute(`
-    SELECT * FROM follow
+    SELECT FollowerID
+    FROM follow
     LEFT JOIN author
     ON follow.TargetID = author.AuthorID
     WHERE AuthorID = ?`, [authorID])
     .then(([res]) => {
-        return res.map(res => delete res.password)
+        return res.map(res => res.FollowerID)
     })
 }
 
-async function removeFollower(followerID, authorID){
+async function removeFollower(authorID, followerID){
     return await promisePool.execute(`
     DELETE FROM follow
-    WHERE FollowerID = ? AND TargetID = ?`,
-    [followerID, authorID])
+    WHERE TargetID = ? AND FollowerID = ?`,
+    [authorID, followerID])
 }
 
-async function addFollower(followerID, authorID){
+async function addFollower(authorID, followerID){
     return await promisePool.execute(`
-    INSERT INTO follow (FollowerID, AuthorID)
+    INSERT INTO follow (TargetID, FollowerID)
     VALUE (?, ?)`,
-    [followerID, authorID])
+    [authorID, followerID])
     .then(([res]) => {
         return res.insertId
     })
 }
 
-async function checkFollower(followerID, authorID){
+async function checkFollower(authorID, followerID){
     return await promisePool.execute(`
     SELECT * FROM follow
-    WHERE FollowerID = ? AND AuthorID = ?`,
-    [followerID, authorID])
+    WHERE TargetID = ? AND FollowerID = ?`,
+    [authorID, followerID])
     .then(([res]) => {
         return res.length == 1
     })
@@ -208,6 +219,7 @@ async function createPost(title, content, authorID) {
 module.exports.getAllAuthors = getAllAuthors;
 module.exports.getAuthorByAuthorID = getAuthorByAuthorID;
 module.exports.createAuthor = createAuthor;
+module.exports.updateAuthor = updateAuthor;
 
 module.exports.getAllFollowersByAuthorUID = getAllFollowersByAuthorUID;
 module.exports.removeFollower = removeFollower;

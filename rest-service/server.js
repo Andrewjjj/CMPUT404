@@ -10,12 +10,22 @@ app.use(bodyParser.json())
 
 const authorRoutes = require('./routes/author')
 const postRoutes = require('./routes/post');
+const followerRoutes = require('./routes/follower');
+
 app.use(authorRoutes);
 app.use("/post", postRoutes);
+app.use(followerRoutes);
+
+
+app.use('/', (err, req, res, next) => {
+    console.log(err)
+    res.status(404).send(`400 Error. Message: ${err.message}`);
+});
 
 app.use('/', (req, res, next) => {
     res.status(404).send('404 Page Not Found');
 });
+
 
 // const db = require('./database/database')
 // db.createAuthor("Aaron", "1234", "https://github.com/AaronTrip", "https://i.imgur.com/k7XVwpB.jpeg")

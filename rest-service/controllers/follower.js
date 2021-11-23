@@ -1,21 +1,21 @@
 const db = require("../database/database");
+const WEB_HOST = process.env.WEB_HOST
+const axios = require("axios")
 
 module.exports.getAllFollowers = async (req, res, next) => {
     try{
         const { authorID } = req.params;
-        let followerArr = await db.getAllFollowersByAuthorUID(authorID)
-        followerArr.map(author => {
-            const host = author.host;
-            return {
-                ...author,
-                id: `${host}/author/${authorInfo.id}`,
-                url: `${host}/author/${authorInfo.id}`,
-                type: "author",
-            }
-        })
+        let followerIDArr = await db.getAllFollowersByAuthorUID(authorID)
+
+        let followers = []
+        for(let followerID of followerIDArr){
+            let response = await axios.get(followerID)
+            followers.push(response.data)
+        }
+        
         res.status(200).json({
             type: "followers",
-            items: followerArr,
+            items: followers,
         })
     }
     catch(err) {
@@ -26,7 +26,7 @@ module.exports.getAllFollowers = async (req, res, next) => {
 module.exports.removeFollower = async (req, res, next) => {
     try{
         const { authorID, followerID } = req.params;
-        await db.removeFollower(followerID, authorID)
+        await db.removeFollower(authorID, followerID)
         res.status(200).end()
     }
     catch(err){
@@ -37,7 +37,7 @@ module.exports.removeFollower = async (req, res, next) => {
 module.exports.addFollower = async (req, res, next) => {
     try{
         const { authorID, followerID } = req.params;
-        await db.addFollower(followerID, authorID)
+        await db.addFollower(authorID, followerID)
         res.status(200).end()
     }
     catch(err){
@@ -48,7 +48,7 @@ module.exports.addFollower = async (req, res, next) => {
 module.exports.checkFollower = async (req, res, next) => {
     try{
         const { authorID, followerID } = req.params;
-        const isFollowing = await db.checkFollower(followerID, authorID)
+        const isFollowing = await db.checkFollower(authorID, followerID)
         res.status(200).json({
             isFollowing: isFollowing,
         })
