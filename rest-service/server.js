@@ -9,9 +9,19 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 const authorRoutes = require('./routes/author')
+const commentRoutes = require('./routes/comment')
+const followerRoutes = require('./routes/follower')
+const friendRequestRoutes = require('./routes/friendRequest')
+const inboxRoutes = require('./routes/inbox')
+// const likeRoutes = require('./routes/like')
 const postRoutes = require('./routes/post');
-app.use(authorRoutes);
-app.use("/post", postRoutes);
+app.use("/service", authorRoutes);
+app.use("/service", commentRoutes);
+app.use("/service", followerRoutes);
+app.use("/service", friendRequestRoutes);
+app.use("/service", inboxRoutes);
+// app.use("/service", likeRoutes);
+app.use("/service", postRoutes);
 
 app.use('/', (req, res, next) => {
     res.status(404).send('404 Page Not Found');

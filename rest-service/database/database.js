@@ -156,7 +156,7 @@ async function getAllCommentsByPostID(postID){
 
 async function addCommentsToPost(postID, authorID, content, contentType, publishedTime){
     return await promisePool.execute(`
-    INSERT INTO comment (CommentID, PostID, AuthorID, Content, ContentType, PublichsedTime)
+    INSERT INTO comment (CommentID, PostID, AuthorID, Content, ContentType, PublishedTime)
     VALUES (?, ?, ?, ?, ?, ?)`, 
     [generateNewId(), postID, authorID, content, contentType, publishedTime])
     .then(([res]) => {
@@ -169,41 +169,95 @@ async function sendLikeToPost(authorID, postID){
     
 }
 
-// =============== TODO: Remake below
-
-async function getAllComments(postID) {
-    return await promisePool.query('SELECT * FROM public."Comment" WHERE "PostID" = $1;', [postID])
-        .then(res => { return res.rows })
-        .catch(e => console.log(e));
+// Posts
+async function getPostByPostID(postID) {
+    return await promisePool.execute(`
+    SELECT * FROM post
+    LEFT JOIN author
+    ON post.AuthorID = author.AuthorID
+    WHERE PostID = ?`,
+    [postID])
+    .then(([res]) => {
+        return res[0]
+    })
 }
 
-async function createComment(postID, authorID, comment) {
-    return await promisePool.query(
-            `INSERT INTO public."Comment"
-        ("PostID", "AuthorID", "Comment", "ContentType", "Published")
-        VALUES ($1, $2, $3, $4, $5)
-        `, [postID, authorID, comment, "text/plain", "2021-10-29"]
-        )
-        .then(res => { return res })
-        .catch(e => console.log(e))
+async function updatePost(postID, title, source, origin, description, contentType, content, categories, published, visibility, unlisted) {
+    return await promisePool.execute(`
+    UPDATE post
+    SET Title = ?, Source = ?, Origin = ?, Description = ?, ContentType = ?, Content = ?,
+    Published = ?, Visibility = ?, Unlisted = ?
+    WHERE PostID = ?`,
+    [title, source, origin, description, contentType, content, published, visibility, unlisted, postID])
+    .then(([res]) => {
+        return res
+    })
 }
 
-async function getAllPosts() {
-    return await promisePool.query('SELECT * FROM public."Post";')
-        .then(res => { return res.rows })
-        .catch(e => console.log(e));
+async function removePost(postID) {
+    return await promisePool.execute(`
+    DELETE FROM post
+    WHERE PostID = ?`,
+    [postID])
 }
 
-async function createPost(title, content, authorID) {
-    return await promisePool.query(
-            `INSERT INTO public."Post" 
-        ("Title", "Description", "ContentType", "AuthorID", "Published", "Visibility", "Unlisted")
-        VALUES ($1, $2, $3, $4, $5, $6, $7);
-        `, [title, content, "text/plain", authorID, "2021-10-29", "PUBLIC", "0"])
-        .then(res => { return res })
-        .catch(e => console.log(e))
+async function createPostWithPostID(postID, authorID, title, source, origin, description, contentType, content, categories, published, visibility, unlisted) {
+    return await promisePool.execute(`
+    INSERT INTO post
+    (PostID, AuthorID, Title, Source, Origin, Description, ContentType, Content, Published, Visibility, Unlisted)
+    VALUES
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [postID, authorID, title, source, origin, description, contentType, content, published, visibility, unlisted])
+    .then(([res]) => {
+        return res
+    })
 }
 
+async function getAllAuthorPosts(authorID) {
+    return await promisePool.execute(`
+    SELECT * FROM post
+    WHERE AuthorID = ?`,
+    [authorID])
+    .then(([res]) => {
+        return res
+    })
+}
+
+async function createPost(authorID, title, source, origin, description, contentType, content, categories, published, visibility, unlisted) {
+    return await promisePool.execute(`
+    INSERT INTO post
+    (PostID, AuthorID, Title, Source, Origin, Description, ContentType, Content, Published, Visibility, Unlisted)
+    VALUES
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [generateNewId(), authorID, title, source, origin, description, contentType, content, published, visibility, unlisted])
+    .then(([res]) => {
+        return res
+    })
+}
+
+// Inbox
+async function getInbox(authorID) {
+    return await promisePool.execute(`
+    SELECT * FROM inbox
+    WHERE AuthorID = ?`,
+    [authorID])
+}
+
+async function postInboxPost(authorID) {
+
+}
+
+async function postInboxFollow(authorID) {
+
+}
+
+async function postInboxLike(authorID) {
+
+}
+
+async function removeInbox(authorID) {
+
+}
 
 module.exports.getAllAuthors = getAllAuthors;
 module.exports.getAuthorByAuthorID = getAuthorByAuthorID;
@@ -222,8 +276,15 @@ module.exports.getAllFriendRequestFromID = getAllFriendRequestFromID;
 module.exports.getAllCommentsByPostID = getAllCommentsByPostID;
 module.exports.addCommentsToPost = addCommentsToPost;
 
-module.exports.getAllComments = getAllComments;
-module.exports.createComment = createComment;
-
-module.exports.getAllPosts = getAllPosts;
+module.exports.getPostByPostID = getPostByPostID;
+module.exports.updatePost = updatePost,
+module.exports.removePost = removePost;
+module.exports.createPostWithPostID = createPostWithPostID;
+module.exports.getAllAuthorPosts = getAllAuthorPosts;
 module.exports.createPost = createPost;
+
+module.exports.getInbox = getInbox;
+module.exports.postInboxPost = postInboxPost;
+module.exports.postInboxFollow = postInboxFollow;
+module.exports.postInboxLike = postInboxLike;
+module.exports.removeInbox = removeInbox;
