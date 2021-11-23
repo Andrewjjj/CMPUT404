@@ -24,9 +24,9 @@ module.exports.postInbox = async (req, res, next) => {
         if (inbox.type == "post") {
             await db.postInboxPost(authorID, "post", inbox.id);
         } else if (inbox.type == "follow") {
-            await db.postInboxPost(authorID, "follow", inbox.id);
+            await db.postInboxFollow(authorID, "follow", inbox.id);
         } else if (inbox.like == "like") {
-            await db.postInboxPost(authorID, "like", inbox.id);
+            await db.postInboxLike(authorID, "like", inbox.id);
         }
         
         res.status(200).send("success")

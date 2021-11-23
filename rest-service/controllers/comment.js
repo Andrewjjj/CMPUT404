@@ -44,6 +44,14 @@ exports.addComments = async (req, res, next) => {
     try{
         const { authorID, postID } = req.params;
         // await db.
+        const { type, comment } = req.body;
+        if(type != "comment") {
+            console.log(`Wrong Type. Received: ${type}`)
+            return res.status(400).send("Bad Request")
+        }
+        const { content, contentType, publishedTime } = comment;
+        await db.addCommentsToPost(postID, authorID, content, contentType, publishedTime)
+        res.status(200).end()
     }
     catch(err){
         next(err)
