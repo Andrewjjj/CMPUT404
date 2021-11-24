@@ -310,6 +310,17 @@ async function removeInbox(authorID) {
     [authorID])
 }
 
+async function likePost(postID) {
+    return await pool.query(
+        `UPDATE public."Post"
+    SET "Likes" = "Likes" + 1
+    WHERE "PostID" = $1
+    `, [postID]
+    )
+    .then(res => { return res })
+    .catch(e => console.log(e))
+}
+
 module.exports.getAllAuthors = getAllAuthors;
 module.exports.getAuthorByAuthorID = getAuthorByAuthorID;
 module.exports.createAuthor = createAuthor;
