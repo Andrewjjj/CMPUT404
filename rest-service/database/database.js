@@ -139,7 +139,7 @@ async function rejectFriendRequest(targetID, requesterID){
 
 async function getAllFriendRequestFromID(targetID){
     return await promisePool.execute(`
-    SELECT Username as displayName, GithubURL as github, Host as host, AuthorID as id, ProfileImageURL as profileImage
+    SELECT Username as displayName, GithubURL as github, AuthorID as id, ProfileImageURL as profileImage
     FROM friend_request
     LEFT JOIN author
     ON friend_request.targetID = author.AuthorID
@@ -154,11 +154,11 @@ async function getAllFriendRequestFromID(targetID){
 // Comments
 async function getAllCommentsByPostID(postID){
     return await promisePool.execute(`
-    SELECT CommentID as id, Content as comment, ContentType as contentType, PublishedTime as published, AuthorID
-    FROM post
-    LEFT JOIN comment
+    SELECT CommentID as id, comment.Content as comment, comment.ContentType as contentType, PublishedTime as published, comment.AuthorID
+    FROM comment
+    LEFT JOIN post
     ON post.PostID = comment.PostID
-    WHERE PostID = ?`,
+    WHERE comment.PostID = ?`,
     [postID])
     .then(([res]) => {
         return res
@@ -229,7 +229,7 @@ async function getPostByPostID(postID) {
     })
 }
 
-async function updatePost(postID, title, source, origin, description, contentType, content, categories, published, visibility, unlisted) {
+async function updatePost(postID, title, source, origin, description, contentType, content, published, visibility, unlisted) {
     return await promisePool.execute(`
     UPDATE post
     SET Title = ?, Source = ?, Origin = ?, Description = ?, ContentType = ?, Content = ?,
@@ -248,7 +248,7 @@ async function removePost(postID) {
     [postID])
 }
 
-async function createPostWithPostID(postID, authorID, title, source, origin, description, contentType, content, categories, published, visibility, unlisted) {
+async function createPostWithPostID(postID, authorID, title, source, origin, description, contentType, content, published, visibility, unlisted) {
     return await promisePool.execute(`
     INSERT INTO post
     (PostID, AuthorID, Title, Source, Origin, Description, ContentType, Content, Published, Visibility, Unlisted)
@@ -270,16 +270,45 @@ async function getAllAuthorPosts(authorID) {
     })
 }
 
-async function createPost(authorID, title, source, origin, description, contentType, content, categories, published, visibility, unlisted) {
+async function createPost(authorID, title, source, origin, description, contentType, content, published, visibility, unlisted) {
+    let postID = generateNewId();
+    
     return await promisePool.execute(`
     INSERT INTO post
     (PostID, AuthorID, Title, Source, Origin, Description, ContentType, Content, Published, Visibility, Unlisted)
     VALUES
     (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [generateNewId(), authorID, title, source, origin, description, contentType, content, published, visibility, unlisted])
+    [postID, authorID, title, source, origin, description, contentType, content, published, visibility, unlisted])
     .then(([res]) => {
-        return res
+        return postID;
     })
+}
+
+// Post Categories
+
+async function getPostCategories(postID) {
+    return await promisePool.execute(`
+    SELECT Category FROM post_category
+    WHERE PostID = ?`,
+    [postID])
+    .then(([res]) => {
+        return res;
+    })
+}
+
+async function addPostCategories(categories) {
+    return await promisePool.query(`
+    INSERT INTO post_category
+    (PostID, Category)
+    VALUES ?`,
+    [categories])
+}
+
+async function removePostCategories(postID) {
+    return await promisePool.execute(`
+    DELETE FROM post_category
+    WHERE PostID = ?`,
+    [postID])
 }
 
 // Inbox
@@ -350,6 +379,10 @@ module.exports.removePost = removePost;
 module.exports.createPostWithPostID = createPostWithPostID;
 module.exports.getAllAuthorPosts = getAllAuthorPosts;
 module.exports.createPost = createPost;
+
+module.exports.getPostCategories = getPostCategories;
+module.exports.addPostCategories = addPostCategories;
+module.exports.removePostCategories = removePostCategories;
 
 module.exports.getInbox = getInbox;
 module.exports.postInbox = postInbox;
