@@ -52,7 +52,7 @@ exports.getLikesOnComment = async (req, res, next) => {
     }
 }
 
-exports.getAuthorLikes = (req, res, next) => {
+exports.getAuthorLikes = async (req, res, next) => {
     try{
         const { authorID } = req.params;
         let authorLikesArr = await db.getAuthorLikes(authorID)
