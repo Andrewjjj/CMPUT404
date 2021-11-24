@@ -8,16 +8,20 @@ module.exports.getAllComments = async (req, res, next) => {
         let comments = await db.getAllCommentsByPostID(postID)
 
         let authorList = {}
-        comments.forEach(comment => {
-            const authorID = comment.authorID
-            // GET AUTHOR LIST HERE
+        await Promise.all(comments.map(async comment => {
+            const authorID = comment.AuthorID
+            let author = await db.getAuthorByAuthorID(authorID);
             let authorInfo = {
                 type: "author",
-                id: "TBA...",
-                url: "TBA..."
+                id: `${WEB_HOST}/author/${authorID}`,
+                url: `${WEB_HOST}/author/${authorID}`,
+                host: WEB_HOST,
+                displayName: author[0].displayName,
+                github: author[0].github,
+                profileImage: author[0].profileImage,
             }
-            authorList.authorID = authorInfo
-        })
+            authorList[authorID] = authorInfo
+        }))
 
         comments = comments.map(comment => {
             return {
@@ -32,6 +36,7 @@ module.exports.getAllComments = async (req, res, next) => {
             page: page,
             size: size,
             post: `${WEB_HOST}/author/${authorID}/post/${postID}`,
+            id: `${WEB_HOST}/author/${authorID}/post/${postID}/comments`,
             comments: comments
         })
     }
@@ -43,7 +48,6 @@ module.exports.getAllComments = async (req, res, next) => {
 exports.addComments = async (req, res, next) => {
     try{
         const { authorID, postID } = req.params;
-        // await db.
         const { type, comment } = req.body;
         if(type != "comment") {
             console.log(`Wrong Type. Received: ${type}`)

@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const app = express();
 app.use(cors())
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 const authorRoutes = require('./routes/author')
@@ -15,17 +15,26 @@ const friendRequestRoutes = require('./routes/friendRequest')
 const inboxRoutes = require('./routes/inbox')
 // const likeRoutes = require('./routes/like')
 const postRoutes = require('./routes/post');
-app.use("/service", authorRoutes);
-app.use("/service", commentRoutes);
-app.use("/service", followerRoutes);
-app.use("/service", friendRequestRoutes);
-app.use("/service", inboxRoutes);
+
+app.use(authorRoutes);
+app.use(postRoutes);
+app.use(followerRoutes);
+app.use(commentRoutes);
+app.use(followerRoutes);
+app.use(friendRequestRoutes);
+app.use(inboxRoutes);
 // app.use("/service", likeRoutes);
-app.use("/service", postRoutes);
+
+
+app.use('/', (err, req, res, next) => {
+    console.log(err)
+    res.status(404).send(`400 Error. Message: ${err.message}`);
+});
 
 app.use('/', (req, res, next) => {
     res.status(404).send('404 Page Not Found');
 });
+
 
 // const db = require('./database/database')
 // db.createAuthor("Aaron", "1234", "https://github.com/AaronTrip", "https://i.imgur.com/k7XVwpB.jpeg")

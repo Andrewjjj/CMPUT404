@@ -2,16 +2,16 @@ const db = require("../database/database");
 const WEB_HOST = process.env.WEB_HOST
 
 module.exports.getAllAuthors = async (req, res, next) => {
-        
+    
     try{
         const { page, size } = req.query
-        let authors = await db.getAllAuthors()
+        if(!page || !size) return res.status(400).send("Page or Size query not passed in")
+        let authors = await db.getAllAuthors(size, page-1)
         authors = authors.map(authorInfo => {
-            const host = authorInfo.host;
             return {
                 ...authorInfo,
-                id: `${host}/author/${authorInfo.id}`,
-                url: `${host}/author/${authorInfo.id}`,
+                id: `${WEB_HOST}/author/${authorInfo.id}`,
+                url: `${WEB_HOST}/author/${authorInfo.id}`,
                 type: "author",
             }
         })
@@ -33,8 +33,8 @@ exports.getAuthorByAuthorID = async (req, res, next) => {
         let authorInfo = (await db.getAuthorByAuthorID(authorID))[0]
         res.status(200).json({
             ...authorInfo,
-            id: `${host}/author/${authorInfo.id}`,
-            url: `${host}/author/${authorInfo.id}`,
+            id: `${WEB_HOST}/author/${authorInfo.id}`,
+            url: `${WEB_HOST}/author/${authorInfo.id}`,
             type: "author",
         })
     }
@@ -43,12 +43,15 @@ exports.getAuthorByAuthorID = async (req, res, next) => {
     }
 }
 
-exports.postUpdateAuthorProfile = (req, res, next) => {
+exports.postUpdateAuthorProfile = async (req, res, next) => {
     
     try{
         const { authorID } = req.params;
-        const { githubURL, profileImageURL, username } = req.body
+        const { github, profileImage, displayName } = req.body;
+        if(!github || !profileImage || !displayName ) return res.status(400).send("Bad Data");
+
         // TODO: Update
+        await db.updateAuthor(authorID, displayName, github, profileImage)
         res.status(200).send("success")
     }
     catch(err) {
