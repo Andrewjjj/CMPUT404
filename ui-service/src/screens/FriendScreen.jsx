@@ -3,54 +3,28 @@ import { Link } from "react-router-dom";
 import {Header} from '../components/Header'
 import {List} from '../components/List'
 import {useState, useEffect} from 'react'
+import axios from 'axios';
 
 export const FriendScreen = (props) => {
-    const [Friends, setFriends]= useState([
-      {
-        "type":"author",
-        "id":"http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
-        "url":"http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
-        "host":"http://127.0.0.1:5454/",
-        "displayName":"Greg Johnson",
-        "github": "http://github.com/gjohnson",
-        "profileImage": "https://i.imgur.com/k7XVwpB.jpeg"
-    },
-    {
-      "type":"author",
-      "id":"http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
-      "url":"http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
-      "host":"http://127.0.0.1:5454/",
-      "displayName":"Treg Johnson",
-      "github": "http://github.com/gjohnson",
-      "profileImage": "https://i.imgur.com/k7XVwpB.jpeg"
-  },
-  {
-    "type":"author",
-    "id":"http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
-    "url":"http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
-    "host":"http://127.0.0.1:5454/",
-    "displayName":"Kreg Johnson",
-    "github": "http://github.com/gjohnson",
-    "profileImage": "https://i.imgur.com/k7XVwpB.jpeg"
-  },
-  {
-    "type":"author",
-    "id":"http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
-    "url":"http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
-    "host":"http://127.0.0.1:5454/",
-    "displayName":"Greg Johnson",
-    "github": "http://github.com/gjohnson",
-    "profileImage": "https://i.imgur.com/k7XVwpB.jpeg"
-  },
-  {
-    "type":"author",
-    "id":"http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
-    "url":"http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
-    "host":"http://127.0.0.1:5454/",
-    "displayName":"Greg Johnson",
-    "github": "http://github.com/gjohnson",
-    "profileImage": "https://i.imgur.com/k7XVwpB.jpeg"
-  }]) // Temporary data
+  const [Friends, setFriends]= useState([]);
+  
+  useEffect(() => {
+    fetchFriends();
+  }, [])
+
+  const fetchFriends = async () => {
+    try {
+      let response = await axios.get("http://localhost:8080/service/author/")
+      let friends = response.data;
+      console.log(friends);
+
+      setFriends(friends);
+    } 
+    catch (err) {
+      console.log(err)
+      alert(err)
+    }
+  }
 
   /*
   //Fetch friends from json server

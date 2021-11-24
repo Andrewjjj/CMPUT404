@@ -176,8 +176,44 @@ async function addCommentsToPost(postID, authorID, content, contentType, publish
 }
 
 // Likes
-async function sendLikeToPost(authorID, postID){
-    
+async function getLikesOnPost(postID){
+    return await promisePool.execute(`
+    SELECT * FROM post_like
+    LEFT JOIN post
+    ON post_like.PostID = post.PostID
+    WHERE post.PostID = ?`,
+    [postID])
+    .then(([res]) => {
+        return res;
+    })
+}
+async function getLikesOnComment(commentID){
+    return await promisePool.execute(`
+    SELECT * FROM comment_like
+    LEFT JOIN comment
+    ON comment_like.CommentID = post.CommentID
+    WHERE comment.CommentID = ?`,
+    [commentID])
+    .then(([res]) => {
+        return res;
+    })
+}
+
+async function addAuthorLikes(authorID, targetID){
+    return await promisePool.execute(`
+    INSERT INTO author_like (AuthorID, TargetID)
+    VALUES (?, ?)`,
+    [authorID, targetID])
+}
+
+async function getAuthorLikes(authorID){
+    return await promisePool.execute(`
+    SELECT * FROM author_likes
+    WHERE AuthorID = `,
+    [authorID])
+    .then(([res]) => {
+        return res;
+    })
 }
 
 // Posts
@@ -281,22 +317,37 @@ async function getInbox(authorID) {
     SELECT * FROM inbox
     WHERE AuthorID = ?`,
     [authorID])
+    .then(([res]) => {
+        return res;
+    })
 }
 
-async function postInboxPost(authorID) {
-
-}
-
-async function postInboxFollow(authorID) {
-
-}
-
-async function postInboxLike(authorID) {
-
+async function postInbox(authorID, type, id) {
+    return await promisePool.execute(`
+    INSERT INTO inbox (InboxID, AuthorID, Type, ID)
+    VALUES (?, ?, ?, ?)`,
+    [generateNewId(), authorID, type, id])
+    .then(([res]) => {
+        return res.insertId
+    })
 }
 
 async function removeInbox(authorID) {
+    return await promisePool.execute(`
+    DELETE FROM inbox
+    WHERE AuthorID = ?`,
+    [authorID])
+}
 
+async function likePost(postID) {
+    return await pool.query(
+        `UPDATE public."Post"
+    SET "Likes" = "Likes" + 1
+    WHERE "PostID" = $1
+    `, [postID]
+    )
+    .then(res => { return res })
+    .catch(e => console.log(e))
 }
 
 module.exports.getAllAuthors = getAllAuthors;
@@ -317,6 +368,11 @@ module.exports.getAllFriendRequestFromID = getAllFriendRequestFromID;
 module.exports.getAllCommentsByPostID = getAllCommentsByPostID;
 module.exports.addCommentsToPost = addCommentsToPost;
 
+module.exports.getLikesOnPost = getLikesOnPost;
+module.exports.getLikesOnComment = getLikesOnComment;
+module.exports.addAuthorLikes = addAuthorLikes;
+module.exports.getAuthorLikes = getAuthorLikes;
+
 module.exports.getPostByPostID = getPostByPostID;
 module.exports.updatePost = updatePost,
 module.exports.removePost = removePost;
@@ -329,7 +385,5 @@ module.exports.addPostCategories = addPostCategories;
 module.exports.removePostCategories = removePostCategories;
 
 module.exports.getInbox = getInbox;
-module.exports.postInboxPost = postInboxPost;
-module.exports.postInboxFollow = postInboxFollow;
-module.exports.postInboxLike = postInboxLike;
+module.exports.postInbox = postInbox;
 module.exports.removeInbox = removeInbox;

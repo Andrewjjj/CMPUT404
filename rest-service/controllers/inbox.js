@@ -1,15 +1,22 @@
 const db = require("../database/database");
+const axios = require('axios');
 
 module.exports.getInbox = async (req, res, next) => {
     try {
         const { authorID } = req.params;
 
-        let inbox = await db.getInbox(authorID)
+        let inboxList = await db.getInbox(authorID)
+
+        let inboxResponseArr = []
+        for(let inbox of inboxList){
+            let response = await axios.get(inbox.ID)
+            inboxResponseArr.push(response.data)
+        }
 
         res.status(200).json({
             type: "inbox",
             author: authorID,
-            items: inbox,
+            items: inboxResponseArr,
         })
     }  catch(err) {
         next(err)
@@ -19,17 +26,19 @@ module.exports.getInbox = async (req, res, next) => {
 module.exports.postInbox = async (req, res, next) => {
     try {
         const { authorID } = req.params;
-        const { inbox } = req.body;
+        const { id, type } = req.body;
 
-        if (inbox.type == "post") {
-            await db.postInboxPost(authorID, "post", inbox.id);
-        } else if (inbox.type == "follow") {
-            await db.postInboxFollow(authorID, "follow", inbox.id);
-        } else if (inbox.like == "like") {
-            await db.postInboxLike(authorID, "like", inbox.id);
+        if (type == "post") {
+            await db.postInbox(authorID, "post", id);
+        } else if (type == "follow") {
+            await db.postInbox(authorID, "follow", id);
+        } else if (type == "like") {
+            await db.postInbox(authorID, "like", id);
+        } else {
+            return res.status(400).send(`Bad Data - Unsupported Type: ${type}`)
         }
+        return res.status(200).send("success")
         
-        res.status(200).send("success")
     }  catch(err) {
         next(err)
     }
