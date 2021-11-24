@@ -13,6 +13,7 @@ const promisePool = mysql.createPool(dbConfig).promise()
 const generateNewId = () => {
     return uuidv4().replaceAll("-", "")
 }
+
 // Author
 async function getAllAuthors(limit, offset) {
     return await promisePool.execute(
