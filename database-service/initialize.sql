@@ -1,0 +1,2 @@
+DROP SCHEMA IF EXISTS db_cmput_404;
+CREATE SCHEMA db_cmput_404;

@@ -1,60 +1,159 @@
 const db = require("../database/database");
+const WEB_HOST = process.env.WEB_HOST
 
-module.exports.getAllPosts = async(req, res, next) => {
-    // console.log("get posts");
+module.exports.getPost = async(req, res, next) => {
     try {
-        let posts = await db.getAllPosts();
-        return res.status(200).json(posts);
+        const { authorID, postID } = req.params;
+        let data = await db.getPostByPostID(postID);
+
+        let categories = await db.getPostCategories(postID);
+        let categoryArr = categories.map(category => {
+            return category.Category;
+        })
+
+        let authorInfo = {
+            type: "author",
+            id: `${WEB_HOST}/author/${authorID}`,
+            displayName: data.Username,
+            url: `${WEB_HOST}/author/${authorID}`,
+            github: data.GithubURL,
+            profileImage: data.ProfileImageURL,
+        }
+
+        let postInfo = {
+            type: "post",
+            title: data.Title,
+            id: `${WEB_HOST}/author/${authorID}/posts/${data.PostID}`,
+            source: data.Source,
+            origin: data.Origin,
+            description: data.Description,
+            contentType: data.ContentType,
+            content: data.Content,
+            author: authorInfo,
+            categories: categoryArr, 
+            count: 0,
+            comments: `${WEB_HOST}/author/${authorID}/posts/${data.PostID}/comments`,
+            published: data.Published,
+            visibility: data.Visibility,
+            unlisted: data.Unlisted,
+        }
+
+        res.status(200).json(postInfo)
     } catch (err) {
-        return res.status(500).send(err);
+        next(err);
     }
 }
 
-// TODO: Add Author
-module.exports.createPost = async(req, res, next) => {
-    // console.log("create post");
-    let title = req.body.title;
-    let content = req.body.content;
-    let tags = req.body.tags;
-    let authorID = "b3b71bd4-e8d4-4ac5-a682-1fb0b97fe7c9" // TODO: Put this is param later
+module.exports.updatePost = async (req, res, next) => {
     try {
-        await db.createPost(title, content, authorID);
-        return res.status(200).send("success");
-    } catch (err) {
-        return res.status(500).send(err);
-    }
-}
+        const { authorID, postID } = req.params;
+        const { title, source, origin, description, 
+            contentType, content, categories, published, 
+            visibility, unlisted } = req.body;
 
-module.exports.likePost = async (req, res) => {
-    let postID = req.params.postID;
-    try {
-        await db.likePost(postID);
-        return res.status(200).send("success");
+        let categoryArr = categories.map(category => {
+            return [postID, category];
+        })
+        
+        await db.updatePost(postID, title, source, origin, description, contentType, content, published, visibility, unlisted)
+        await db.removePostCategories(postID)
+        await db.addPostCategories(categoryArr)
+        res.status(200).send("Success")
     } catch(err) {
-        return res.status(500).send(err);
+        next(err);
     }
 }
 
-module.exports.getAllComments = async(req, res, next) => {
-    let postID = req.params.postID;
-    // console.log("get comments");
+module.exports.removePost = async (req, res, next) => {
     try {
-        let comments = await db.getAllComments(postID);
-        return res.status(200).json(comments);
-    } catch (err) {
-        return res.status(500).send(err);
+        const { authorID, postID } = req.params;
+        await db.removePost(postID);
+        res.status(200).end()
+    } catch(err) {
+        next(err);
     }
 }
 
-module.exports.createComment = async(req, res, next) => {
-    // console.log("create comment")
-    let comment = req.body.comment;
-    let postID = req.params.postID;
-    let authorID = "b3b71bd4-e8d4-4ac5-a682-1fb0b97fe7c9" // TODO
+module.exports.createPost = async (req, res, next) => {
     try {
-        await db.createComment(postID, authorID, comment);
-        return res.status(200).send("success");
-    } catch (err) {
-        return res.status(500).send(err)
+        const { authorID, postID } = req.params;
+        const { title, source, origin, description, 
+            contentType, content, categories, published, 
+            visibility, unlisted } = req.body;
+
+        let categoryArr = categories.map(category => {
+            return [postID, category]
+        })
+
+        await db.createPostWithPostID(postID, authorID, title, source, origin, description, contentType, 
+            content, published, visibility, unlisted);
+        await db.addPostCategories(categoryArr);
+
+        res.status(200).send("Success")
+    } catch(err) {
+        next(err);
+    }
+}
+
+module.exports.getAuthorPosts = async (req, res, next) => {
+    try {
+        const { authorID } = req.params;
+        
+        let posts = await db.getAllAuthorPosts(authorID);
+        let authorInfo = await db.getAuthorByAuthorID(authorID)
+        authorInfo = authorInfo[0]
+
+        authorInfo.type = "post";
+        authorInfo.id = `${WEB_HOST}/author/${authorID}`
+
+        let postsInfo = await Promise.all(posts.map(async (post) => {
+            let categories = await db.getPostCategories(post.PostID);
+            let categoryArr = categories.map(category => {
+                return category.Category;
+            })
+            return {
+                type: "post",
+                title: post.Title,
+                id: `${WEB_HOST}/author/${authorID}/posts/${post.PostID}`,
+                source: post.Source,
+                origin: post.Origin,
+                description: post.Description,
+                contentType: post.ContentType,
+                content: post.Content,
+                author: authorInfo,
+                categories: categoryArr,
+                count: 0,
+                comments: `${WEB_HOST}/author/${authorID}/posts/${post.PostID}/comments`,
+                published: post.Published,
+                visibility: post.Visibility,
+                unlisted: post.Unlisted,
+            }
+        }))
+
+        res.status(200).json(postsInfo);
+    } catch(err) {
+        next(err);
+    }
+}
+
+module.exports.createAuthorPost = async (req, res, next) => {
+    try {
+        const { authorID } = req.params;
+        const { title, source, origin, description, 
+            contentType, content, categories, published, 
+            visibility, unlisted } = req.body;
+
+        let postID = await db.createPost(authorID, title, source, origin, description, contentType, 
+            content, published, visibility, unlisted);
+
+        let categoryArr = categories.map(category => {
+            return [postID, category]
+        })
+
+        await db.addPostCategories(categoryArr)
+
+        res.status(200).send("Success")
+    } catch(err) {
+        next(err);
     }
 }
