@@ -13,6 +13,8 @@
   }
 }
 
+
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -29,16 +31,26 @@
 }
 
 .container {
-  max-width: 425px;
+  max-width: 525px;
   margin: 10px auto;
   min-height: 700px;
-  border: 3px solid white;
-  background-color: #15202B;
+  
+  background-color: rgb(21, 32, 43);
   padding: 10px;
   align-items: left;
   text-align: left;
   overflow-y: auto;
   height: 500px;
+  
+}
+
+.Buttons{
+
+  background-color: #FF7A00;
+}
+
+.Buttons:hover{
+  background-color: #d46700;
 }
 
 .container::-webkit-scrollbar
@@ -73,7 +85,7 @@
 .headerc {
   text-align: center;
   margin-bottom: 10px;
-  background-color:#FF7A00 ;
+  background-color:#ff7a00 ;
   border-radius: 5px;
   color: white;
   display:flexbox;
@@ -101,7 +113,7 @@
 
 .friendDivButton
 {
-  background-color:#FF7A00 ;
+  background-color:#ff7a00 ;
   color: white;
   border-radius: 5px;
 }
