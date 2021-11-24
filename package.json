@@ -20,5 +20,8 @@
     "homepage": "https://github.com/wonbinjeong/CMPUT404#readme",
     "engines": {
         "node": "14.14.0"
+    },
+    "dependencies": {
+        "react-bootstrap": "^2.0.2"
     }
 }
