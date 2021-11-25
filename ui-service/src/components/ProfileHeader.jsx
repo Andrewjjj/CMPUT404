@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+
 export const ProfileHeader = ({title}) => {
     return (
         <div className='headerProfile'>
