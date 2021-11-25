@@ -1,11 +1,11 @@
-import {Header} from './Header'
+import {ProfileHeader} from './ProfileHeader'
 import {Details} from './Details'
 export const Profile = ( ) => {
     
     return (
         <div className="containerProfile">
             <div>
-                <Header title="Profile"></Header>
+                <ProfileHeader title="Profile"></ProfileHeader>
                 <Details></Details>
                 </div>
         </div>

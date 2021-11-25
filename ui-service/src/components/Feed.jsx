@@ -1,4 +1,4 @@
-import { Header } from "./Header"
+import { ProfileHeader } from "./ProfileHeader"
 import { PostList } from "./PostList"
 
 export const Feed = () => {
@@ -157,7 +157,7 @@ export const Feed = () => {
         
     return (
         <div className='containerFeed'>
-           <Header title="Feed"></Header>
+           <ProfileHeader title="Feed"></ProfileHeader>
            <PostList posts={posts}></PostList>
         </div>
     )
