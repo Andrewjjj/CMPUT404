@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 
 export const InboxScreen = (props) => {
 
@@ -45,7 +46,13 @@ export const InboxScreen = (props) => {
             
         ]
 
-        setPosts(parsePosts(testjson))
+        let authorid = "longsnake";
+        let inboxUrl = "http://localhost:8080/" + authorid + "/inbox";
+        let response = await axios.get(inboxUrl);
+
+        let responseJson = response.data;
+
+        setPosts(parsePosts(responseJson));
     }
 
     const parsePosts = function(postsArray){
