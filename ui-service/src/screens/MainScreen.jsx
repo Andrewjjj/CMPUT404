@@ -3,6 +3,7 @@ import axios from 'axios'
 import { CreatePostModal } from '../components/CreatePostModal';
 import { PostFeed } from '../components/PostFeed';
 import { Link } from 'react-router-dom'
+import {Button, Input, Form} from 'react-bootstrap';
 
 export const MainScreen = () => {
     const [posts, setPosts] = useState([]);
@@ -51,22 +52,22 @@ export const MainScreen = () => {
     
     return(
         <>
-        <Link to="/Friends">
-            <button className="btn btn-md btn-secondary" href="/Friends">Go to Friends</button>
-        </Link>
-        <Link to="/Post">
-            <button className="btn btn-md btn-secondary" href="/Post">Go to Post</button>
-        </Link>
-
-        <Link to="/Inbox">
-            <button className="btn btn-md btn-secondary" href="/Inbox">Go to Inbox</button>
-        </Link>
-
+       
         <CreatePostModal isVisible={showModal} setVisible={setShowModal} submitPostHandler={createNewPostHandler}></CreatePostModal>
-        <div className="text-center my-5" style={{backgroundColor: "rgb(21,32,43)"}}>
-            <button className="btn btn-primary btn-lg w-50" style={{backgroundColor: "rgb(255,122,0)"}} onClick={() => setShowModal(true)}>Create New Post</button>
+        <div id="mainscreen" className="text-center my-5" style={{backgroundColor: "rgb(21,32,43)", display: "flex", justifyContent: "space-around"}}>
+            <Link to="/Friends">
+                <Button className="Buttons" href="/Friends">Go to Friends</Button>
+            </Link>
+            <Button className="Buttons" style={{backgroundColor: "rgb(255,122,0)"}} onClick={() => setShowModal(true)}>Create New Post</Button>
+            <Link to="/Inbox">
+                <Button className="Buttons" href="/Inbox">Go to Inbox</Button>
+            </Link>  
+        </div> 
+       <div style={{backgroundColor: "rgb(21,32,43)", marginTop: "0"}}>
             <PostFeed></PostFeed>
         </div>
+            
+        
         </>
     )
 }
