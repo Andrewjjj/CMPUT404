@@ -7,6 +7,3 @@ export const ProfileHeader = ({title}) => {
     )
 }
 
-Header.propTypes={
-    title: PropTypes.string.isRequired,
-}
