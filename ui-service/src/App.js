@@ -6,6 +6,7 @@ import { InboxScreen } from "./screens/InboxScreen"
 import { FriendScreen } from "./screens/FriendScreen"
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { LoginScreen } from './screens/LoginScreen';
+import { RegistrationScreen } from './screens/RegistrationScreen';
 
 function App() {
   return (
@@ -33,6 +34,12 @@ function App() {
           name="Login Screen"
           component={LoginScreen} />
         {/* render={(props) => <LoginScreen {...props} />} /> */}
+        <Route
+          path="/Register"
+          name="Register Screen"
+          component={RegistrationScreen} />
+        {/* render={(props) => <LoginScreen {...props} />} /> */}
+
 
         <Route
           component={MainScreen} />

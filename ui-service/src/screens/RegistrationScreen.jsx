@@ -5,19 +5,19 @@ import {Button, Input, Form} from 'react-bootstrap';
 
 
 
-export const LoginScreen = () => {
+export const RegistrationScreen = () => {
 
 
     return (
         <body style={{backgroundColor: "rgb(21,32,43)"}}> 
             <div className="container">
                 <header style={{color: "rgb(255, 122, 0)", fontSize:"200%"}}>
-                    Login to whatever this is called
+                    Register with whatever this app is called
                 </header>
                 <div style={{
                     display: "flex", alignItems: "center", color: "rgb(150, 150, 150)",
                     flexDirection: "column" }}>
-                    <p style={{fontWeight: "bold"}}>Enter your info below</p>     
+                    <p style={{fontWeight: "bold"}}>Register below by entering an ID and password</p>     
                     <Form>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label style={{color: "rgb(150, 150, 150)"}}>Email address</Form.Label>
@@ -29,7 +29,7 @@ export const LoginScreen = () => {
                         <Form.Label style={{color: "rgb(150, 150, 150)"}}>Password</Form.Label>
                         <Form.Control style={{backgroundColor: "rgb(21,32,43)", borderColor: "#ff7a00", borderInlineColor: "#ff7a00"}} type="password" placeholder="Password" />
                     </Form.Group >
-                    <Link to="/">
+                    <Link to="/Login">
                         <Button className="Buttons" variant="primary" type="submit">
                             Login
                         </Button>

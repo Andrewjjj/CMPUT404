@@ -44,9 +44,16 @@
   
 }
 
+#mainscreen{
+
+  margin-top: 0;
+}
+
 .Buttons{
 
   background-color: #FF7A00;
+  color: rgb(255, 255, 255);
+  
 }
 
 .Buttons:hover{
