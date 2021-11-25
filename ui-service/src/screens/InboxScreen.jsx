@@ -56,7 +56,6 @@ export const InboxScreen = (props) => {
             var postType = postsArray[i].type
             if (postType === "friendRequest") {
                 displayArray[i] = friendRequest(postsArray[i], i)
-                //TODO: ADD BUTTONS TO ACCEPT/DENY THE FRIEND REQUEST HERE
             } else if (postType === "like") {
                 displayArray[i] = likedPost(postsArray[i], i)
             } else if (postType === "comment") {
