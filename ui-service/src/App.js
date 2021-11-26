@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import { MainScreen } from "./screens/MainScreen"
 import { PostScreen } from "./screens/PostScreen"
+import { PostOutsourceScreen } from "./screens/PostOutsourceScreen"
 import { SiteAdminScreen } from "./screens/SiteAdminScreen"
 import { InboxScreen } from "./screens/InboxScreen"
 import { LandingScreen } from "./screens/LandingScreen"
@@ -13,6 +14,7 @@ import { LoginUserScreen, LoginAdminScreen } from './screens/LoginScreen';
 import { RegistrationScreen } from './screens/RegistrationScreen';
 import { useStoreActions, useStoreState } from 'easy-peasy'
 import { useEffect } from 'react';
+import { AuthorForeignScreen } from './screens/AuthorForeignScreen';
 function App() {
   const isLoggedIn = useStoreState((state) => state.isLoggedIn)
   const isLoggedInAdmin = useStoreState((state) => state.isLoggedInAdmin)
@@ -39,9 +41,19 @@ function App() {
             element={<RegistrationScreen />} />
           {/* <Route element={LandingScreen}/> */}
           <Route
-            path="/Post"
+            path="/Posts"
             name="View Post Screen"
             element={<PostScreen />}
+            />
+          <Route
+            path="/Author/Foreign"
+            name="View Post Screen"
+            element={<AuthorForeignScreen />}
+            />
+          <Route
+            path="/Posts/Others"
+            name="View Post Screen"
+            element={<PostOutsourceScreen />}
             />
           <Route
             path="/Inbox"

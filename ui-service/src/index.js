@@ -22,6 +22,7 @@ const store = createStore({
     }
   }),
   logOut: action((state, data) => {
+    console.log("CALLED??")
     state.author = null;
     state.isLoggedIn = false;
     state.isLoggedInAdmin = false;

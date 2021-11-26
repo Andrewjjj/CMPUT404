@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import {Button, Input, Form} from 'react-bootstrap';
+
 import { CreatePostModal } from '../components/CreatePostModal';
 import { useStoreActions, useStoreState } from 'easy-peasy'
 import { useNavigate } from 'react-router-dom'
 
 import axios from 'axios'
 
-export const PostScreen = (props) => {
+export const PostOutsourceScreen = (props) => {
 
     const authorInfo = useStoreState((state) => state.author)
 
     const [posts, setPosts] = useState([]);
     const [showModal, setShowModal] = useState(false)
 
+    const [hostURL, setHostURL] = useState("")
+
     const navigate = useNavigate()
 
-    const fetchPosts = async () => {
+    const fetchPosts = async (url) => {
         try{
-            let response = await axios.get(`http://localhost:8080/author/${authorInfo.AuthorID}/posts`)
+            let response = await axios.get(`${url}`)
             console.log("response", response.data)
             let posts = response.data
             setPosts(posts)
@@ -30,7 +34,7 @@ export const PostScreen = (props) => {
 
     useEffect(() => {
         if(!authorInfo) navigate("/")
-        fetchPosts()
+        // fetchPosts()
     }, [])
 
     const createNewPostHandler = () => {
@@ -46,8 +50,10 @@ export const PostScreen = (props) => {
         <>
             <CreatePostModal isVisible={showModal} setVisible={setShowModal} submitPostHandler={createNewPostHandler}></CreatePostModal>
             <div>
-                This is a Post Screen!
+                This is a Post (From Others) Screen!
             </div>
+            <input type="text" value={hostURL} onInput={(e) => {setHostURL(e.currentTarget.value)}} />
+            <Button onClick={() => {fetchPosts()}}>Fetch Posts</Button>
             <div>
                 {posts.map((post, i) => (
                     <div className=" w-50 mt-3 mx-auto border p-4 rounded-5 z-depth-2 text-white"

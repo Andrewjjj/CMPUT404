@@ -17,6 +17,7 @@ const inboxRoutes = require('./routes/inbox')
 const likeRoutes = require('./routes/like')
 const postRoutes = require('./routes/post');
 
+
 app.use(adminRoutes);
 app.use(authorRoutes);
 app.use(postRoutes);
@@ -25,6 +26,9 @@ app.use(commentRoutes);
 app.use(friendRequestRoutes);
 app.use(inboxRoutes);
 app.use(likeRoutes);
+
+const authTestRoutes = require('./routes/_other');
+app.use(authTestRoutes);
 
 
 app.use('/', (err, req, res, next) => {

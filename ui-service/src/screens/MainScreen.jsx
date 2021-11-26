@@ -17,7 +17,7 @@ export const MainScreen = () => {
 
     useEffect(() => {
         if(!authorInfo) navigate("/")
-        fetchPosts();
+        // fetchPosts();
     }, [])
 
     const logOutHandler = () => {
@@ -71,14 +71,24 @@ export const MainScreen = () => {
        
         <div id="mainscreen" className="text-center my-5" style={{backgroundColor: "rgb(21,32,43)", display: "flex", justifyContent: "space-around"}}>
             {/* <Link to="/Friends"> */}
-            <Button className="Buttons" href="/Profile">Go to Profile</Button>
+            <div class="row">
+                <div class="col">
+                    <Button className="Buttons" onClick={() => {navigate("/Profile")}}>Go to Profile</Button>
 
-                <Button className="Buttons" href="/Friends">Go to Friends</Button>
-            {/* </Link> */}
-            {/* <Button className="Buttons" style={{backgroundColor: "rgb(255,122,0)"}} onClick={() => setShowModal(true)}>Create New Post</Button> */}
-            {/* <Link to="/Inbox"> */}
-                <Button className="Buttons" href="/Posts">Go to Posts</Button>
-                <Button className="Buttons" href="/Inbox">Go to Inbox</Button>
+                        <Button className="Buttons" onClick={() => {navigate("/Friends")}}>Go to Friends</Button>
+                    {/* </Link> */}
+                    {/* <Button className="Buttons" style={{backgroundColor: "rgb(255,122,0)"}} onClick={() => setShowModal(true)}>Create New Post</Button> */}
+                    {/* <Link to="/Inbox"> */}
+                        <Button className="Buttons" onClick={() => {navigate("/Posts")}}>Go to Posts</Button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <Button className="Buttons" onClick={() => {navigate("/Posts/Others")}}>Go to Post Others</Button>
+                    <Button className="Buttons" onClick={() => {navigate("/Inbox")}}>Go to Inbox</Button>
+                    <Button className="Buttons" onClick={() => {navigate("/Author/Foreign")}}>Connet to Foreign Authors</Button>
+                </div>
+            </div>
             {/* </Link>   */}
             <Button
                 onClick={() => {logOutHandler()}}
