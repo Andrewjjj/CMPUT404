@@ -3,7 +3,7 @@
 import {Profile} from './components/Profile';
 import {Feed} from './components/Feed'
 
-export constant ProfilePage() {
+export const ProfilePage = () =>{
   const author={
     "type":"author",
     "id":"http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
