@@ -3,10 +3,10 @@ import './App.css';
 import { MainScreen } from "./screens/MainScreen"
 import { PostScreen } from "./screens/PostScreen"
 import { SiteAdminScreen } from "./screens/SiteAdminScreen"
-
 import { InboxScreen } from "./screens/InboxScreen"
 import { LandingScreen } from "./screens/LandingScreen"
 import { FriendScreen } from "./screens/FriendScreen"
+import { AdminScreen } from './screens/AdminScreen'
 import { ProfilePage } from "./screens/ProfilePage"
 import { BrowserRouter, Route, Routes, Redirect } from "react-router-dom";
 import { LoginUserScreen, LoginAdminScreen } from './screens/LoginScreen';
@@ -56,11 +56,16 @@ function App() {
             name="Register Screen"
             render={<ProfilePage /> }/>
           { isLoggedInAdmin ? (
+            <>
             <Route
               path="/SiteAdmin"
               name="Register Screen"
               element={<SiteAdminScreen />}/>
-
+            <Route
+              path="/Admin"
+              name="Node Screen"
+              element={<AdminScreen />}/>
+            </>
           ) : <></>}
           <Route 
             path="/Home"
