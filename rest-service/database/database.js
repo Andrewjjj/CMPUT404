@@ -351,6 +351,26 @@ async function likePost(postID) {
     .catch(e => console.log(e))
 }
 
+async function loginAuthor(username, password) {
+    return await promisePool.execute(`
+    SELECT * FROM author
+    WHERE Username = ? AND Password = ?`,
+    [username, password])
+    .then(([row]) => {
+        return row;
+    })
+}
+
+async function loginAdmin(username, password) {
+    return await promisePool.execute(`
+    SELECT * FROM admin
+    WHERE Username = ? AND Password = ?`,
+    [username, password])
+    .then(([row]) => {
+        return row;
+    })
+}
+
 module.exports.getAllAuthors = getAllAuthors;
 module.exports.getAuthorByAuthorID = getAuthorByAuthorID;
 module.exports.createAuthor = createAuthor;
@@ -388,3 +408,6 @@ module.exports.removePostCategories = removePostCategories;
 module.exports.getInbox = getInbox;
 module.exports.postInbox = postInbox;
 module.exports.removeInbox = removeInbox;
+
+module.exports.loginAuthor = loginAuthor;
+module.exports.loginAdmin = loginAdmin;

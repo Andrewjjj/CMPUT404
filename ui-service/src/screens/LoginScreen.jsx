@@ -20,7 +20,7 @@ export const LoginScreen = () => {
                     <p style={{fontWeight: "bold"}}>Enter your info below</p>     
                     <Form>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label style={{color: "rgb(150, 150, 150)"}}>Email address</Form.Label>
+                        <Form.Label style={{color: "rgb(150, 150, 150)"}}>Username</Form.Label>
                         <Form.Control style={{backgroundColor: "rgb(21,32,43)", borderColor: "#ff7a00" }} type="email" placeholder="Enter email"/>
                        
                     </Form.Group>

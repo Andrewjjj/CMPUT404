@@ -1,6 +1,34 @@
 const db = require("../database/database");
 const WEB_HOST = process.env.WEB_HOST
 
+module.exports.loginAuthor = async (req, res, next) => {
+    try {
+        const {username, password } = req.body;
+        if (username == null || password == null) return res.status(400).send("Invalid Login Credentials")
+        
+        let loginInfo = await db.loginAuthor(username, password);
+        if (loginInfo.length < 1) return res.status(400).send("No user exists")
+        
+        return res.status(200).json(loginInfo[0]);
+    } catch(err) {
+        next(err)
+    }
+}
+
+module.exports.loginAdmin = async (req, res, next) => {
+    try {
+        const {username, password } = req.body;
+        if (username == null || password == null) return res.status(400).send("Invalid Login Credentials")
+        
+        let loginInfo = await db.loginAdmin(username, password);
+        if (loginInfo.length < 1) return res.status(400).send("No user exists")
+
+        return res.status(200).json(loginInfo[0]);
+    } catch(err) {
+        next(err)
+    }
+}
+
 module.exports.getAllAuthors = async (req, res, next) => {
     
     try{
