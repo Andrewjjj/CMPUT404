@@ -11,6 +11,7 @@ module.exports.loginAuthor = async (req, res, next) => {
         
         return res.status(200).json(loginInfo[0]);
     } catch(err) {
+        console.log(err)
         next(err)
     }
 }

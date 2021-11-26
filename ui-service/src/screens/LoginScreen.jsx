@@ -1,27 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {Button, Input, Form} from 'react-bootstrap';
 
-import { useStoreActions } from 'easy-peasy'
+import { useStoreActions, useStoreState } from 'easy-peasy'
 
 export const LoginUserScreen = () => {
 
 	const logIn = useStoreActions((state) => state.logIn);
-
+	const restHost = useStoreState((state) => state.restHost);
+    // console.log(restHost)
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+    
+    const navigate = useNavigate()
 
     const handleLogin = async () => {
-        const response = await axios.post("", {
-            username: username,
-            password: password,
-        })
-        const authorData = response.data
-        logIn({
-            ...authorData,
-            isAdmin: false,
-        })
+        try{
+            const response = await axios.post(`${restHost}/login/author`, {
+                username: username,
+                password: password,
+            })
+            console.log(response.data)
+
+            const authorData = response.data
+            logIn({
+                ...authorData,
+                isAdmin: false,
+            })
+            navigate("/Home")
+            // window.location.href = "/"
+        }
+        catch(err){
+            console.log("Login Failed. Check your email / password")
+            alert(err)
+        }
+        return
+
     }
 
     return (
@@ -62,20 +77,31 @@ export const LoginUserScreen = () => {
 export const LoginAdminScreen = () => {
 
 	const logIn = useStoreActions((state) => state.logIn);
+    const restHost = useStoreState((state) => state.restHost);
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
 
+    const navigate = useNavigate()
+
     const handleLogin = async () => {
-        const response = await axios.post("", {
-            username: username,
-            password: password,
-        })
-        const authorData = response.data
-        logIn({
-            ...authorData,
-            isAdmin: true,
-        })
+        try{
+            const response = await axios.post(`${restHost}/login/Admin`, {
+                username: username,
+                password: password,
+            })
+            const authorData = response.data
+            logIn({
+                ...authorData,
+                isAdmin: true,
+            })
+            navigate("/SiteAdmin")
+            // window.location.href = "/SiteAdmin"
+        }
+        catch(err){
+            console.log(err)
+            alert("Login Failed.")
+        }
     }
     return (
         <body style={{backgroundColor: "rgb(21,32,43)"}}> 
@@ -102,10 +128,10 @@ export const LoginAdminScreen = () => {
                         onInput={(e) => {setPassword(e.currentTarget.value)}}
                         value={password} />
                     </Form.Group >
-                        <Button className="Buttons" variant="primary" type="button">
+                        <Button className="Buttons" variant="primary" type="button"
+                            onClick={handleLogin}>
                             Login Admin
                         </Button>
-                   
                     </Form>
                 </div>
 
