@@ -39,8 +39,8 @@ module.exports.getAllAuthors = async (req, res, next) => {
         authors = authors.map(authorInfo => {
             return {
                 ...authorInfo,
-                id: `${WEB_HOST}/author/${authorInfo.id}`,
-                url: `${WEB_HOST}/author/${authorInfo.id}`,
+                id: `${WEB_HOST}author/${authorInfo.id}`,
+                url: `${WEB_HOST}author/${authorInfo.id}`,
                 type: "author",
             }
         })
@@ -62,8 +62,8 @@ exports.getAuthorByAuthorID = async (req, res, next) => {
         let authorInfo = (await db.getAuthorByAuthorID(authorID))[0]
         res.status(200).json({
             ...authorInfo,
-            id: `${WEB_HOST}/author/${authorInfo.id}`,
-            url: `${WEB_HOST}/author/${authorInfo.id}`,
+            id: `${WEB_HOST}author/${authorInfo.id}`,
+            url: `${WEB_HOST}author/${authorInfo.id}`,
             type: "author",
         })
     }

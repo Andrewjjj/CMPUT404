@@ -95,7 +95,7 @@ export const LoginAdminScreen = () => {
                 ...authorData,
                 isAdmin: true,
             })
-            navigate("/SiteAdmin")
+            navigate("/Admin")
             // window.location.href = "/SiteAdmin"
         }
         catch(err){

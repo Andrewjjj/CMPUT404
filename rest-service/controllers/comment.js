@@ -13,8 +13,8 @@ module.exports.getAllComments = async (req, res, next) => {
             let author = await db.getAuthorByAuthorID(authorID);
             let authorInfo = {
                 type: "author",
-                id: `${WEB_HOST}/author/${authorID}`,
-                url: `${WEB_HOST}/author/${authorID}`,
+                id: `${WEB_HOST}author/${authorID}`,
+                url: `${WEB_HOST}author/${authorID}`,
                 host: WEB_HOST,
                 displayName: author[0].displayName,
                 github: author[0].github,
@@ -35,8 +35,8 @@ module.exports.getAllComments = async (req, res, next) => {
             type: "comments",
             page: page,
             size: size,
-            post: `${WEB_HOST}/author/${authorID}/post/${postID}`,
-            id: `${WEB_HOST}/author/${authorID}/post/${postID}/comments`,
+            post: `${WEB_HOST}author/${authorID}/post/${postID}`,
+            id: `${WEB_HOST}author/${authorID}/post/${postID}/comments`,
             comments: comments
         })
     }
