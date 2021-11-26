@@ -8,6 +8,7 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
+const adminRoutes = require('./routes/admin')
 const authorRoutes = require('./routes/author')
 const commentRoutes = require('./routes/comment')
 const followerRoutes = require('./routes/follower')
@@ -16,6 +17,7 @@ const inboxRoutes = require('./routes/inbox')
 const likeRoutes = require('./routes/like')
 const postRoutes = require('./routes/post');
 
+app.use(adminRoutes);
 app.use(authorRoutes);
 app.use(postRoutes);
 app.use(followerRoutes);

@@ -340,17 +340,7 @@ async function removeInbox(authorID) {
     [authorID])
 }
 
-async function likePost(postID) {
-    return await pool.query(
-        `UPDATE public."Post"
-    SET "Likes" = "Likes" + 1
-    WHERE "PostID" = $1
-    `, [postID]
-    )
-    .then(res => { return res })
-    .catch(e => console.log(e))
-}
-
+// login
 async function loginAuthor(username, password) {
     return await promisePool.execute(`
     SELECT * FROM author
@@ -369,6 +359,37 @@ async function loginAdmin(username, password) {
     .then(([row]) => {
         return row;
     })
+}
+
+// admin
+async function getAllNodes() {
+    return await promisePool.execute(`
+    SELECT * FROM node`)
+    .then(([row]) => {
+        return row;
+    })
+}
+
+async function addNode(host) {
+    return await promisePool.execute(`
+    INSERT INTO node
+    (Host) VALUES (?)`,
+    [host])
+    .then(([res]) => {
+        return res.insertId;
+    })
+}
+
+async function removeAllNodes() {
+    return await promisePool.execute(`
+    DELETE FROM node`)
+}
+
+async function removeNode(nodeID) {
+    return await promisePool.execute(`
+    DELETE FROM node
+    WHERE NodeID = ?`,
+    [nodeID])
 }
 
 module.exports.getAllAuthors = getAllAuthors;
@@ -411,3 +432,8 @@ module.exports.removeInbox = removeInbox;
 
 module.exports.loginAuthor = loginAuthor;
 module.exports.loginAdmin = loginAdmin;
+
+module.exports.getAllNodes = getAllNodes;
+module.exports.addNode = addNode;
+module.exports.removeAllNodes = removeAllNodes;
+module.exports.removeNode = removeNode;
