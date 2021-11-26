@@ -12,16 +12,15 @@ export const LoginScreen = () => {
         <body style={{backgroundColor: "rgb(21,32,43)"}}> 
             <div className="container">
                 <header style={{color: "rgb(255, 122, 0)", fontSize:"200%"}}>
-                    Login to whatever this is called
+                    Login to Social App
                 </header>
                 <div style={{
                     display: "flex", alignItems: "center", color: "rgb(150, 150, 150)",
                     flexDirection: "column" }}>
-                    <p style={{fontWeight: "bold"}}>Enter your info below</p>     
                     <Form>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label style={{color: "rgb(150, 150, 150)"}}>Username</Form.Label>
-                        <Form.Control style={{backgroundColor: "rgb(21,32,43)", borderColor: "#ff7a00" }} type="email" placeholder="Enter email"/>
+                        <Form.Control style={{backgroundColor: "rgb(21,32,43)", borderColor: "#ff7a00" }} type="text" placeholder="Enter username"/>
                        
                     </Form.Group>
 
