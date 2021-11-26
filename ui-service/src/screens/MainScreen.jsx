@@ -4,14 +4,24 @@ import { CreatePostModal } from '../components/CreatePostModal';
 import { PostFeed } from '../components/PostFeed';
 import { Link } from 'react-router-dom'
 import {Button, Input, Form} from 'react-bootstrap';
+import { useStoreActions } from 'easy-peasy'
+import { useNavigate } from 'react-router-dom'
 
 export const MainScreen = () => {
     const [posts, setPosts] = useState([]);
     const [showModal, setShowModal] = useState(false)
+    const navigate = useNavigate()
+
+    const logOut = useStoreActions((state) => state.logOut)
 
     useEffect(() => {
         fetchPosts();
     }, [])
+
+    const logOutHandler = () => {
+        logOut()
+        navigate("/")
+    }
 
     const fetchPosts = async () => {
         try{
@@ -60,13 +70,16 @@ export const MainScreen = () => {
        
         <CreatePostModal isVisible={showModal} setVisible={setShowModal} submitPostHandler={createNewPostHandler}></CreatePostModal>
         <div id="mainscreen" className="text-center my-5" style={{backgroundColor: "rgb(21,32,43)", display: "flex", justifyContent: "space-around"}}>
-            <Link to="/Friends">
+            {/* <Link to="/Friends"> */}
                 <Button className="Buttons" href="/Friends">Go to Friends</Button>
-            </Link>
+            {/* </Link> */}
             <Button className="Buttons" style={{backgroundColor: "rgb(255,122,0)"}} onClick={() => setShowModal(true)}>Create New Post</Button>
-            <Link to="/Inbox">
+            {/* <Link to="/Inbox"> */}
                 <Button className="Buttons" href="/Inbox">Go to Inbox</Button>
-            </Link>  
+            {/* </Link>   */}
+            <Button
+                onClick={() => {logOutHandler()}}
+            >Logout</Button>
         </div> 
        <div style={{backgroundColor: "rgb(21,32,43)", marginTop: "0"}}>
             <PostFeed></PostFeed>

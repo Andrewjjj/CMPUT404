@@ -2,63 +2,76 @@ import logo from './logo.svg';
 import './App.css';
 import { MainScreen } from "./screens/MainScreen"
 import { PostScreen } from "./screens/PostScreen"
+import { SiteAdminScreen } from "./screens/SiteAdminScreen"
+
 import { InboxScreen } from "./screens/InboxScreen"
 import { LandingScreen } from "./screens/LandingScreen"
 import { FriendScreen } from "./screens/FriendScreen"
 import { ProfilePage } from "./screens/ProfilePage"
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Redirect } from "react-router-dom";
 import { LoginUserScreen, LoginAdminScreen } from './screens/LoginScreen';
 import { RegistrationScreen } from './screens/RegistrationScreen';
-import { useStoreState } from 'easy-peasy'
+import { useStoreActions, useStoreState } from 'easy-peasy'
+import { useEffect } from 'react';
 function App() {
   const isLoggedIn = useStoreState((state) => state.isLoggedIn)
+  const isLoggedInAdmin = useStoreState((state) => state.isLoggedInAdmin)
+  const restHost = useStoreState((state) => state.restHost)
+  useEffect(() => {
+    console.log(restHost)
+    // setRestHost("http://localhost:8080")
+  }, [])
 
   return (
       <BrowserRouter>
-        <Switch>
-          {isLoggedIn ? 
-          <>
-          <Route
-            path="/Post"
-            name="View Post Screen"
-            component={PostScreen} />
-          <Route
-            path="/Inbox"
-            name="Inbox Screen"
-            component={InboxScreen} />
-          <Route
-            path="/Friends"
-            name="Friend Screen"
-            component={FriendScreen} />
-          
-          <Route
-            path="/Profile"
-            name="Register Screen"
-            component={ProfilePage} />
-          <Route
-            path="/"
-            component={MainScreen} />
-          </>
-          :
-          <>
+        <Routes>
           <Route
             path="/LoginUser"
             name="Login Screen"
-            component={LoginUserScreen} />
+            element={<LoginUserScreen />} />
           <Route
             path="/LoginAdmin"
             name="Login Screen"
-            component={LoginAdminScreen} />
+            element={<LoginAdminScreen />} />
           <Route
             path="/Register"
             name="Register Screen"
-            component={RegistrationScreen} />
+            element={<RegistrationScreen />} />
+          {/* <Route element={LandingScreen}/> */}
           <Route
-            path="/"
-            component={LandingScreen} />
-          </>
-          }
-        </Switch>
+            path="/Post"
+            name="View Post Screen"
+            element={<PostScreen />}
+            />
+          <Route
+            path="/Inbox"
+            name="Inbox Screen"
+            element={<InboxScreen />}/>
+          <Route
+            path="/Friends"
+            name="Friend Screen"
+            element={<FriendScreen />}/>
+          <Route
+            path="/Profile"
+            name="Register Screen"
+            render={<ProfilePage /> }/>
+          { isLoggedInAdmin ? (
+            <Route
+              path="/SiteAdmin"
+              name="Register Screen"
+              element={<SiteAdminScreen />}/>
+
+          ) : <></>}
+          <Route 
+            path="/Home"
+            name="HomeScreen"
+            element={<MainScreen />}/>
+          <Route 
+            path="*"
+            name="main"
+            element={<LandingScreen />}/>
+
+        </Routes>
       </BrowserRouter>
   );
 }

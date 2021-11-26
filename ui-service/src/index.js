@@ -3,31 +3,34 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
-// import { Provider } from 'react-redux'
-// import store from './store'
-
 import { action, createStore, StoreProvider } from 'easy-peasy';
 
 const store = createStore({
-    logIn: action((state, data) => {
-      state.isLoggedIn = true;
-      if(data.isAdmin == true){
-        state.isAdmin = true;
-      }
-      else{
-        state.user = data;
-        state.userID = data.AuthorID
-      }
-    }),
-    logOut: action((state, data) => {
-      state.user = null;
-      state.userID = null;
+
+  setRestHost: action((state, data) => {
+    state.restHost = data
+  }),
+  logIn: action((state, data) => {
+    if (data.isAdmin == true) {
+      state.isLoggedInAdmin = true;
       state.isLoggedIn = false;
-      state.isAdmin = false;
-    }),
-    isLoggedIn: false,
-    isAdmin: false
+    }
+    else {
+      state.isLoggedInAdmin = false;
+      state.isLoggedIn = true;
+      state.user = data;
+      state.userID = data.AuthorID
+    }
+  }),
+  logOut: action((state, data) => {
+    state.user = null;
+    state.userID = null;
+    state.isLoggedIn = false;
+    state.isLoggedInAdmin = false;
+  }),
+  // isLoggedIn: false,
+  // isLoggedInAdmin: false,
+  restHost: "http://localhost:8080"
 })
 
 ReactDOM.render(
