@@ -30,6 +30,8 @@
   color: #61dafb;
 }
 
+
+
 .container {
   max-width: 525px;
   margin: 10px auto;
@@ -43,6 +45,8 @@
   height: 500px;
   
 }
+
+
 
 #mainscreen{
 
@@ -131,6 +135,84 @@
   height:auto;
   
 }
+
+.containerProfile{
+  width: 300px;
+  border-radius: 10px;
+  min-height: 700px;
+  background-color: #263b52;
+  padding: 10px;
+  align-items: center;
+  text-align: center;
+  overflow-y: auto;
+  height: 725px;
+  margin-top: 15px;
+}
+
+.headerProfile
+{
+  background-color:#FF7A00;
+  text-align: center;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  color: white;
+
+}
+
+.profileDiv
+{
+  margin: 50px;
+}
+
+.profileDivButton
+{
+  background-color:#ff7a00 ;
+  color: white;
+  height: 50px;
+  width: 100px;
+  border-radius:5px;
+}
+
+.author {
+  background: #1E2F41;
+  border-radius: 10px;
+  margin: 5px;
+  height: 100%;
+  
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 90px;
+  padding-bottom: 50px;
+  cursor: pointer;
+  
+  
+  color: white;
+}
+
+.bodyDiv
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    
+}
+
+.containerFeed{
+  width: 1215px;
+  border-radius: 10px;
+  min-height: 700px;
+  background-color: #263b52;
+  padding: 10px;
+  align-items: center;
+  text-align: left;
+  overflow-y: auto;
+  height: 725px;
+  margin-top: 15px;
+  
+}
+
+.PostList
+{padding: '20px';margin:"5px"; display:"grid"; gap: 10px;}
+
 
 @keyframes App-logo-spin {
   from {
