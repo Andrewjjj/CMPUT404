@@ -30,14 +30,14 @@ export const PostFeed = (props) => {
 
     const fetchPosts = async () => {
         try{
-            let response = await axios.get("http://localhost:8080/service/post")
+            let response = await axios.get("http://localhost:8080/post")
             let posts = response.data
 
             // TODO: change this 
             await Promise.all(posts.map(async post => {
-                response = await axios.get(`http://localhost:8080/service/post/${post.PostID}/comment`)
+                response = await axios.get(`http://localhost:8080/post/${post.PostID}/comment`)
                 post.Comments = response.data;
-                response = await axios.get(`http://localhost:8080/service/author/${post.AuthorID}`)
+                response = await axios.get(`http://localhost:8080/author/${post.AuthorID}`)
                 post.AuthorName = await response.data[0].Name;
                 post.Tags = ["awesome", "good"]
             }))

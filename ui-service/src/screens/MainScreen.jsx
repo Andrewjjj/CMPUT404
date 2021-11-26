@@ -15,17 +15,22 @@ export const MainScreen = () => {
 
     const fetchPosts = async () => {
         try{
-            let response = await axios.get("http://localhost:8080/service/post")
-            let posts = response.data
 
-            // TODO: change this 
-            await Promise.all(posts.map(async post => {
-                response = await axios.get(`http://localhost:8080/service/post/${post.PostID}/comment`)
-                post.Comments = response.data;
-                post.Tags = ["awesome", "good"]
-            }))
+            let response = await axios.get("http://localhost:8080/authors?page=1&size=5")
+            console.log("response", response.data)
+            return;
 
-            setPosts(posts)
+            // let response = await axios.get("http://localhost:8080/post")
+            // let posts = response.data
+
+            // // TODO: change this 
+            // await Promise.all(posts.map(async post => {
+            //     response = await axios.get(`http://localhost:8080/post/${post.PostID}/comment`)
+            //     post.Comments = response.data;
+            //     post.Tags = ["awesome", "good"]
+            // }))
+
+            // setPosts(posts)
         }
         catch(err){
             console.log(err)
@@ -38,7 +43,7 @@ export const MainScreen = () => {
         alert("Create New Post Clicked!")
         console.log(title)
 
-        await axios.post(`http://localhost:8080/service/post/`, {
+        await axios.post(`http://localhost:8080/post/`, {
             title: title,
             content: content,
             tags: tags,
