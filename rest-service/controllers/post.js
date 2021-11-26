@@ -13,9 +13,9 @@ module.exports.getPost = async(req, res, next) => {
 
         let authorInfo = {
             type: "author",
-            id: `${WEB_HOST}/author/${authorID}`,
+            id: `${WEB_HOST}author/${authorID}`,
             displayName: data.Username,
-            url: `${WEB_HOST}/author/${authorID}`,
+            url: `${WEB_HOST}author/${authorID}`,
             github: data.GithubURL,
             profileImage: data.ProfileImageURL,
         }
@@ -23,7 +23,7 @@ module.exports.getPost = async(req, res, next) => {
         let postInfo = {
             type: "post",
             title: data.Title,
-            id: `${WEB_HOST}/author/${authorID}/posts/${data.PostID}`,
+            id: `${WEB_HOST}author/${authorID}/posts/${data.PostID}`,
             source: data.Source,
             origin: data.Origin,
             description: data.Description,
@@ -32,7 +32,7 @@ module.exports.getPost = async(req, res, next) => {
             author: authorInfo,
             categories: categoryArr, 
             count: 0,
-            comments: `${WEB_HOST}/author/${authorID}/posts/${data.PostID}/comments`,
+            comments: `${WEB_HOST}author/${authorID}/posts/${data.PostID}/comments`,
             published: data.Published,
             visibility: data.Visibility,
             unlisted: data.Unlisted,
@@ -104,7 +104,7 @@ module.exports.getAuthorPosts = async (req, res, next) => {
         authorInfo = authorInfo[0]
 
         authorInfo.type = "post";
-        authorInfo.id = `${WEB_HOST}/author/${authorID}`
+        authorInfo.id = `${WEB_HOST}author/${authorID}`
 
         let postsInfo = await Promise.all(posts.map(async (post) => {
             let categories = await db.getPostCategories(post.PostID);
@@ -114,7 +114,7 @@ module.exports.getAuthorPosts = async (req, res, next) => {
             return {
                 type: "post",
                 title: post.Title,
-                id: `${WEB_HOST}/author/${authorID}/posts/${post.PostID}`,
+                id: `${WEB_HOST}author/${authorID}/posts/${post.PostID}`,
                 source: post.Source,
                 origin: post.Origin,
                 description: post.Description,
@@ -123,7 +123,7 @@ module.exports.getAuthorPosts = async (req, res, next) => {
                 author: authorInfo,
                 categories: categoryArr,
                 count: 0,
-                comments: `${WEB_HOST}/author/${authorID}/posts/${post.PostID}/comments`,
+                comments: `${WEB_HOST}author/${authorID}/posts/${post.PostID}/comments`,
                 published: post.Published,
                 visibility: post.Visibility,
                 unlisted: post.Unlisted,

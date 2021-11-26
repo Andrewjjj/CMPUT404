@@ -73,7 +73,7 @@ export const MainScreen = () => {
             {/* <Link to="/Friends"> */}
             <Button className="Buttons" href="/Profile">Go to Profile</Button>
 
-                <Button className="Buttons" href="/Friends">Go to Friends</Button>
+                {/* <Button className="Buttons" href="/Friends">Go to Friends</Button> */}
             {/* </Link> */}
             {/* <Button className="Buttons" style={{backgroundColor: "rgb(255,122,0)"}} onClick={() => setShowModal(true)}>Create New Post</Button> */}
             {/* <Link to="/Inbox"> */}

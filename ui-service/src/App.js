@@ -47,14 +47,14 @@ function App() {
             path="/Inbox"
             name="Inbox Screen"
             element={<InboxScreen />}/>
-          <Route
+          {/* <Route
             path="/Friends"
             name="Friend Screen"
-            element={<FriendScreen />}/>
+            element={<FriendScreen />}/> */}
           <Route
             path="/Profile"
             name="Register Screen"
-            element={<ProfilePage /> }/>
+            render={<ProfilePage /> }/>
           { isLoggedInAdmin ? (
             <>
             <Route
