@@ -54,7 +54,7 @@ function App() {
           <Route
             path="/Profile"
             name="Register Screen"
-            render={<ProfilePage /> }/>
+            element={<ProfilePage /> }/>
           { isLoggedInAdmin ? (
             <Route
               path="/SiteAdmin"

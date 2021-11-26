@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { WithContext as ReactTags } from 'react-tag-input';
+import { useStoreActions, useStoreState } from 'easy-peasy'
+
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
@@ -22,6 +24,7 @@ export const PostFeed = (props) => {
     const [tags, setTags] = useState([]);
     const [posts, setPosts] = useState([]);
     const [commentInputField, setCommentInputField] = useState({});
+    const authorInfo = useStoreState((state) => state.author)
     
 
     useEffect(() => {
@@ -30,17 +33,18 @@ export const PostFeed = (props) => {
 
     const fetchPosts = async () => {
         try{
-            let response = await axios.get("http://localhost:8080/post")
+            let response = await axios.get(`http://localhost:8080/author/${authorInfo.AuthorID}/posts`)
+            // let response = await axios.get("http://localhost:8080/post")
             let posts = response.data
 
             // TODO: change this 
-            await Promise.all(posts.map(async post => {
-                response = await axios.get(`http://localhost:8080/post/${post.PostID}/comment`)
-                post.Comments = response.data;
-                response = await axios.get(`http://localhost:8080/author/${post.AuthorID}`)
-                post.AuthorName = await response.data[0].Name;
-                post.Tags = ["awesome", "good"]
-            }))
+            // await Promise.all(posts.map(async post => {
+            //     response = await axios.get(`http://localhost:8080/post/${post.PostID}/comment`)
+            //     post.Comments = response.data;
+            //     response = await axios.get(`http://localhost:8080/author/${post.AuthorID}`)
+            //     post.AuthorName = await response.data[0].Name;
+            //     post.Tags = ["awesome", "good"]
+            // }))
 
             setPosts(posts)
         }

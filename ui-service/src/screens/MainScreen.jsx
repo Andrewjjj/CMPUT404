@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
-import { CreatePostModal } from '../components/CreatePostModal';
 import { PostFeed } from '../components/PostFeed';
 import { Link } from 'react-router-dom'
 import {Button, Input, Form} from 'react-bootstrap';
-import { useStoreActions } from 'easy-peasy'
+import { useStoreActions, useStoreState } from 'easy-peasy'
 import { useNavigate } from 'react-router-dom'
 
 export const MainScreen = () => {
@@ -13,8 +12,11 @@ export const MainScreen = () => {
     const navigate = useNavigate()
 
     const logOut = useStoreActions((state) => state.logOut)
+    const authorInfo = useStoreState((state) => state.author)
+    const restHost = useStoreState((state) => state.restHost)
 
     useEffect(() => {
+        if(!authorInfo) navigate("/")
         fetchPosts();
     }, [])
 
@@ -25,13 +27,12 @@ export const MainScreen = () => {
 
     const fetchPosts = async () => {
         try{
-
-            let response = await axios.get("http://localhost:8080/authors?page=1&size=5")
+            let response = await axios.get(`${restHost}/author/${authorInfo.AuthorID}/posts`)
             console.log("response", response.data)
-            return;
+            // return;
 
             // let response = await axios.get("http://localhost:8080/post")
-            // let posts = response.data
+            let posts = response.data
 
             // // TODO: change this 
             // await Promise.all(posts.map(async post => {
@@ -40,7 +41,7 @@ export const MainScreen = () => {
             //     post.Tags = ["awesome", "good"]
             // }))
 
-            // setPosts(posts)
+            setPosts(posts)
         }
         catch(err){
             console.log(err)
@@ -68,13 +69,15 @@ export const MainScreen = () => {
     return(
         <>
        
-        <CreatePostModal isVisible={showModal} setVisible={setShowModal} submitPostHandler={createNewPostHandler}></CreatePostModal>
         <div id="mainscreen" className="text-center my-5" style={{backgroundColor: "rgb(21,32,43)", display: "flex", justifyContent: "space-around"}}>
             {/* <Link to="/Friends"> */}
+            <Button className="Buttons" href="/Profile">Go to Profile</Button>
+
                 <Button className="Buttons" href="/Friends">Go to Friends</Button>
             {/* </Link> */}
-            <Button className="Buttons" style={{backgroundColor: "rgb(255,122,0)"}} onClick={() => setShowModal(true)}>Create New Post</Button>
+            {/* <Button className="Buttons" style={{backgroundColor: "rgb(255,122,0)"}} onClick={() => setShowModal(true)}>Create New Post</Button> */}
             {/* <Link to="/Inbox"> */}
+                <Button className="Buttons" href="/Posts">Go to Posts</Button>
                 <Button className="Buttons" href="/Inbox">Go to Inbox</Button>
             {/* </Link>   */}
             <Button
@@ -82,7 +85,7 @@ export const MainScreen = () => {
             >Logout</Button>
         </div> 
        <div style={{backgroundColor: "rgb(21,32,43)", marginTop: "0"}}>
-            <PostFeed></PostFeed>
+            {/* <PostFeed></PostFeed> */}
         </div>
             
         

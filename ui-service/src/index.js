@@ -18,13 +18,11 @@ const store = createStore({
     else {
       state.isLoggedInAdmin = false;
       state.isLoggedIn = true;
-      state.user = data;
-      state.userID = data.AuthorID
+      state.author = data
     }
   }),
   logOut: action((state, data) => {
-    state.user = null;
-    state.userID = null;
+    state.author = null;
     state.isLoggedIn = false;
     state.isLoggedInAdmin = false;
   }),
