@@ -5,6 +5,7 @@ import { PostScreen } from "./screens/PostScreen"
 import { InboxScreen } from "./screens/InboxScreen"
 import { LandingScreen } from "./screens/LandingScreen"
 import { FriendScreen } from "./screens/FriendScreen"
+import { AdminScreen } from './screens/AdminScreen'
 import { ProfilePage } from "./screens/ProfilePage"
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { LoginUserScreen, LoginAdminScreen } from './screens/LoginScreen';
@@ -30,7 +31,6 @@ function App() {
             path="/Friends"
             name="Friend Screen"
             component={FriendScreen} />
-          
           <Route
             path="/Profile"
             name="Register Screen"
@@ -41,6 +41,10 @@ function App() {
           </>
           :
           <>
+          <Route
+            path="/Admin"
+            name="Admin Screen"
+            component={AdminScreen} />
           <Route
             path="/LoginUser"
             name="Login Screen"
