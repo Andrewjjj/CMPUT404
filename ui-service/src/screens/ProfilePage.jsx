@@ -1,7 +1,7 @@
 
 
-import {Profile} from './components/Profile';
-import {Feed} from './components/Feed'
+import {Profile} from '../components/Profile';
+import {Feed} from '../components/Feed'
 
 export const ProfilePage = () =>{
   const author={
