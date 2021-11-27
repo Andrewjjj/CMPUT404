@@ -16,14 +16,21 @@ export const PostOutsourceScreen = (props) => {
     const [showModal, setShowModal] = useState(false)
 
     const [hostURL, setHostURL] = useState("")
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
 
     const navigate = useNavigate()
 
-    const fetchPosts = async (url) => {
+    const fetchPosts = async () => {
         try{
-            let response = await axios.get(`${url}`)
+            let token = btoa(`${username}:${password}`)
+            let response = await axios.get(`${hostURL}`, {
+                headers: {
+                    "Authorization": `Basic ${token}`
+                }
+            })
             console.log("response", response.data)
-            let posts = response.data
+            let posts = response.data.items
             setPosts(posts)
         }
         catch(err){
@@ -47,13 +54,22 @@ export const PostOutsourceScreen = (props) => {
     }
 
     return (
-        <>
+        <div className="m-5">
             <CreatePostModal isVisible={showModal} setVisible={setShowModal} submitPostHandler={createNewPostHandler}></CreatePostModal>
-            <div>
+            <div className="my-2">
                 This is a Post (From Others) Screen!
             </div>
-            <input type="text" value={hostURL} onInput={(e) => {setHostURL(e.currentTarget.value)}} />
-            <Button onClick={() => {fetchPosts()}}>Fetch Posts</Button>
+            <div>
+                Enter their post URL:
+            </div>
+            <div className="mx-5">
+                URL: <input type="text" className="w-100" value={hostURL} onInput={(e) => {setHostURL(e.currentTarget.value)}} />
+                Username: <input type="text" className="w-100" value={username} onInput={(e) => {setUsername(e.currentTarget.value)}} />
+                Password: <input type="text" className="w-100" value={password} onInput={(e) => {setPassword(e.currentTarget.value)}} />
+            </div>
+            <div className="text-center">
+                <Button onClick={() => {fetchPosts()}}>Fetch Posts</Button>
+            </div>
             <div>
                 {posts.map((post, i) => (
                     <div className=" w-50 mt-3 mx-auto border p-4 rounded-5 z-depth-2 text-white"
@@ -86,6 +102,6 @@ export const PostOutsourceScreen = (props) => {
                     </div>
                 ))}
             </div>
-        </>
+        </div>
     )
 }
