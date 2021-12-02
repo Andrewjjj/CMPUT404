@@ -34,8 +34,15 @@ module.exports.getAllAuthors = async (req, res, next) => {
     
     try{
         const { page, size } = req.query
-        if(!page || !size) return res.status(400).send("Page or Size query not passed in")
-        let authors = await db.getAllAuthors(size, page-1)
+        let authors;
+        if(!page || !size) {
+            // return res.status(400).send("Page or Size query not passed in")
+            authors = await db.getAllAuthors()
+        }
+        else{
+            authors = await db.getAllAuthorsPaginated(size, page-1)
+        }
+        
         authors = authors.map(authorInfo => {
             return {
                 ...authorInfo,

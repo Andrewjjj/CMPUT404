@@ -15,7 +15,16 @@ const generateNewId = () => {
 }
 
 // Author
-async function getAllAuthors(limit, offset) {
+async function getAllAuthors() {
+    return await promisePool.execute(
+    `SELECT Username as displayName, GithubURL as github, AuthorID as id, ProfileImageURL as profileImage
+    FROM author`)
+    .then(([row]) => { 
+        return row
+    })
+}
+
+async function getAllAuthorsPaginated(limit, offset) {
     return await promisePool.execute(
     `SELECT Username as displayName, GithubURL as github, AuthorID as id, ProfileImageURL as profileImage
     FROM author
@@ -393,6 +402,7 @@ async function removeNode(nodeID) {
 }
 
 module.exports.getAllAuthors = getAllAuthors;
+module.exports.getAllAuthorsPaginated = getAllAuthorsPaginated;
 module.exports.getAuthorByAuthorID = getAuthorByAuthorID;
 module.exports.createAuthor = createAuthor;
 module.exports.updateAuthor = updateAuthor;

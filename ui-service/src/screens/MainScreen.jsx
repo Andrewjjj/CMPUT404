@@ -14,10 +14,13 @@ export const MainScreen = () => {
     const logOut = useStoreActions((state) => state.logOut)
     const authorInfo = useStoreState((state) => state.author)
     const restHost = useStoreState((state) => state.restHost)
+    const st = useStoreState(s => s)
 
     useEffect(() => {
         if(!authorInfo) navigate("/")
         // fetchPosts();
+        console.log(st)
+
     }, [])
 
     const logOutHandler = () => {
@@ -71,8 +74,8 @@ export const MainScreen = () => {
        
         <div id="mainscreen" className="text-center my-5" style={{backgroundColor: "rgb(21,32,43)", display: "flex", justifyContent: "space-around"}}>
             {/* <Link to="/Friends"> */}
-            <div class="row">
-                <div class="col">
+            <div className="row">
+                <div className="col">
                     <Button className="Buttons" onClick={() => {navigate("/Profile")}}>Go to Profile</Button>
 
                         <Button className="Buttons" onClick={() => {navigate("/Friends")}}>Go to Friends</Button>
@@ -82,8 +85,8 @@ export const MainScreen = () => {
                         <Button className="Buttons" onClick={() => {navigate("/Posts")}}>Go to Posts</Button>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
+            <div className="row">
+                <div className="col">
                     <Button className="Buttons" onClick={() => {navigate("/Posts/Others")}}>Go to Post Others</Button>
                     <Button className="Buttons" onClick={() => {navigate("/Inbox")}}>Go to Inbox</Button>
                     <Button className="Buttons" onClick={() => {navigate("/Author/Foreign")}}>Connet to Foreign Authors</Button>
@@ -97,7 +100,6 @@ export const MainScreen = () => {
        <div style={{backgroundColor: "rgb(21,32,43)", marginTop: "0"}}>
             {/* <PostFeed></PostFeed> */}
         </div>
-            
         
         </>
     )
