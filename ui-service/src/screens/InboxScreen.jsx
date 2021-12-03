@@ -5,7 +5,7 @@ import axios from 'axios'
 
 export const InboxScreen = (props) => {
 
-    const [posts, setPosts] = useState([]);
+    //const [posts, setPosts] = useState([]);
     const [inbox, setInbox] = useState([]);
 
     const restHost = useStoreState((state) => state.restHost)
@@ -16,7 +16,7 @@ export const InboxScreen = (props) => {
         
     }, [])
 
-    const fetchPosts = async () => {
+    /*const fetchPosts = async () => {
         let testJson = [
             {
                 "type": "friendRequest",
@@ -63,7 +63,7 @@ export const InboxScreen = (props) => {
         let responseJson = testJson;
         setInbox(testJson)
         // setPosts(parsePosts(testJson));
-    }
+    }*/
 
     const fetchInbox = async (authorID) => {
         let fetchInboxUrl = `${restHost}/author/${authorID}/inbox`
