@@ -31,10 +31,10 @@ function App() {
     <>
       {isRehydrated ? (
         <BrowserRouter>
-          <MainScreen />
           <Routes>
             {isLoggedIn ? (
-              <>
+              <MainScreen>
+
               <Route
                 path="/Posts"
                 name="View Post Screen"
@@ -62,7 +62,7 @@ function App() {
                 path="/Home"
                 name="Home Screen"
                 element={<BlankPage /> }/>
-              </>
+              </MainScreen>
             ) : <></>}
             {/* <Route
               path="/Friends"
