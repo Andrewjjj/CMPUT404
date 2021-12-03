@@ -32,7 +32,7 @@ const store = createStore(
     }),
     // isLoggedIn: false,
     // isLoggedInAdmin: false,
-    restHost: "http://localhost:8080"
+    restHost: "https://fast-chamber-90421.herokuapp.com"
   })
 )
 ReactDOM.render(
