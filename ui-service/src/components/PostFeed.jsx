@@ -25,7 +25,7 @@ export const PostFeed = (props) => {
     const [posts, setPosts] = useState([]);
     const [commentInputField, setCommentInputField] = useState({});
     const authorInfo = useStoreState((state) => state.author)
-    
+    const restHost = useStoreState((state) => state.restHost)
 
     useEffect(() => {
         fetchPosts();
@@ -33,7 +33,7 @@ export const PostFeed = (props) => {
 
     const fetchPosts = async () => {
         try{
-            let response = await axios.get(`http://localhost:8080/author/${authorInfo.AuthorID}/posts`)
+            let response = await axios.get(`${restHost}/author/${authorInfo.AuthorID}/posts`)
             // let response = await axios.get("http://localhost:8080/post")
             let posts = response.data
 
@@ -68,7 +68,7 @@ export const PostFeed = (props) => {
         try{
             console.log(postID)
             console.log(username)
-            await axios.post(`http://localhost:8080/service/post/${postID}/comment/`, {
+            await axios.post(`${restHost}/author/${authorInfo.AuthorID}/${postID}/comments`, {
                 comment: comment,
                 username: username,
             }).then(res => {
@@ -84,7 +84,7 @@ export const PostFeed = (props) => {
 
     const reactionClickHandler = async (postID, reactionType) => {
         try {
-            await axios.post(`http://localhost:8080/service/post/${postID}/like`)
+            await axios.post(`${restHost}/${authorInfo.AuthorID}/inbox`)
             .then(res => {
                 alert("success")
             })
