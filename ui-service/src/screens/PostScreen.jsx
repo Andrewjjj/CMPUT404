@@ -5,6 +5,7 @@ import { useStoreActions, useStoreState } from 'easy-peasy'
 import { useNavigate } from 'react-router-dom'
 
 import axios from 'axios'
+import Button from '@restart/ui/esm/Button';
 
 export const PostScreen = (props) => {
 
@@ -45,9 +46,11 @@ export const PostScreen = (props) => {
     return (
         <>
             <CreatePostModal isVisible={showModal} setVisible={setShowModal} submitPostHandler={createNewPostHandler}></CreatePostModal>
+
             <div>
                 This is a Post Screen!
             </div>
+            <Button onClick={() => setShowModal(true)}>Create New Post</Button>
             <div>
                 {posts.map((post, i) => (
                     <div className=" w-50 mt-3 mx-auto border p-4 rounded-5 z-depth-2 text-white"

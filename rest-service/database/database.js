@@ -15,7 +15,16 @@ const generateNewId = () => {
 }
 
 // Author
-async function getAllAuthors(limit, offset) {
+async function getAllAuthors() {
+    return await promisePool.execute(
+    `SELECT Username as displayName, GithubURL as github, AuthorID as id, ProfileImageURL as profileImage
+    FROM author`)
+    .then(([row]) => { 
+        return row
+    })
+}
+
+async function getAllAuthorsPaginated(limit, offset) {
     return await promisePool.execute(
     `SELECT Username as displayName, GithubURL as github, AuthorID as id, ProfileImageURL as profileImage
     FROM author
@@ -220,9 +229,9 @@ async function getAuthorLikes(authorID){
 // Posts
 async function getPostByPostID(postID) {
     return await promisePool.execute(`
-    SELECT * FROM post
-    LEFT JOIN author
-    ON post.AuthorID = author.AuthorID
+    SELECT PostID as id, AuthorID as authorID, Title as title, Description as description, ContentType as contentType,
+    Source as source, Origin as origin, Content as content, Visibility as visibility, Unlisted as unlisted, Published as published
+    FROM post
     WHERE PostID = ?`,
     [postID])
     .then(([res]) => {
@@ -263,7 +272,9 @@ async function createPostWithPostID(postID, authorID, title, source, origin, des
 
 async function getAllAuthorPosts(authorID) {
     return await promisePool.execute(`
-    SELECT * FROM post
+    SELECT PostID as id, AuthorID as authorID, Title as title, Description as description, ContentType as contentType,
+    Source as source, Origin as origin, Content as content, Visibility as visibility, Unlisted as unlisted, Published as published
+    FROM post
     WHERE AuthorID = ?`,
     [authorID])
     .then(([res]) => {
@@ -289,7 +300,7 @@ async function createPost(authorID, title, source, origin, description, contentT
 
 async function getPostCategories(postID) {
     return await promisePool.execute(`
-    SELECT Category FROM post_category
+    SELECT Category as category FROM post_category
     WHERE PostID = ?`,
     [postID])
     .then(([res]) => {
@@ -315,7 +326,7 @@ async function removePostCategories(postID) {
 // Inbox
 async function getInbox(authorID) {
     return await promisePool.execute(`
-    SELECT * FROM inbox
+    SELECT InboxID as inboxID, AuthorID as authorID, Type as type, ID as id FROM inbox
     WHERE AuthorID = ?`,
     [authorID])
     .then(([res]) => {
@@ -343,7 +354,8 @@ async function removeInbox(authorID) {
 // login
 async function loginAuthor(username, password) {
     return await promisePool.execute(`
-    SELECT * FROM author
+    SELECT AuthorID as id, Username as displayName, GithubURL as github, ProfileImageURL as profileImage 
+    FROM author
     WHERE Username = ? AND Password = ?`,
     [username, password])
     .then(([row]) => {
@@ -393,6 +405,7 @@ async function removeNode(nodeID) {
 }
 
 module.exports.getAllAuthors = getAllAuthors;
+module.exports.getAllAuthorsPaginated = getAllAuthorsPaginated;
 module.exports.getAuthorByAuthorID = getAuthorByAuthorID;
 module.exports.createAuthor = createAuthor;
 module.exports.updateAuthor = updateAuthor;

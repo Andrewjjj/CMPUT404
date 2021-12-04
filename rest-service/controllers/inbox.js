@@ -9,7 +9,7 @@ module.exports.getInbox = async (req, res, next) => {
 
         let inboxResponseArr = []
         for(let inbox of inboxList){
-            let response = await axios.get(inbox.ID)
+            let response = await axios.get(inbox.id)
             inboxResponseArr.push(response.data)
         }
 

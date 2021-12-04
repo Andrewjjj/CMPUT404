@@ -7,6 +7,7 @@ module.exports.loginAuthor = async (req, res, next) => {
         if (username == null || password == null) return res.status(400).send("Invalid Login Credentials")
         
         let loginInfo = await db.loginAuthor(username, password);
+        console.log(loginInfo)
         if (loginInfo.length < 1) return res.status(400).send("No user exists")
         
         return res.status(200).json(loginInfo[0]);
@@ -34,8 +35,15 @@ module.exports.getAllAuthors = async (req, res, next) => {
     
     try{
         const { page, size } = req.query
-        if(!page || !size) return res.status(400).send("Page or Size query not passed in")
-        let authors = await db.getAllAuthors(size, page-1)
+        let authors;
+        if(!page || !size) {
+            // return res.status(400).send("Page or Size query not passed in")
+            authors = await db.getAllAuthors()
+        }
+        else{
+            authors = await db.getAllAuthorsPaginated(size, page-1)
+        }
+        
         authors = authors.map(authorInfo => {
             return {
                 ...authorInfo,

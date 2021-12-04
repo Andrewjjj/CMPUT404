@@ -3,208 +3,57 @@
 import { useEffect, useState } from 'react'
 import { Profile } from '../components/Profile';
 import { Feed } from '../components/Feed'
-
+import { useStoreState } from 'easy-peasy'
 import axios from 'axios'
 
 export const ProfilePage = () => {
 
     const [posts, setPosts] = useState([]) 
-    const [author, setAuthor] = useState({
-        "type": "author",
-        "id": "http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
-        "url": "http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
-        "host": "http://127.0.0.1:5454/",
-        "displayName": "Greg Johnson",
-        "github": "http://github.com/gjohnson",
-        "profileImage": "https://i.imgur.com/k7XVwpB.jpeg"
-    } )
+    const [author, setAuthor] = useState({})
+
+    const authorInfo = useStoreState((store) => store.author)
 
     const fetchData = async () => {
-        let response = await axios.get("http://localhost:8080/authors/")
+        console.log("Info: ", authorInfo.id)
+        let response = await axios.get(`${authorInfo.id}/posts`)
         let postData = response.data.items
         console.log(response.data)
+        console.log(postData)
         setPosts(postData)
     }
 
     useEffect(() => {
+        // console.log(authorInfo)
+        setAuthor(authorInfo)
         fetchData()
     }, [])
     
-    // const author = {
-    //     "type": "author",
-    //     "id": "http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
-    //     "url": "http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
-    //     "host": "http://127.0.0.1:5454/",
-    //     "displayName": "Greg Johnson",
-    //     "github": "http://github.com/gjohnson",
-    //     "profileImage": "https://i.imgur.com/k7XVwpB.jpeg"
-    // } //test data
-    // const posts = [
-    //     {
-    //         "type": "post",
-
-    //         "title": "A post title about a post about web dev",
-
-    //         "id": "http://127.0.0.1:5454/author/9de17f29c12e8f97bcbbd34cc908f1baba40658e/posts/764efa883dda1e11db47671c4a3bbd9e",
-
-    //         "source": "http://lastplaceigotthisfrom.com/posts/yyyyy",
-
-    //         "origin": "http://whereitcamefrom.com/posts/zzzzz",
-
-    //         "description": "This post discusses stuff -- brief",
-
-    //         "contentType": "text/plain",
-    //         "content": "Þā wæs on burgum Bēowulf Scyldinga, lēof lēod-cyning, longe þrāge folcum gefrǣge (fæder ellor hwearf, aldor of earde), oð þæt him eft onwōc hēah Healfdene; hēold þenden lifde, gamol and gūð-rēow, glæde Scyldingas. Þǣm fēower bearn forð-gerīmed in worold wōcun, weoroda rǣswan, Heorogār and Hrōðgār and Hālga til; hȳrde ic, þat Elan cwēn Ongenþēowes wæs Heaðoscilfinges heals-gebedde. Þā wæs Hrōðgāre here-spēd gyfen, wīges weorð-mynd, þæt him his wine-māgas georne hȳrdon, oð þæt sēo geogoð gewēox, mago-driht micel. Him on mōd bearn, þæt heal-reced hātan wolde, medo-ærn micel men gewyrcean, þone yldo bearn ǣfre gefrūnon, and þǣr on innan eall gedǣlan geongum and ealdum, swylc him god sealde, būton folc-scare and feorum gumena. Þā ic wīde gefrægn weorc gebannan manigre mǣgðe geond þisne middan-geard, folc-stede frætwan. Him on fyrste gelomp ǣdre mid yldum, þæt hit wearð eal gearo, heal-ærna mǣst; scōp him Heort naman, sē þe his wordes geweald wīde hæfde. Hē bēot ne ālēh, bēagas dǣlde, sinc æt symle. Sele hlīfade hēah and horn-gēap: heaðo-wylma bād, lāðan līges; ne wæs hit lenge þā gēn þæt se ecg-hete āðum-swerian 85 æfter wæl-nīðe wæcnan scolde. Þā se ellen-gǣst earfoðlīce þrāge geþolode, sē þe in þȳstrum bād, þæt hē dōgora gehwām drēam gehȳrde hlūdne in healle; þǣr wæs hearpan swēg, swutol sang scopes. Sægde sē þe cūðe frum-sceaft fīra feorran reccan",
-
-    //         "author": {
-    //             "type": "author",
-
-    //             "id": "http://127.0.0.1:5454/author/9de17f29c12e8f97bcbbd34cc908f1baba40658e",
-
-    //             "host": "http://127.0.0.1:5454/",
-
-    //             "displayName": "Lara Croft",
-
-    //             "url": "http://127.0.0.1:5454/author/9de17f29c12e8f97bcbbd34cc908f1baba40658e",
-
-    //             "github": "http://github.com/laracroft",
-
-    //             "profileImage": "https://i.imgur.com/k7XVwpB.jpeg"
-    //         },
-
-    //         "categories": ["web", "tutorial"],
-
-    //         "count": 1023,
-
-    //         "comments": "http://127.0.0.1:5454/author/9de17f29c12e8f97bcbbd34cc908f1baba40658e/posts/de305d54-75b4-431b-adb2-eb6b9e546013/comments",
-
-    //         "commentsSrc": {
-    //             "type": "comments",
-    //             "page": 1,
-    //             "size": 5,
-    //             "post": "http://127.0.0.1:5454/author/9de17f29c12e8f97bcbbd34cc908f1baba40658e/posts/764efa883dda1e11db47671c4a3bbd9e",
-    //             "id": "http://127.0.0.1:5454/author/9de17f29c12e8f97bcbbd34cc908f1baba40658e/posts/de305d54-75b4-431b-adb2-eb6b9e546013/comments",
-    //             "comments": [
-    //                 {
-    //                     "type": "comment",
-    //                     "author": {
-    //                         "type": "author",
-
-    //                         "id": "http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
-
-    //                         "url": "http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
-    //                         "host": "http://127.0.0.1:5454/",
-    //                         "displayName": "Greg Johnson",
-
-    //                         "github": "http://github.com/gjohnson",
-
-    //                         "profileImage": "https://i.imgur.com/k7XVwpB.jpeg"
-    //                     },
-    //                     "comment": "Sick Olde English",
-    //                     "contentType": "text/markdown",
-
-    //                     "published": "2015-03-09T13:07:04+00:00",
-
-    //                     "id": "http://127.0.0.1:5454/author/9de17f29c12e8f97bcbbd34cc908f1baba40658e/posts/de305d54-75b4-431b-adb2-eb6b9e546013/comments/f6255bb01c648fe967714d52a89e8e9c",
-    //                 }
-    //             ]
-    //         },
-
-    //         "published": "2015-03-09T13:07:04+00:00",
-
-    //         "visibility": "PUBLIC",
-
-    //         "unlisted": false
-    //     },
-
-    //     {
-    //         "type": "post",
-
-    //         "title": "A post title about a post about web dev",
-
-    //         "id": "http://127.0.0.1:5454/author/9de17f29c12e8f97bcbbd34cc908f1baba40658e/posts/764efa883dda1e11db47671c4a3bbd9e",
-
-    //         "source": "http://lastplaceigotthisfrom.com/posts/yyyyy",
-
-    //         "origin": "http://whereitcamefrom.com/posts/zzzzz",
-
-    //         "description": "This post discusses stuff -- brief",
-
-    //         "contentType": "text/plain",
-    //         "content": "Þā wæs on burgum Bēowulf Scyldinga, lēof lēod-cyning, longe þrāge folcum gefrǣge (fæder ellor hwearf, aldor of earde), oð þæt him eft onwōc hēah Healfdene; hēold þenden lifde, gamol and gūð-rēow, glæde Scyldingas. Þǣm fēower bearn forð-gerīmed in worold wōcun, weoroda rǣswan, Heorogār and Hrōðgār and Hālga til; hȳrde ic, þat Elan cwēn Ongenþēowes wæs Heaðoscilfinges heals-gebedde. Þā wæs Hrōðgāre here-spēd gyfen, wīges weorð-mynd, þæt him his wine-māgas georne hȳrdon, oð þæt sēo geogoð gewēox, mago-driht micel. Him on mōd bearn, þæt heal-reced hātan wolde, medo-ærn micel men gewyrcean, þone yldo bearn ǣfre gefrūnon, and þǣr on innan eall gedǣlan geongum and ealdum, swylc him god sealde, būton folc-scare and feorum gumena. Þā ic wīde gefrægn weorc gebannan manigre mǣgðe geond þisne middan-geard, folc-stede frætwan. Him on fyrste gelomp ǣdre mid yldum, þæt hit wearð eal gearo, heal-ærna mǣst; scōp him Heort naman, sē þe his wordes geweald wīde hæfde. Hē bēot ne ālēh, bēagas dǣlde, sinc æt symle. Sele hlīfade hēah and horn-gēap: heaðo-wylma bād, lāðan līges; ne wæs hit lenge þā gēn þæt se ecg-hete āðum-swerian 85 æfter wæl-nīðe wæcnan scolde. Þā se ellen-gǣst earfoðlīce þrāge geþolode, sē þe in þȳstrum bād, þæt hē dōgora gehwām drēam gehȳrde hlūdne in healle; þǣr wæs hearpan swēg, swutol sang scopes. Sægde sē þe cūðe frum-sceaft fīra feorran reccan",
-
-    //         "author": {
-    //             "type": "author",
-
-    //             "id": "http://127.0.0.1:5454/author/9de17f29c12e8f97bcbbd34cc908f1baba40658e",
-
-    //             "host": "http://127.0.0.1:5454/",
-
-    //             "displayName": "Lara Croft",
-
-    //             "url": "http://127.0.0.1:5454/author/9de17f29c12e8f97bcbbd34cc908f1baba40658e",
-
-    //             "github": "http://github.com/laracroft",
-
-    //             "profileImage": "https://i.imgur.com/k7XVwpB.jpeg"
-    //         },
-
-    //         "categories": ["web", "tutorial"],
-
-    //         "count": 1023,
-
-    //         "comments": "http://127.0.0.1:5454/author/9de17f29c12e8f97bcbbd34cc908f1baba40658e/posts/de305d54-75b4-431b-adb2-eb6b9e546013/comments",
-
-    //         "commentsSrc": {
-    //             "type": "comments",
-    //             "page": 1,
-    //             "size": 5,
-    //             "post": "http://127.0.0.1:5454/author/9de17f29c12e8f97bcbbd34cc908f1baba40658e/posts/764efa883dda1e11db47671c4a3bbd9e",
-    //             "id": "http://127.0.0.1:5454/author/9de17f29c12e8f97bcbbd34cc908f1baba40658e/posts/de305d54-75b4-431b-adb2-eb6b9e546013/comments",
-    //             "comments": [
-    //                 {
-    //                     "type": "comment",
-    //                     "author": {
-    //                         "type": "author",
-
-    //                         "id": "http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
-
-    //                         "url": "http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
-    //                         "host": "http://127.0.0.1:5454/",
-    //                         "displayName": "Greg Johnson",
-
-    //                         "github": "http://github.com/gjohnson",
-
-    //                         "profileImage": "https://i.imgur.com/k7XVwpB.jpeg"
-    //                     },
-    //                     "comment": "Sick Olde English",
-    //                     "contentType": "text/markdown",
-
-    //                     "published": "2015-03-09T13:07:04+00:00",
-
-    //                     "id": "http://127.0.0.1:5454/author/9de17f29c12e8f97bcbbd34cc908f1baba40658e/posts/de305d54-75b4-431b-adb2-eb6b9e546013/comments/f6255bb01c648fe967714d52a89e8e9c",
-    //                 }
-    //             ]
-    //         },
-
-    //         "published": "2015-03-09T13:07:04+00:00",
-
-    //         "visibility": "PUBLIC",
-
-    //         "unlisted": false
-    //     },
-
-    // ] //test data
-
     return (
         <div style={{ backgroundColor: "rgb(21, 32, 43)", height: "753px" }}>
             <div className="bodyDiv">
-                <Profile author={author}></Profile>
-                <Feed posts={posts}></Feed>
+                {Object.keys(author).length != 0 ? (
+                <>
+                    <Profile author={author}></Profile>
+                    <div className='headerProfile'>
+                        <h1>{author.displayName}</h1>
+                    </div>
+                    <div className="PostList">
+                    {posts.map((post) => (
+                        <div style={{textAlign: 'left', color: "white", padding:"20px",margin:"10px", backgroundColor:"#1E2F41", borderRadius:"10px"}}>
+                            <h4><b>{post.title}</b></h4>
+                            <h5 style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>{post.author.displayName} </h5>
+                            <br></br>
+                            <div>
+                                {post.description}
+                            </div>
+                        </div>
+                    ))}
+                    </div>
+                </>
+                ) : <></>}
+                {/* <Feed posts={posts}></Feed> */}
             </div>
         </div>
-
-
     )
 }
 
