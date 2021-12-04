@@ -58,7 +58,7 @@ export const PostFeed = (props) => {
 
     const fetchComments = async (posts) => {
         let comments = []
-        console.log("Post COMemnts", posts)
+        
         for(var i = 0; i < posts.length; i++){
             try{
                 let commentsResponse = await axios.get(`${posts[i].id}/comments`)
@@ -69,8 +69,10 @@ export const PostFeed = (props) => {
                 alert(`Comment error: ${err}`)
             }
         }
+        console.log("Post Comments", comments)
+        //alert(toString(comments))
         setComments(comments)
-        alert(`comment 1: ${comments[0].comments[0].comment}`)
+        //alert(`comment 1: ${comments[0].comments[0].comment}`)
     }
 
     const commentChangeHandler = (postID, comment) => {
@@ -166,14 +168,14 @@ export const PostFeed = (props) => {
                 {/* Comment Section */}
                 <div className="mt-2 mx-2">
                     {
-                        comments.map((comment, j) => 
+                        comments[i].comments.map((comment, j) => 
                             <div key={"comment_"+j}>
                                 <div className="column my-2 px-5 text-start">
                                     <div className="col-3 bg-grey" style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>
-                                        {comment[0].comment || ""/*comment.Comment*/}
+                                        {comment.author.displayName}
                                     </div>
                                     <div className="col text-start">
-                                        {"snek"/*comment.Comment*/}snekk
+                                        {comment.comment}
                                     </div>
                                 </div>
                             </div>
