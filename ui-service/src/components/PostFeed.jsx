@@ -62,15 +62,27 @@ export const PostFeed = (props) => {
         console.log(commentInputField)
     }
 
-    const submitCommentHandler = async (postID, username) => {
-        let comment = commentInputField[postID]
+    const submitCommentHandler = async (postID) => {
+        let comment = commentInputField[postID];
+        let currentDate = new Date();
+        currentDate = currentDate.toString();
         console.log(comment)
         try{
-            console.log(postID)
-            console.log(username)
-            await axios.post(`${restHost}/author/${authorInfo.AuthorID}/${postID}/comments`, {
+            console.log(postID);
+            await axios.post(`${postID}/comments`, {
+                type: "comment",
+                author:{
+                    type: "author",
+                    id: `${authorInfo.AuthorID}`,
+                    url:`${authorInfo.AuthorID}`,
+                    host: `${restHost}`,
+                    github: "awoo",
+                    profileImage:"awoo"
+                },
                 comment: comment,
-                username: username,
+                contentType: "text/plain", //TODO: ALLOW TEXT/MARKDOWN
+                id: "1234",
+                published: currentDate
             }).then(res => {
                 alert("success")
             })
@@ -78,6 +90,7 @@ export const PostFeed = (props) => {
         catch(err){
             console.log(err)
             alert(err)
+            //alert(postID)
         }
         fetchPosts();
     }
@@ -150,7 +163,7 @@ export const PostFeed = (props) => {
                         Comment: <input type="text" id={"comment_"+post.PostID} className="form-control-sm" onInput={(e) => commentChangeHandler(post.PostID, e.target.value)}></input>
                         <div className="col text-end">
                             <button className="btn" onClick={() => {
-                                submitCommentHandler(post.id, "dummy_username")
+                                submitCommentHandler(post.id)
                             }}>Submit</button>
                         </div>
                     </div>
