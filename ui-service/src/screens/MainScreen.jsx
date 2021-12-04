@@ -98,7 +98,7 @@ export const MainScreen = () => {
             >Logout</Button>
         </div> 
        <div style={{backgroundColor: "rgb(21,32,43)", marginTop: "0"}}>
-            {/* <PostFeed></PostFeed> */}
+            {<PostFeed></PostFeed> }
         </div>
         
         </>

@@ -107,7 +107,7 @@ export const PostFeed = (props) => {
                 </div>
                 {/* Content Section */}
                 <div className="row rounded rounded-5 py-2 px-4" style={{backgroundColor: "rgb(30,47,65)"}}>
-                    {post.Description}
+                    {post.content}
                 </div>
                 {/* React Section */}
                 <div className="row my-2">
@@ -134,7 +134,7 @@ export const PostFeed = (props) => {
                 </div>
                 {/* Comment Section */}
                 <div className="mt-2 mx-2">
-                    {post.Comments.map((comment, i) => 
+                    {/*post.comments.map((comment, i) => 
                         <div key={"comment_"+i}>
                             <div className="column my-2 px-5 text-start">
                                 <div className="col-3 bg-grey" style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>
@@ -145,7 +145,7 @@ export const PostFeed = (props) => {
                                 </div>
                             </div>
                         </div>
-                    )}
+                    )*/}
                     <div className="row px-5 py-2">
                         Comment: <input type="text" id={"comment_"+post.PostID} className="form-control-sm" onInput={(e) => commentChangeHandler(post.PostID, e.target.value)}></input>
                         <div className="col text-end">
@@ -158,7 +158,7 @@ export const PostFeed = (props) => {
                     <div className="row my-1">
                         <p className="text-grey">
                         Tags: 
-                        {post.Tags.map((tag, i) => 
+                        {post.categories.map((tag, i) => 
                             <button key={"button"+i}
                                 className="btn btn-sm btn-warning mx-1"
                                 onClick={() => {
