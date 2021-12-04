@@ -61,7 +61,7 @@ function App() {
               <Route
                 path="/Home"
                 name="Home Screen"
-                element={<BlankPage /> }/>
+                element={<MainScreen /> }/>
               </>
             ) : <></>}
             {/* <Route
