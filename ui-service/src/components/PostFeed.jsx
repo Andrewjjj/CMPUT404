@@ -25,7 +25,7 @@ export const PostFeed = (props) => {
     const [posts, setPosts] = useState([]);
     const [commentInputField, setCommentInputField] = useState({});
     const authorInfo = useStoreState((state) => state.author)
-    
+    const restHost = useStoreState((state) => state.restHost)
 
     useEffect(() => {
         fetchPosts();
@@ -33,7 +33,7 @@ export const PostFeed = (props) => {
 
     const fetchPosts = async () => {
         try{
-            let response = await axios.get(`http://localhost:8080/author/${authorInfo.AuthorID}/posts`)
+            let response = await axios.get(`${restHost}/author/${authorInfo.AuthorID}/posts`)
             // let response = await axios.get("http://localhost:8080/post")
             let posts = response.data
 
@@ -68,7 +68,7 @@ export const PostFeed = (props) => {
         try{
             console.log(postID)
             console.log(username)
-            await axios.post(`http://localhost:8080/service/post/${postID}/comment/`, {
+            await axios.post(`${restHost}/author/${authorInfo.AuthorID}/${postID}/comments`, {
                 comment: comment,
                 username: username,
             }).then(res => {
@@ -84,7 +84,7 @@ export const PostFeed = (props) => {
 
     const reactionClickHandler = async (postID, reactionType) => {
         try {
-            await axios.post(`http://localhost:8080/service/post/${postID}/like`)
+            await axios.post(`${restHost}/${authorInfo.AuthorID}/inbox`)
             .then(res => {
                 alert("success")
             })
@@ -102,31 +102,31 @@ export const PostFeed = (props) => {
             style={{backgroundColor: "rgb(30,47,65)"}} key={"post"+i}>
                 {/* Title Section */}
                 <div className="row" style={{textAlign: 'left'}}>
-                    <h5><b>{post.Title}</b></h5>
-                    <h6 style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>{post.AuthorName} </h6>
+                    <h5><b>{post.title}</b></h5>
+                    <h6 style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>{post.author["displayName"]} </h6>
                 </div>
                 {/* Content Section */}
                 <div className="row rounded rounded-5 py-2 px-4" style={{backgroundColor: "rgb(30,47,65)"}}>
-                    {post.Description}
+                    {post.content}
                 </div>
                 {/* React Section */}
                 <div className="row my-2">
                   <div class="btn-group-sm shadow-0 col" role="group">
                          <button type="button" class="btn btn-dark shadow-0" style={{backgroundColor: "rgb(30,47,65)"}}data-mdb-color="dark"
                             onClick={() => {
-                                reactionClickHandler(post.PostID, "like")
+                                reactionClickHandler(post.id, "like")
                             }}>
                             <i className="far fa-thumbs-up fa-1x"></i>+{post.Likes}
                         </button>
                         <button type="button" class="btn btn-dark shadow-0" style={{backgroundColor: "rgb(30,47,65)"}}data-mdb-color="dark"
                             onClick={() => {
-                                reactionClickHandler(post.PostID, "love")
+                                reactionClickHandler(post.id, "love")
                             }}>
                             <i className="far fa-heart fa-1x"></i>+{post.Likes}
                         </button>
                         <button type="button" class="btn btn-dark shadow-0" style={{backgroundColor: "rgb(30,47,65)"}}data-mdb-color="dark"
                             onClick={() => {
-                                reactionClickHandler(post.PostID, "rocket")
+                                reactionClickHandler(post.id, "rocket")
                             }}>
                             <i className="fas fa-rocket fa-1x"></i>+{post.Likes}
                         </button>
@@ -134,7 +134,7 @@ export const PostFeed = (props) => {
                 </div>
                 {/* Comment Section */}
                 <div className="mt-2 mx-2">
-                    {post.Comments.map((comment, i) => 
+                    {/*post.comments.map((comment, i) => 
                         <div key={"comment_"+i}>
                             <div className="column my-2 px-5 text-start">
                                 <div className="col-3 bg-grey" style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>
@@ -145,12 +145,12 @@ export const PostFeed = (props) => {
                                 </div>
                             </div>
                         </div>
-                    )}
+                    )*/}
                     <div className="row px-5 py-2">
                         Comment: <input type="text" id={"comment_"+post.PostID} className="form-control-sm" onInput={(e) => commentChangeHandler(post.PostID, e.target.value)}></input>
                         <div className="col text-end">
                             <button className="btn" onClick={() => {
-                                submitCommentHandler(post.PostID, "dummy_username")
+                                submitCommentHandler(post.id, "dummy_username")
                             }}>Submit</button>
                         </div>
                     </div>
@@ -158,7 +158,7 @@ export const PostFeed = (props) => {
                     <div className="row my-1">
                         <p className="text-grey">
                         Tags: 
-                        {post.Tags.map((tag, i) => 
+                        {post.categories.map((tag, i) => 
                             <button key={"button"+i}
                                 className="btn btn-sm btn-warning mx-1"
                                 onClick={() => {

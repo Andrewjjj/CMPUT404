@@ -89,7 +89,7 @@ export const MainScreen = () => {
                 <div className="col">
                     <Button className="Buttons" onClick={() => {navigate("/Posts/Others")}}>Go to Post Others</Button>
                     <Button className="Buttons" onClick={() => {navigate("/Inbox")}}>Go to Inbox</Button>
-                    <Button className="Buttons" onClick={() => {navigate("/Author/Foreign")}}>Connet to Foreign Authors</Button>
+                    <Button className="Buttons" onClick={() => {navigate("/Author/Foreign")}}>Connect to Foreign Authors</Button>
                 </div>
             </div>
             {/* </Link>   */}
@@ -98,7 +98,7 @@ export const MainScreen = () => {
             >Logout</Button>
         </div> 
        <div style={{backgroundColor: "rgb(21,32,43)", marginTop: "0"}}>
-            {/* <PostFeed></PostFeed> */}
+            {<PostFeed></PostFeed> }
         </div>
         
         </>
