@@ -86,7 +86,7 @@ export const PostFeed = (props) => {
 
     const submitCommentHandler = async (postID) => {
         console.log(postID)
-        let newComment = "awoo";
+        let newComment = commentInputField[postID];
         let currentDate = new Date();
         let url = `${postID}/comments`
         currentDate = currentDate.toString();
@@ -108,8 +108,8 @@ export const PostFeed = (props) => {
         }
         catch(err){
             console.log(err)
-            alert(err)
-            //alert(newComment)
+            //alert(err)
+            alert(newComment)
         }
         fetchPosts();
     }
@@ -123,7 +123,7 @@ export const PostFeed = (props) => {
         } catch(err) {
             console.log(err)
             //alert(err)
-            alert()
+            alert(`${restHost}/${authorInfo.AuthorID}/inbox`)
         }
         fetchPosts();
     }
@@ -168,7 +168,7 @@ export const PostFeed = (props) => {
                 {/* Comment Section */}
                 <div className="mt-2 mx-2">
                     {
-                        comments[i].comments.map((comment, j) => 
+                        comments[i] === undefined ? "" : comments[i].comments.map((comment, j) => 
                             <div key={"comment_"+j}>
                                 <div className="column my-2 px-5 text-start">
                                     <div className="col-3 bg-grey" style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>
