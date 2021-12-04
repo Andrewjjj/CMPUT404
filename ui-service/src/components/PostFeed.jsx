@@ -30,7 +30,7 @@ export const PostFeed = (props) => {
 
     useEffect(() => {
         fetchPosts();
-    }, [])
+    }, [posts])
 
     const fetchPosts = async () => {
         try{
@@ -122,8 +122,8 @@ export const PostFeed = (props) => {
             })
         } catch(err) {
             console.log(err)
-            //alert(err)
-            alert(`${restHost}/${authorInfo.AuthorID}/inbox`)
+            alert(err)
+            //alert(`${restHost}/${authorInfo.AuthorID}/inbox`)
         }
         fetchPosts();
     }
@@ -150,18 +150,6 @@ export const PostFeed = (props) => {
                                 reactionClickHandler(post.id, "like")
                             }}>
                             <i className="far fa-thumbs-up fa-1x"></i>+{post.Likes}
-                        </button>
-                        <button type="button" class="btn btn-dark shadow-0" style={{backgroundColor: "rgb(30,47,65)"}}data-mdb-color="dark"
-                            onClick={() => {
-                                reactionClickHandler(post.id, "love")
-                            }}>
-                            <i className="far fa-heart fa-1x"></i>+{post.Likes}
-                        </button>
-                        <button type="button" class="btn btn-dark shadow-0" style={{backgroundColor: "rgb(30,47,65)"}}data-mdb-color="dark"
-                            onClick={() => {
-                                reactionClickHandler(post.id, "rocket")
-                            }}>
-                            <i className="fas fa-rocket fa-1x"></i>+{post.Likes}
                         </button>
                     </div>
                 </div>
@@ -194,12 +182,7 @@ export const PostFeed = (props) => {
                         <p className="text-grey">
                         Tags: 
                         {post.categories.map((tag, i) => 
-                            <button key={"button"+i}
-                                className="btn btn-sm btn-warning mx-1"
-                                onClick={() => {
-                                    alert("Sorry! This hasn't been implemented yet")
-                                }}
-                            >{tag}</button>
+                            <span> {tag}</span>
                         )}
                         </p>
                     </div>
