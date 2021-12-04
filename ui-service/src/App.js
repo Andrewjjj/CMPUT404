@@ -20,11 +20,12 @@ function App() {
   const isLoggedIn = useStoreState((state) => state.isLoggedIn)
   const isLoggedInAdmin = useStoreState((state) => state.isLoggedInAdmin)
   const restHost = useStoreState((state) => state.restHost)
+  const setRestHost = useStoreActions((state) => state.setRestHost)
   const isRehydrated = useStoreRehydrated()
   
   useEffect(() => {
+    setRestHost("http://localhost:8080")
     console.log(restHost, isLoggedIn, isRehydrated)
-    // setRestHost("http://localhost:8080")
   }, [])
 
   return (

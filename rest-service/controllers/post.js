@@ -9,7 +9,7 @@ module.exports.getPost = async(req, res, next) => {
         authorInfo = authorInfo[0]
 
         authorInfo.type = "author";
-        authorInfo.id = `${WEB_HOST}author/${authorID}`
+        authorInfo.id = `${WEB_HOST}/author/${authorID}`
 
         let categories = await db.getPostCategories(postID);
         let categoryArr = categories.map(category => {
@@ -19,9 +19,10 @@ module.exports.getPost = async(req, res, next) => {
         let post = {
             ...postInfo,
             type: "post",
-            id: `${WEB_HOST}author/${authorID}/posts/${postInfo.id}`,
+            id: `${WEB_HOST}/author/${authorID}/posts/${postInfo.id}`,
+            categories: categoryArr,
             count: 0,
-            comments: `${WEB_HOST}author/${authorID}/posts/${postInfo.id}/comments`,
+            comments: `${WEB_HOST}/author/${authorID}/posts/${postInfo.id}/comments`,
         }
 
         res.status(200).json(post)
@@ -90,7 +91,7 @@ module.exports.getAuthorPosts = async (req, res, next) => {
         authorInfo = authorInfo[0]
 
         authorInfo.type = "author";
-        authorInfo.id = `${WEB_HOST}author/${authorID}`
+        authorInfo.id = `${WEB_HOST}/author/${authorID}`
 
         let postsInfo = await Promise.all(posts.map(async (post) => {
             let categories = await db.getPostCategories(post.id);
@@ -100,7 +101,7 @@ module.exports.getAuthorPosts = async (req, res, next) => {
             return {
                 type: "post",
                 title: post.title,
-                id: `${WEB_HOST}author/${authorID}/posts/${post.id}`,
+                id: `${WEB_HOST}/author/${authorID}/posts/${post.id}`,
                 source: post.source,
                 origin: post.origin,
                 description: post.description,
@@ -109,7 +110,7 @@ module.exports.getAuthorPosts = async (req, res, next) => {
                 author: authorInfo,
                 categories: categoryArr,
                 count: 0,
-                comments: `${WEB_HOST}author/${authorID}/posts/${post.postID}/comments`,
+                comments: `${WEB_HOST}/author/${authorID}/posts/${post.postID}/comments`,
                 published: post.published,
                 visibility: post.visibility,
                 unlisted: post.unlisted,

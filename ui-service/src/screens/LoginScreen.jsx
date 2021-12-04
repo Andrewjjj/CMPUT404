@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
-import {Button, Input, Form} from 'react-bootstrap';
+import {Button, Input, Form, Image} from 'react-bootstrap';
 
 import { useStoreActions, useStoreState } from 'easy-peasy'
 
@@ -40,37 +40,46 @@ export const LoginUserScreen = () => {
     }
 
     return (
-        <div className="container" style={{backgroundColor: "rgb(21,32,43)"}}>
-            <header style={{color: "rgb(255, 122, 0)", fontSize:"200%"}}>
-                Login User
-            </header>
-            <div style={{
-                display: "flex", alignItems: "center", color: "rgb(150, 150, 150)",
-                flexDirection: "column" }}>
-                <p style={{fontWeight: "bold"}}>Enter your info below</p>     
-                <Form>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label style={{color: "rgb(150, 150, 150)"}}>Email address</Form.Label>
-                    <Form.Control style={{backgroundColor: "rgb(21,32,43)", borderColor: "#ff7a00" }} type="email" placeholder="Enter email" 
-                        onInput={(e) => {setUsername(e.currentTarget.value)}}
-                        value={username}/>
-                </Form.Group>
+        <body className="background">
+            <div className="container" style={{backgroundColor: "rgb(21,32,43)"}}>
+                <header style={{color: "rgb(255, 122, 0)", fontSize:"200%", textAlign: 'center'}}>
+                    Login User
+                </header>
+                <div style={{
+                    display: "flex", alignItems: "center", color: "rgb(150, 150, 150)",
+                    flexDirection: "column" }}>
+                    <p style={{fontWeight: "bold"}}>Enter your info below</p>     
+                    <Form>
+                        <Form.Group className="mb-3" controlId="formPlaintext">
+                        <Form.Label style={{color: "rgb(150, 150, 150)"}}>Username</Form.Label>
+                        <Form.Control style={{backgroundColor: "rgb(21,32,43)", borderColor: "#ff7a00" }} type="email" placeholder=" Enter Username" 
+                            onInput={(e) => {setUsername(e.currentTarget.value)}}
+                            value={username}/>
+                    </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label style={{color: "rgb(150, 150, 150)"}}>Password</Form.Label>
-                    <Form.Control style={{backgroundColor: "rgb(21,32,43)", borderColor: "#ff7a00", borderInlineColor: "#ff7a00"}} type="password" placeholder="Password" 
-                    onInput={(e) => {setPassword(e.currentTarget.value)}}
-                    value={password}/>
-                </Form.Group >
-                {/* <Link to="/"> */}
-                    <Button className="Buttons" variant="primary" type="button"
-                        onClick={handleLogin}>
-                        Login
-                    </Button>
-                {/* </Link> */}
-                </Form>
+                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                        <Form.Label style={{color: "rgb(150, 150, 150)"}}>Password</Form.Label>
+                        <Form.Control style={{backgroundColor: "rgb(21,32,43)", borderColor: "#ff7a00", borderInlineColor: "#ff7a00"}} type="password" placeholder="Password" 
+                        onInput={(e) => {setPassword(e.currentTarget.value)}}
+                        value={password}/>
+                    </Form.Group >
+                    {/* <Link to="/"> */}
+                        <Button className="Buttons" variant="primary" type="button"
+                            onClick={handleLogin}>
+                            Login
+                        </Button>
+
+                    {/* </Link> */}
+                    </Form>
+                    <div style={{width: "40%", height: "30%", marginTop: "25%"}}>
+                        <Image src="appLogo.png" fluid/>
+                    </div>
+                </div>
             </div>
-        </div>
+
+        </body>
+        
+            
     )
 }
 
