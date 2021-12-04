@@ -30,7 +30,7 @@ export const MainScreen = () => {
 
     const fetchPosts = async () => {
         try{
-            let response = await axios.get(`${restHost}/author/${authorInfo.AuthorID}/posts`)
+            let response = await axios.get(`${restHost}/author/${authorInfo.id}/posts`)
             console.log("response", response.data)
             // return;
 
