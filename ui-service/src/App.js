@@ -33,8 +33,8 @@ function App() {
         <BrowserRouter>
           <Routes>
             {isLoggedIn ? (
-              <MainScreen>
-
+              //<MainScreen>
+              <>
               <Route
                 path="/Posts"
                 name="View Post Screen"
@@ -62,7 +62,7 @@ function App() {
                 path="/Home"
                 name="Home Screen"
                 element={<BlankPage /> }/>
-              </MainScreen>
+              </>
             ) : <></>}
             {/* <Route
               path="/Friends"
