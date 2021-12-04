@@ -108,8 +108,8 @@ export const PostFeed = (props) => {
         }
         catch(err){
             console.log(err)
-            //alert(err)
-            alert(newComment)
+            alert(err)
+            //alert(newComment)
         }
         fetchPosts();
     }
