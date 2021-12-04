@@ -1,18 +1,22 @@
 import axios from 'axios';
 import {Button} from 'react-bootstrap';
-
-const removeNode = async (nodeID) => {
-    try {
-        await axios.delete("https://fast-chamber-90421.herokuapp.com/admin/nodes/" + nodeID)
-        alert("Success")
-        window.location.reload();
-    } catch(err) {
-        console.log(err)
-        alert(err)
-    }
-}
+import { useStoreState } from 'easy-peasy'
 
 export const NodeList = ({nodes}) => {
+
+    const restHost = useStoreState((state) => state.restHost)
+
+    const removeNode = async (nodeID) => {
+        try {
+            await axios.delete(`${restHost}/admin/nodes/${nodeID}`)
+            alert("Success")
+            window.location.reload();
+        } catch(err) {
+            console.log(err)
+            alert(err)
+        }
+    }
+
     return (
         <ul>
             {nodes.map((node) => (

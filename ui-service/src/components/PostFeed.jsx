@@ -37,7 +37,7 @@ export const PostFeed = (props) => {
             let response = await axios.get(`${restHost}/author/${authorInfo.AuthorID}/posts`)
             // let response = await axios.get("http://localhost:8080/post")
             let posts = response.data
-            
+            console.log("Posts: ", posts)
             // TODO: change this 
             // await Promise.all(posts.map(async post => {
             //     response = await axios.get(`http://localhost:8080/post/${post.PostID}/comment`)
@@ -58,9 +58,10 @@ export const PostFeed = (props) => {
 
     const fetchComments = async (posts) => {
         let comments = []
+        console.log("Post COMemnts", posts)
         for(var i = 0; i < posts.length; i++){
             try{
-                let commentsResponse = await axios.get(`${posts[i].comments}`)
+                let commentsResponse = await axios.get(`${posts[i].id}/comments`)
                 comments[i] = commentsResponse.data;
             }
             catch(err){
@@ -72,6 +73,7 @@ export const PostFeed = (props) => {
     }
 
     const commentChangeHandler = (postID, comment) => {
+        console.log(postID, comment)
         setCommentInputField({
             ...commentInputField,
             [postID]: comment,
@@ -80,26 +82,22 @@ export const PostFeed = (props) => {
     }
 
     const submitCommentHandler = async (postID) => {
+        console.log(postID)
         let newComment = "awoo";
         let currentDate = new Date();
         let url = `${postID}/comments`
         currentDate = currentDate.toString();
         console.log(newComment)
         try{
-            console.log(postID);
             await axios.post(url, {
                 type: "comment",
-                author:{
-                    type: "author",
-                    //id: `${authorInfo.AuthorID}`,
-                    //:`${authorInfo.AuthorID}`,
-                    //host: `${restHost}`,
-                    github: "awoo",
-                    profileImage:"awoo"
-                },
-                comment: newComment,
-                contentType: "text/plain", //TODO: ALLOW TEXT/MARKDOWN
-                id: "1234",
+                comment: {
+                    publishedTime: currentDate,
+                    authorID: authorInfo.id,
+                    content: commentInputField[postID],
+                    contentType: "text/plain", //TODO: ALLOW TEXT/MARKDOWN
+                }
+                // id: "1234",
                 //published: currentDate
             }).then(res => {
                 alert("success")
@@ -179,7 +177,7 @@ export const PostFeed = (props) => {
                         </div>
                     )*/}
                     <div className="row px-5 py-2">
-                        Comment: <input type="text" id={"comment_"+post.id} className="form-control-sm" onInput={(e) => commentChangeHandler(post.PostID, e.target.value)}></input>
+                        Comment: <input type="text" id={"comment_"+post.id} className="form-control-sm" onInput={(e) => commentChangeHandler(post.id, e.target.value)}></input>
                         <div className="col text-end">
                             <button className="btn" onClick={() => {
                                 submitCommentHandler(post.id)
