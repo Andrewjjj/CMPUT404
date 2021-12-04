@@ -36,7 +36,7 @@ export const PostFeed = (props) => {
         try{
             let response = await axios.get(`${restHost}/author/${authorInfo.AuthorID}/posts`)
             // let response = await axios.get("http://localhost:8080/post")
-            let posts = response.data
+            let newPosts = response.data
             
             // TODO: change this 
             // await Promise.all(posts.map(async post => {
@@ -47,28 +47,29 @@ export const PostFeed = (props) => {
             //     post.Tags = ["awesome", "good"]
             // }))
 
-            setPosts(posts)
-            fetchComments(posts)
+            setPosts(newPosts)
         }
         catch(err){
             console.log(err)
             alert(`Post error: ${err}`)
         }
+        fetchComments(posts)
     }
 
     const fetchComments = async (posts) => {
-        let comments = []
+        let fetchedComments = []
         for(var i = 0; i < posts.length; i++){
             try{
                 let commentsResponse = await axios.get(`${posts[i].comments}`)
-                comments[i] = commentsResponse.data;
+                fetchedComments[i] = commentsResponse.data;
             }
             catch(err){
                 console.log(err)
                 alert(`Comment error: ${err}`)
             }
         }
-        setComments(comments)
+        setComments(fetchedComments)
+        alert(`comment 1: ${comments[0].comments[0].comment}`)
     }
 
     const commentChangeHandler = (postID, comment) => {
@@ -166,18 +167,20 @@ export const PostFeed = (props) => {
                 </div>
                 {/* Comment Section */}
                 <div className="mt-2 mx-2">
-                    {/*comments[i].map((comment, j) => 
-                        <div key={"comment_"+j}>
-                            <div className="column my-2 px-5 text-start">
-                                <div className="col-3 bg-grey" style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>
-                                    {comment.AuthorID}
-                                </div>
-                                <div className="col text-start">
-                                    {comment.Comment}
+                    {
+                        comments.map((comment, j) => 
+                            <div key={"comment_"+j}>
+                                <div className="column my-2 px-5 text-start">
+                                    <div className="col-3 bg-grey" style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>
+                                        {comment[0].comment || ""/*comment.Comment*/}
+                                    </div>
+                                    <div className="col text-start">
+                                        {"snek"/*comment.Comment*/}snekk
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )*/}
+                        )
+                    }
                     <div className="row px-5 py-2">
                         Comment: <input type="text" id={"comment_"+post.id} className="form-control-sm" onInput={(e) => commentChangeHandler(post.PostID, e.target.value)}></input>
                         <div className="col text-end">
