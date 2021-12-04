@@ -1,20 +1,21 @@
 const db = require("../database/database");
 const WEB_HOST = process.env.WEB_HOST
 
-module.exports.getAllComments = async (req, res, next) => {
+exports.getAllComments = async (req, res, next) => {
     try{
         const { authorID, postID } = req.params;
         const { page, size } = req.query
         let comments = await db.getAllCommentsByPostID(postID)
-
+        console.log(comments)
         let authorList = {}
         await Promise.all(comments.map(async comment => {
+            console.log(comment)
             const authorID = comment.AuthorID
             let author = await db.getAuthorByAuthorID(authorID);
             let authorInfo = {
                 type: "author",
-                id: `${WEB_HOST}author/${authorID}`,
-                url: `${WEB_HOST}author/${authorID}`,
+                id: `${WEB_HOST}/author/${authorID}`,
+                url: `${WEB_HOST}/author/${authorID}`,
                 host: WEB_HOST,
                 displayName: author[0].displayName,
                 github: author[0].github,
@@ -35,8 +36,8 @@ module.exports.getAllComments = async (req, res, next) => {
             type: "comments",
             page: page,
             size: size,
-            post: `${WEB_HOST}author/${authorID}/post/${postID}`,
-            id: `${WEB_HOST}author/${authorID}/post/${postID}/comments`,
+            post: `${WEB_HOST}/author/${authorID}/post/${postID}`,
+            id: `${WEB_HOST}/author/${authorID}/post/${postID}/comments`,
             comments: comments
         })
     }

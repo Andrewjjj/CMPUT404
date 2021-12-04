@@ -5,7 +5,7 @@ const WEB_HOST = process.env.WEB_HOST
 exports.getLikesOnPost = async (req, res, next) => {
     try{
         const { authorID, postID } = req.params;
-        const obj = `${WEB_HOST}author/${authorID}/post/${postID}`;
+        const obj = `${WEB_HOST}/author/${authorID}/post/${postID}`;
         let likesArr = await db.getLikesOnPost(postID)
         let likeResponseArr = []
         for(let like of likesArr){
@@ -30,7 +30,7 @@ exports.getLikesOnPost = async (req, res, next) => {
 exports.getLikesOnComment = async (req, res, next) => {
     try{
         const { authorID, postID, commentID } = req.params;
-        const obj = `${WEB_HOST}author/${authorID}/post/${postID}/comment/${commentID}`;
+        const obj = `${WEB_HOST}/author/${authorID}/post/${postID}/comment/${commentID}`;
         let likesArr = await db.getLikesOnComment(commentID)
         let likeResponseArr = []
         for(let like of likesArr){
