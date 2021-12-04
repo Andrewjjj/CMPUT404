@@ -102,8 +102,8 @@ export const PostFeed = (props) => {
             style={{backgroundColor: "rgb(30,47,65)"}} key={"post"+i}>
                 {/* Title Section */}
                 <div className="row" style={{textAlign: 'left'}}>
-                    <h5><b>{post.Title}</b></h5>
-                    <h6 style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>{post.AuthorName} </h6>
+                    <h5><b>{post.title}</b></h5>
+                    <h6 style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>{post.author["displayName"]} </h6>
                 </div>
                 {/* Content Section */}
                 <div className="row rounded rounded-5 py-2 px-4" style={{backgroundColor: "rgb(30,47,65)"}}>
@@ -114,19 +114,19 @@ export const PostFeed = (props) => {
                   <div class="btn-group-sm shadow-0 col" role="group">
                          <button type="button" class="btn btn-dark shadow-0" style={{backgroundColor: "rgb(30,47,65)"}}data-mdb-color="dark"
                             onClick={() => {
-                                reactionClickHandler(post.PostID, "like")
+                                reactionClickHandler(post.id, "like")
                             }}>
                             <i className="far fa-thumbs-up fa-1x"></i>+{post.Likes}
                         </button>
                         <button type="button" class="btn btn-dark shadow-0" style={{backgroundColor: "rgb(30,47,65)"}}data-mdb-color="dark"
                             onClick={() => {
-                                reactionClickHandler(post.PostID, "love")
+                                reactionClickHandler(post.id, "love")
                             }}>
                             <i className="far fa-heart fa-1x"></i>+{post.Likes}
                         </button>
                         <button type="button" class="btn btn-dark shadow-0" style={{backgroundColor: "rgb(30,47,65)"}}data-mdb-color="dark"
                             onClick={() => {
-                                reactionClickHandler(post.PostID, "rocket")
+                                reactionClickHandler(post.id, "rocket")
                             }}>
                             <i className="fas fa-rocket fa-1x"></i>+{post.Likes}
                         </button>
@@ -150,7 +150,7 @@ export const PostFeed = (props) => {
                         Comment: <input type="text" id={"comment_"+post.PostID} className="form-control-sm" onInput={(e) => commentChangeHandler(post.PostID, e.target.value)}></input>
                         <div className="col text-end">
                             <button className="btn" onClick={() => {
-                                submitCommentHandler(post.PostID, "dummy_username")
+                                submitCommentHandler(post.id, "dummy_username")
                             }}>Submit</button>
                         </div>
                     </div>
