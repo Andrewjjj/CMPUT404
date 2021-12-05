@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
+import { CreatePostModal } from '../components/CreatePostModal';
+import { Button } from 'react-bootstrap'
 import { WithContext as ReactTags } from 'react-tag-input';
 import { useStoreActions, useStoreState } from 'easy-peasy'
 
@@ -30,7 +32,7 @@ export const PostFeed = (props) => {
     const restHost = useStoreState((state) => state.restHost)
     //const feedAuthor = props.author;
     const [editingPostID, setEditingPostID] = useState("")
-
+    const [showModal, setShowModal] = useState(false)
     useEffect(() => {
         fetchPosts();
     }, [])
@@ -254,8 +256,20 @@ export const PostFeed = (props) => {
         fetchPosts();
     }
 
+
+    const createNewPostHandler = () => {
+
+    }
+
+
     return (
         <div id={PostFeed}>
+            <CreatePostModal isVisible={showModal} setVisible={setShowModal} submitPostHandler={createNewPostHandler}></CreatePostModal>
+
+            <div>
+                This is a Post Screen!
+            </div>
+            <Button onClick={() => setShowModal(true)}>Create New Post</Button>
             {posts.map((post, i) => 
             <div className=" w-50 mt-3 mx-auto border p-4 rounded-5 z-depth-2 text-white"
             style={{backgroundColor: "rgb(30,47,65)"}} key={"post"+i}>
