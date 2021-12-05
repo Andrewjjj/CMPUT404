@@ -11,10 +11,13 @@ export const AdminScreen = (props) => {
     const [Nodes, setNodes] = useState([]);
     const [host, setHost] = useState("");
 
+    const [registrationList, setRegistrationList] = useState([])
+
     const restHost = useStoreState((state) => state.restHost)
 
     useEffect(() => {
         fetchNodes();
+        fetchRegistrationRequests();
     }, []);
 
     const fetchNodes = async () => {
@@ -44,30 +47,58 @@ export const AdminScreen = (props) => {
         window.location.reload();
     }
 
+    const fetchRegistrationRequests = async () => {
+        const response = await axios.get(`${restHost}/register`)
+        setRegistrationList(response.data)
+    }
+
     return (
         <div className="container">
-            <div>
-                <Header title="Nodes" /> 
+            <div className="row">
+                <div className="col">
+                    <div>
+                        <Header title="Nodes" /> 
+                    </div>
+                    <div>
+                        <NodeList nodes={Nodes} />
+                    </div>
+                    <InputGroup className="mb-3">
+                        <FormControl
+                        placeholder="Host"
+                        aria-label="Host"
+                        aria-describedby="Host"
+                        onInput={(e) => {setHost(e.currentTarget.value)}}
+                        value={host}
+                        />
+                        <Button variant="outline-secondary" id="Host"
+                            onClick={addNode}>
+                            Add Host
+                        </Button>
+                    </InputGroup>
+                    <Button className="btn btn-danger" onClick={deleteAllNodes}>
+                        Delete All Nodes
+                    </Button>
+                </div>
+                <div className="col">
+                    <div>
+                        <Header title="Registration Requests" /> 
+                    </div>
+                    <div>
+                        {registrationList.map(user => (
+                            <>
+                            {user.Username}
+                            <Button className="btn btn-primary" onClick={deleteAllNodes}>
+                                Approve
+                            </Button>
+                            <Button className="btn btn-danger" onClick={deleteAllNodes}>
+                                Reject
+                            </Button>
+                            </>
+                        ))}
+                    </div>
+                </div>
+
             </div>
-            <div>
-                <NodeList nodes={Nodes} />
-            </div>
-            <InputGroup className="mb-3">
-                <FormControl
-                placeholder="Host"
-                aria-label="Host"
-                aria-describedby="Host"
-                onInput={(e) => {setHost(e.currentTarget.value)}}
-                value={host}
-                />
-                <Button variant="outline-secondary" id="Host"
-                    onClick={addNode}>
-                    Add Host
-                </Button>
-            </InputGroup>
-            <Button className="btn btn-danger" onClick={deleteAllNodes}>
-                Delete All Nodes
-            </Button>
         </div>
     )
 }
