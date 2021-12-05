@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const authorController = require("../controllers/author")
 
-router.post("/login/Author", authorController.loginAuthor);
-router.post("/login/Admin", authorController.loginAdmin);
+router.post("/login/author", authorController.loginAuthor);
+router.post("/login/admin", authorController.loginAdmin);
 
 router.get("/authors/", authorController.getAllAuthors);
 router.get("/author/:authorID/", authorController.getAuthorByAuthorID);

@@ -25,7 +25,7 @@ function App() {
   const isRehydrated = useStoreRehydrated()
   
   useEffect(() => {
-    setRestHost("http://127.0.0.1:8080")
+    setRestHost("http://localhost:8080")
     console.log(restHost, isLoggedIn, isRehydrated)
   }, [])
 

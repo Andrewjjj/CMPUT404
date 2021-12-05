@@ -66,13 +66,13 @@ export const FriendScreen = (props) => {
       let response = await axios.get(`${restHost}/authors`)
       let authors = response.data.items;
 
-      let friendResponse = await axios.get(`${restHost}/author/${authorInfo.AuthorID}/friends`)
+      let friendResponse = await axios.get(`${restHost}/author/${authorInfo.id}/friends`)
       let friends = friendResponse.data
       // console.log(friends)
 
       // console.log(authors)
       // setFriendRequests()
-      let authorArr = authors.filter(e => e.id != `${restHost.replace("localhost", "127.0.0.1")}/author/${authorInfo.AuthorID}`)
+      let authorArr = authors.filter(e => e.id != `${restHost.replace("localhost", "127.0.0.1")}/author/${authorInfo.id}`)
       // let friendsIdArr = friends.map(e => e.id)
       authorArr = authorArr.filter(e => !friends.map(e => e.id).includes(e.id))
       console.log(friends, authorArr)
