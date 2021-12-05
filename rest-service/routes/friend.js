@@ -4,5 +4,4 @@ const friendController = require("../controllers/friend")
 
 router.get("/author/:authorID/friends", friendController.getAllFriendsByAuthor);
 
-
 module.exports = router;

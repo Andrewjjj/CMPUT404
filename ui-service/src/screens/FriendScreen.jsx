@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 // import { Friend } from './Friend.jsx'
 
 export const FriendScreen = (props) => {
+  const [authors, setAuthors] = useState([]);
+  const [friends, setFriends] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
 
@@ -18,8 +20,9 @@ export const FriendScreen = (props) => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetchFollowers();
-    fetchFriendRequests();
+    // fetchFollowers();
+    // fetchFriendRequests();
+    fetchAuthors()
   }, [])
 
   const fetchFollowers = async () => {
@@ -49,6 +52,35 @@ export const FriendScreen = (props) => {
       alert(err)
     }
   }
+  
+  const fetchAuthors = async () => {
+    try {
+      let response = await axios.get(`${restHost}/authors`)
+      let authors = response.data.items;
+
+      let friendResponse = await axios.get(`${restHost}/author/${authorInfo.AuthorID}/friends`)
+      let friends = friendResponse.data
+      // console.log(friends)
+
+      // console.log(authors)
+      // setFriendRequests()
+      let authorArr = authors.filter(e => e.id != `${restHost.replace("localhost", "127.0.0.1")}/author/${authorInfo.AuthorID}`)
+      // let friendsIdArr = friends.map(e => e.id)
+      authorArr = authorArr.filter(e => !friends.map(e => e.id).includes(e.id))
+      console.log(friends, authorArr)
+      setFriends(friends)
+      setAuthors(authorArr)
+
+      // console.log(friendRequests)
+      // setFriends(friends);
+    }
+    catch (err) {
+      console.log(err)
+      alert(err)
+    }
+  }
+
+  
   /*
   //Fetch friends from json server
   useEffect( () => {
@@ -87,11 +119,12 @@ export const FriendScreen = (props) => {
   return (
     <div className="container">
       <div>
-        <Header title="Friends" />
-
+        <div className='headerc'>
+          <div><h1>Friends</h1></div>
+        </div>
       </div>
       <>
-        {followers.map((follower) => (
+        {friends.map((follower) => (
           <div className='friend'>
             <div className='friendDivRight'>
               <img className='profileImage' src={follower.profileImage} alt=""></img>
@@ -103,7 +136,7 @@ export const FriendScreen = (props) => {
                 <button className='friendDivButton' onClick={() => { navigate(`/Profile?authorID=${follower.id}`)}} rel="noreferrer noopener" target="_blank"> Visit Profile </button>
               </div>
               <div>
-                <button className='friendDivButton' onClick={() => { openInNewTab(follower.githubLink) }} rel="noreferrer noopener" target="_blank" target="_blank"> Visit Github </button>
+                <button className='friendDivButton' onClick={() => { openInNewTab(follower.github) }} rel="noreferrer noopener" target="_blank" target="_blank"> Visit Github </button>
               </div>
             </div>
 
@@ -111,6 +144,33 @@ export const FriendScreen = (props) => {
           // <Friend key = {friend.id} friend={friend} />
         ))}
       </>
+      <div>
+        <div className='headerc'>
+          <div><h1>Authors (Non-friends)</h1></div>
+        </div>
+      </div>
+      <>
+        {authors.map((follower) => (
+          <div className='friend'>
+            <div className='friendDivRight'>
+              <img className='profileImage' src={follower.profileImage} alt=""></img>
+              <h4>{follower.displayName}</h4>
+              {/* <p>{friend.type}</p> */}
+            </div>
+            <div className='friendDivLeft'>
+              <div>
+                <button className='friendDivButton' onClick={() => { navigate(`/Profile?authorID=${follower.id}`)}} rel="noreferrer noopener" target="_blank"> Visit Profile </button>
+              </div>
+              <div>
+                <button className='friendDivButton' onClick={() => { openInNewTab(follower.github) }} rel="noreferrer noopener" target="_blank" target="_blank"> Visit Github </button>
+              </div>
+            </div>
+
+          </div>
+          // <Friend key = {friend.id} friend={friend} />
+        ))}
+      </>
+
       {/* <List friends={friends} /> */}
     </div>
   )
