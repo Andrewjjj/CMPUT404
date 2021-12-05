@@ -38,6 +38,11 @@ export const LandingScreen = () => {
                         Log in as Site Admin
                         </Button>
                     </div>   
+                    <div>
+                        <Button href="/Register" className="Buttons">
+                        Register
+                        </Button>
+                    </div>   
                 
             </div>
         </body>

@@ -57,7 +57,7 @@ function App() {
                 element={<InboxScreen />}/>
               <Route
                 path="/Profile"
-                name="Register Screen"
+                name="Profile Screen"
                 element={<ProfilePage /> }/>
               <Route
                 path="/Home"

@@ -16,6 +16,7 @@ const friendRequestRoutes = require('./routes/friendRequest')
 const inboxRoutes = require('./routes/inbox')
 const likeRoutes = require('./routes/like')
 const postRoutes = require('./routes/post');
+const registerRoutes = require('./routes/register');
 
 
 app.use(adminRoutes);
@@ -26,6 +27,7 @@ app.use(commentRoutes);
 app.use(friendRequestRoutes);
 app.use(inboxRoutes);
 app.use(likeRoutes);
+app.use(registerRoutes);
 
 const authTestRoutes = require('./routes/_other');
 app.use(authTestRoutes);

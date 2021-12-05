@@ -401,6 +401,22 @@ async function removeNode(nodeID) {
     [nodeID])
 }
 
+async function getAllRegistrationRequests(){
+    return await promisePool.execute(`
+    SELECT * FROM register`)
+    .then(([res]) => {
+        return res;
+    })
+}
+
+async function registerRequest(username, password, githubUrl, profileImageUrl){
+    return await promisePool.execute(`
+    INSERT INTO register (Username, Password, GithubURL, ProfileImageURL)
+    VALUES (?, ?, ?, ?)`, 
+    [username, password, githubUrl, profileImageUrl])
+}
+
+
 module.exports.getAllAuthors = getAllAuthors;
 module.exports.getAllAuthorsPaginated = getAllAuthorsPaginated;
 module.exports.getAuthorByAuthorID = getAuthorByAuthorID;
@@ -447,3 +463,6 @@ module.exports.getAllNodes = getAllNodes;
 module.exports.addNode = addNode;
 module.exports.removeAllNodes = removeAllNodes;
 module.exports.removeNode = removeNode;
+
+module.exports.getAllRegistrationRequests = getAllRegistrationRequests;
+module.exports.registerRequest = registerRequest;
