@@ -21,7 +21,6 @@
 }
 
 
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -57,7 +56,7 @@
 
 #mainscreen{
 
-  margin-top: 0;
+  margin-top: 0 !important;
 }
 
 .Buttons{

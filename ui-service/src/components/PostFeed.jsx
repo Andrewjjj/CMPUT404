@@ -74,7 +74,6 @@ export const PostFeed = (props) => {
         console.log("Post Comments", newComments)
         //alert(toString(comments))
         setComments(newComments)
-        return 0
     }
 
     const commentChangeHandler = (postID, comment) => {
@@ -121,7 +120,9 @@ export const PostFeed = (props) => {
         try {
             await axios.post(url,{
                 type: "like",
-                senderName: authorInfo.displayName, //TODO: ADD MORE FIELDS
+                senderName: authorInfo.displayName,
+                object: postID,
+                author: authorInfo
             })
             .then(res => {
                 alert("success")
@@ -157,6 +158,9 @@ export const PostFeed = (props) => {
                             }}>
                             <i className="far fa-thumbs-up fa-1x"></i>+{post.Likes}
                         </button>
+                        <button className="btn" onClick={() => {
+                                submitCommentHandler(post.id)
+                        }}>Share</button>
                     </div>
                 </div>
                 {/* Comment Section */}
