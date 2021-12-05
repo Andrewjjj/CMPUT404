@@ -19,9 +19,6 @@ const customStyles = {
 
 export const PostFeed = (props) => {
     
-    const [title, setTitle] = useState("")
-    const [content, setContent] = useState("")
-    const [tags, setTags] = useState([]);
     const [posts, setPosts] = useState([]);
     const [comments, setComments] = useState([]);
     const [commentInputField, setCommentInputField] = useState({});
@@ -160,7 +157,7 @@ export const PostFeed = (props) => {
             alert(`Editing error: ${err}`)
         }
         setEditingPostID("")
-        fetchPosts()
+        //fetchPosts()
     }
 
     const deletePostHandler = (post) => {
