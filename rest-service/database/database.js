@@ -12,9 +12,8 @@ const dbConfig = {
 const promisePool = mysql.createPool(dbConfig).promise()
 
 const generateNewId = () => {
-    return uuidv4().replaceAll("-", "")
+    return uuidv4().replace(/-/g, "")
 }
-
 // Author
 async function getAllAuthors() {
     return await promisePool.execute(
