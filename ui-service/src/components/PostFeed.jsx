@@ -269,11 +269,12 @@ export const PostFeed = (props) => {
                     <h6 style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>{post.author["displayName"]} </h6>
                 </div>
                 {/* Content Section */}
+                {post.contentType}
                 <div className="row rounded rounded-5 py-2 px-4" style={{backgroundColor: "rgb(30,47,65)"}}>
                     {post.id === editingPostID ?
                          <input type="text" id={"edit_body_"+post.id} className="form-control-sm" onInput={(e) => editBodyHandler(post.id, e.target.value)}></input>
                         
-                        : post.content}
+                        : post.contentType === "text/plain" ? (post.content) : "awoo"}
                 </div>
                 {/* React Section */}
                 <div className="row my-2">
