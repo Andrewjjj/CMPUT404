@@ -7,23 +7,34 @@ module.exports.getInbox = async (req, res, next) => {
         const { authorID } = req.params;
 
         let inboxList = await db.getInbox(authorID)
-        console.log(inboxList)
+        // console.log(inboxList)
 
         let inboxResponseArr = []
         for(let inbox of inboxList){
-            if (inbox.type == "friendRequest") {
-                inbox.id = `${WEB_HOST}/author/${authorID}/friend_request`
-            } else if (inbox.type == "like") {
-                inbox.id = `${WEB_HOST}/author/${authorID}/likes`
-            } else if (inbox.type == "comment") {
-                inbox.id = `${WEB_HOST}/author/${authorID}/comments`
-            }
-
             let response = await axios.get(inbox.id)
-            response.data.map(data => {
-                inboxResponseArr.push(data);
-            })
+            // console.log(response.data)
+
+            if (inbox.type == "friendRequest") {
+                response.data.map(data => {
+                    inboxResponseArr.push(data);
+                })
+            } else if (inbox.type == "like") {
+
+            } else if (inbox.type == "comment") {
+                response.data.comments.map(data => {
+                    inboxResponseArr.push(data);
+                })
+            } else if (inbox.type == "follow") {
+                response.data.items.map(data => {
+                    data.type = "follow";
+                    inboxResponseArr.push(data);
+                })
+            } else if (inbox.type == "post") {
+                inboxResponseArr.push(response.data);
+            }
         }
+
+        // console.log(inboxResponseArr)
 
         res.status(200).json({
             type: "inbox",

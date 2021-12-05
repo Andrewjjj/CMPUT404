@@ -4,9 +4,12 @@ import { useEffect, useState } from 'react'
 import { Profile } from '../components/Profile';
 import { Feed } from '../components/Feed'
 import { useStoreState } from 'easy-peasy'
+import { useParams } from 'react-router-dom'
 import axios from 'axios'
 
 export const ProfilePage = () => {
+
+    const { ProfileAuthorID } = useParams()
 
     const [posts, setPosts] = useState([]) 
     const [author, setAuthor] = useState({})
@@ -23,7 +26,7 @@ export const ProfilePage = () => {
     }
 
     useEffect(() => {
-        // console.log(authorInfo)
+        console.log("ProfileAuthorID", ProfileAuthorID)
         setAuthor(authorInfo)
         fetchData()
     }, [])
@@ -51,7 +54,6 @@ export const ProfilePage = () => {
                     </div>
                 </>
                 ) : <></>}
-                {/* <Feed posts={posts}></Feed> */}
             </div>
         </div>
     )

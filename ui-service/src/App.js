@@ -15,6 +15,7 @@ import { RegistrationScreen } from './screens/RegistrationScreen';
 import { useStoreActions, useStoreState, useStoreRehydrated } from 'easy-peasy'
 import { useEffect } from 'react';
 import { AuthorForeignScreen } from './screens/AuthorForeignScreen';
+import { PostFeed } from './components/PostFeed';
 
 function App() {
   const isLoggedIn = useStoreState((state) => state.isLoggedIn)
@@ -25,6 +26,7 @@ function App() {
   
   useEffect(() => {
     setRestHost("http://localhost:8080")
+    console.log("AHH")
     console.log(restHost, isLoggedIn, isRehydrated)
   }, [])
 
@@ -32,14 +34,16 @@ function App() {
     <>
       {isRehydrated ? (
         <BrowserRouter>
+          {isLoggedIn ? 
+          <MainScreen></MainScreen> : <></>
+          }
           <Routes>
             {isLoggedIn ? (
-              //<MainScreen>
               <>
               <Route
                 path="/Posts"
                 name="View Post Screen"
-                element={<PostScreen />}
+                element={<PostFeed />}
                 />
               <Route
                 path="/Author/Foreign"
@@ -56,17 +60,21 @@ function App() {
                 name="Inbox Screen"
                 element={<InboxScreen />}/>
               <Route
-                path="/Profile"
+                path="/Profile/:ProfileAuthorID"
                 name="Profile Screen"
                 element={<ProfilePage /> }/>
+              {/* <Route
+                path="/Profile"
+                name="Profile Screen"
+                element={<ProfilePage /> }/> */}
               <Route
                 path="/Friends"
                 name="Friend Screen"
                 element={<FriendScreen />}/>
-              <Route
+              {/* <Route
                 path="/Home"
                 name="Home Screen"
-                element={<MainScreen /> }/>
+                element={<PostFeed /> }/> */}
               </>
             ) : <></>}
             { isLoggedInAdmin ? (

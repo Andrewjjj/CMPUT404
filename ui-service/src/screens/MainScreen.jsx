@@ -17,6 +17,7 @@ export const MainScreen = () => {
     const st = useStoreState(s => s)
 
     useEffect(() => {
+        console.log(`/Profile/${restHost}/author/${authorInfo.AuthorID}`)
         if(!authorInfo) navigate("/")
         // fetchPosts();
         console.log(st)
@@ -28,7 +29,7 @@ export const MainScreen = () => {
         navigate("/")
     }
 
-    const fetchPosts = async () => {
+    /*const fetchPosts = async () => {
         try{
             let response = await axios.get(`${restHost}/author/${authorInfo.id}/posts`)
             console.log("response", response.data)
@@ -50,7 +51,7 @@ export const MainScreen = () => {
             console.log(err)
             alert(err)
         }
-    }
+    }*/
 
     const createNewPostHandler = async (title, content, tags) => {
         console.log("Clicked?!")
@@ -64,32 +65,35 @@ export const MainScreen = () => {
         }).then(res => {
             alert(res)
             setShowModal(false);
-            fetchPosts();
+            //fetchPosts();
         })
     }
 
     
     return(
         <>
-        <body className="background">
+        <div className="background">
             <div id="mainscreen" className="text-center my-5" style={{backgroundColor: "rgb(21,32,43)", display: "flex", justifyContent: "center"}}>
                     {/* <Link to="/Friends"> */}
                     
-                    <div style={{display: 'flex', alignItems: "center", flexDirection: "column",  gap: "30px"}}>
-                        <Button className="Buttons" onClick={() => {navigate("/Profile")}}>Go to Profile</Button>
+                    <div style={{display: 'flex'}}>
+                    {/* <div style={{display: 'flex', alignItems: "center", flexDirection: "column",  gap: "30px"}}> */}
+                        <Button className="Buttons" onClick={() => {navigate(`/Profile/${authorInfo.AuthorID}`)}}>Go to Profile</Button>
                         <Button className="Buttons" onClick={() => {navigate("/Inbox")}}>Go to Inbox</Button>
                         <Button className="Buttons" onClick={() => {navigate("/Friends")}}>Go to Friends</Button>
                         {/* </Link> */}
                         {/* <Button className="Buttons" style={{backgroundColor: "rgb(255,122,0)"}} onClick={() => setShowModal(true)}>Create New Post</Button> */}
                         {/* <Link to="/Inbox"> */}
                         <Button className="Buttons" onClick={() => {navigate("/Posts")}}>Go to Posts</Button>
+
                     </div>
                     
                     <div style={{backgroundColor: "rgb(21,32,43)", marginTop: "0"}}>
-                        {<PostFeed></PostFeed> }
+                        {/* {<PostFeed author={authorInfo}></PostFeed> } */}
                     </div>
                     
-                    <div style={{display: 'flex', alignItems: "center", flexDirection: "column",  gap: "30px"}}>
+                    {/* <div style={{display: 'flex', alignItems: "center", flexDirection: "column",  gap: "30px"}}> */}
+                    <div style={{display: 'flex'}}>
                         <Button className="Buttons" onClick={() => {navigate("/Posts/Others")}}>Go to Post Others</Button>
                         <Button className="Buttons" onClick={() => {navigate("/Author/Foreign")}}>Connect to Foreign Authors</Button>
                         <Button className="Buttons" onClick={() => {logOutHandler()}}>Logout</Button>
@@ -102,9 +106,8 @@ export const MainScreen = () => {
             </div> 
             
                 
-        </body>
-
-           
+        </div>
+ 
         
         </>
     )

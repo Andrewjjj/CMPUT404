@@ -110,7 +110,7 @@ module.exports.getAuthorPosts = async (req, res, next) => {
                 author: authorInfo,
                 categories: categoryArr,
                 count: 0,
-                comments: `${WEB_HOST}/author/${authorID}/posts/${post.postID}/comments`,
+                comments: `${WEB_HOST}/author/${authorID}/posts/${post.id}/comments`,
                 published: post.published,
                 visibility: post.visibility,
                 unlisted: post.unlisted,

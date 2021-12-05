@@ -15,9 +15,9 @@ export const InboxScreen = (props) => {
         try {
             let fetchInboxUrl = `${restHost}/author/${authorID}/inbox`
             let response = await axios.get(fetchInboxUrl)
+            console.log("RESPONSE" ,response.data)
             setInbox(response.data);
-            // console.log(response.data)
-            console.log(inbox)
+            console.log("INBOX: " ,inbox)
         } catch(err) {
             console.log(err)
             alert(err)
@@ -128,21 +128,21 @@ export const InboxScreen = (props) => {
     }
 
     const FriendRequest = (props) => {
-        console.log("fr", props)
+        // console.log("fr", props)
 
         const request = props.inbox
         const i = props.idx
 
         return  (
         <div className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2 bg-white" key={"post"+i}>
-            <a href={request.url} >{request.displayName}</a> wants to be friends!
+            <a href={request.actor.url} >{request.actor.displayName}</a> wants to be friends!
             <br></br><button className = "btn btn-primary" onClick = {() => {acceptFriendRequest(request.senderID, request.id)}}> Accept friend request </button> <button className="btn btn-danger" onClick = {() => {rejectFriendRequest(request.senderID, request.id)}}> Reject Friend Request</button>
         </div>
         )
     }
 
     const LikedPost = (props) => {
-        console.log("liked", props)
+        // console.log("liked", props)
 
         const like = props.inbox
         const i = props.idx
@@ -158,30 +158,64 @@ export const InboxScreen = (props) => {
     }
 
     const CommentedPost = (props) => {
-        console.log("Comment", props)
+        // console.log("Comment", props)
         const comment = props.inbox
         const i = props.idx
         //TODO: ADD A REAL LINK TO THE COMMENT
         return  (
             <div className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2 bg-white" key={"post"+i}>
-                <a href={comment.senderHost + "/author/" + comment.senderID} >{comment.senderName}</a> commented '{comment.content}' on your post!
+                <a href={comment.author.id} >{comment.author.displayName}</a> commented '{comment.comment}' on your post!
                 <br></br>
                 <button className = "btn btn-primary"> Goto commented post </button> <button className="btn btn-danger"> Dismiss </button>
             </div>
         )
     }
 
+    const Follows = (props) => {
+        const follow = props.inbox;
+        const i = props.idx;
+
+        return (
+            <div className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2 bg-white" key={"post"+i}>
+                <a href={follow.id}>{follow.displayName}</a> has followed you!
+                <br></br>
+            </div>        
+        )
+    }
+
+    const Post = (props) => {
+        const post = props.inbox;
+        const i = props.idx;
+
+        return (
+            <div className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2 bg-white" key={"post"+i}>
+                <h3> There is a post of your interest </h3>
+                {/* Title Section */}
+                <div className="row" style={{textAlign: 'left'}}>
+                    <h5><b>{post.title}</b></h5>
+                    <h6 style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>{post.authorID} </h6>
+                </div>
+                {/* Content Section */}
+                <div className="row rounded rounded-5 py-2 px-4" style={{backgroundColor: "rgb(30,47,65)"}}>
+                    {post.content}
+                </div>
+            </div>        
+        )
+    }
+
     const InboxComponent = (inbox, i) => {
-        console.log("IBX", inbox)
-        if (inbox.type === "author") {
-            // displayArray[i] = friendRequest(postsArray[i], i)
+        // console.log("IBX", inbox)
+        if (inbox.type === "friendRequest") {
             return <FriendRequest inbox={inbox} idx={i}/>
         } else if (inbox.type === "like") {
-            // displayArray[i] = likedPost(postsArray[i], i)
             return <LikedPost inbox={inbox} idx={i}/>
         } else if (inbox.type === "comment") {
             return <CommentedPost inbox={inbox} idx={i}/>
-        } else{
+        } else if (inbox.type === "follow") {
+            return <Follows inbox={inbox} idx={i}/>
+        } else if (inbox.type === "post") {
+            return <Post inbox={inbox} idx={i}/>
+        } else {
             console.log("Unrecognized:", inbox)
             return <></>
             // throw "Error: Unrecognized item in inbox";
@@ -191,7 +225,7 @@ export const InboxScreen = (props) => {
     return (
         <>
             <div className="bg-grey">
-            {inbox.items.map((content, i) => (
+            {inbox.items && inbox.items.map((content, i) => (
                 <InboxComponent {...content} key={`InboxComponent_${i}`} />
             ))}
             </div>
