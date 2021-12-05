@@ -79,7 +79,6 @@ export const PostScreen = (props) => {
                                 </button>
                             </div>
                         </div>
-                        
                     </div>
                 ))}
             </div>

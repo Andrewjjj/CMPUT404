@@ -15,6 +15,7 @@ export const ProfilePage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const ProfileAuthorID = searchParams.get('authorID')
+    const Token = searchParams.get('token')
     // const src = searchParams.get('src')
     // const f = searchParams.get('f')
 
@@ -28,16 +29,49 @@ export const ProfilePage = () => {
     const authorInfo = useStoreState((store) => store.author)
     const restHost = useStoreState((store) => store.restHost)
 
+    const fetchPosts = async () => {
+        try{
+            let response = await axios.get(`${ProfileAuthorID}/posts`, {
+                headers: {
+                    "Authorization": `Basic ${Token}`
+                }
+            })
+            if(Array.isArray(response.data)) {
+                setPosts(response.data)
+            } 
+            else{
+                console.log(response.data)
+                alert("Wrong Format Receieved")
+            }
+            // console.log("Post", response.data)
+            // setPosts(response.data)
+        }
+        catch(err){
+            console.log(err)
+            alert(err)
+        }
+
+    }
+
     const fetchAuthor = async () => {
         console.log("Info Author ID: ", ProfileAuthorID, authorInfo.AuthorID)
-        let response = await axios.get(ProfileAuthorID)
+        let response = await axios.get(ProfileAuthorID, {
+            headers: {
+                "Authorization": `Basic ${Token}`
+            }
+        })
         setAuthor(response.data)
+        fetchPosts()
     }
 
     const fetchFollowing = async () => {
         try{
             // console.log("Info Author ID: ", ProfileAuthorID, authorInfo.AuthorID)
-            let response = await axios.get(`${ProfileAuthorID}/followers/${authorInfo.AuthorID}`)
+            let response = await axios.get(`${ProfileAuthorID}/followers/${authorInfo.AuthorID}`, {
+                headers: {
+                    "Authorization": `Basic ${Token}`
+                }
+            })
             // console.log(response.data)
             setIsFollowing(response.data.isFollowing)
         }
@@ -50,7 +84,11 @@ export const ProfilePage = () => {
     const fetchFriend = async () => {
         try{
             // console.log("Info Author ID: ", ProfileAuthorID, authorInfo.AuthorID)
-            let response = await axios.get(`${ProfileAuthorID}/friends`)
+            let response = await axios.get(`${ProfileAuthorID}/friends`, {
+                headers: {
+                    "Authorization": `Basic ${Token}`
+                }
+            })
             let friendIdArr = response.data.map(friend => friend.id)
             console.log(friendIdArr, `${restHost}/author/${authorInfo.AuthorID}`)
             if(friendIdArr.includes(`${restHost}/author/${authorInfo.AuthorID}`)){
@@ -69,7 +107,11 @@ export const ProfilePage = () => {
     const fetchRequest = async () => {
         try{
             // console.log("Info Author ID: ", ProfileAuthorID, authorInfo.AuthorID)
-            let response = await axios.get(`${ProfileAuthorID}/friend_request/${authorInfo.AuthorID}`)
+            let response = await axios.get(`${ProfileAuthorID}/friend_request/${authorInfo.AuthorID}`, {
+                headers: {
+                    "Authorization": `Basic ${Token}`
+                }
+            })
             setIsRequested(response.data.isRequested)
             // console.log("1", response.data.isRequested)
             // let friendIdArr = response.data.map(friend => friend.id)
@@ -101,7 +143,11 @@ export const ProfilePage = () => {
 
     const clickFollowHandler = async () => {
         try{
-            await axios.put(`${ProfileAuthorID}/followers/${authorInfo.AuthorID}`)
+            await axios.put(`${ProfileAuthorID}/followers/${authorInfo.AuthorID}`, {
+                headers: {
+                    "Authorization": `Basic ${Token}`
+                }
+            })
             alert("Following Successful!")
             fetchFollowing()
         }
@@ -113,7 +159,11 @@ export const ProfilePage = () => {
 
     const clickUnfollowHandler = async () => {
         try{
-            await axios.put(`${ProfileAuthorID}/followers/${authorInfo.AuthorID}`)
+            await axios.put(`${ProfileAuthorID}/followers/${authorInfo.AuthorID}`, {
+                headers: {
+                    "Authorization": `Basic ${Token}`
+                }
+            })
             alert("Following Successful!")
             fetchFollowing()
         }
@@ -125,7 +175,11 @@ export const ProfilePage = () => {
 
     const requestFriendHandler = async () => {
         try{
-            await axios.post(`${ProfileAuthorID}/friend_request/${authorInfo.AuthorID}`)
+            await axios.post(`${ProfileAuthorID}/friend_request/${authorInfo.AuthorID}`, {
+                headers: {
+                    "Authorization": `Basic ${Token}`
+                }
+            })
             alert("Request Sent Successfully!")
             fetchRequest()
         }
@@ -137,7 +191,11 @@ export const ProfilePage = () => {
     } 
     const cancelRequestHandler = async () => {
         try{
-            await axios.delete(`${ProfileAuthorID}/friend_request/${authorInfo.AuthorID}`)
+            await axios.delete(`${ProfileAuthorID}/friend_request/${authorInfo.AuthorID}`, {
+                headers: {
+                    "Authorization": `Basic ${Token}`
+                }
+            })
             alert("Request Deleted Successfully!")
             fetchRequest()
         }
@@ -156,11 +214,11 @@ export const ProfilePage = () => {
     
     return (
         <div style={{ backgroundColor: "rgb(21, 32, 43)", height: "753px" }}>
-            <div className="bodyDiv">
+            <div className="row mx-5">
                 {Object.keys(author).length != 0 ? (
                 <>
                     {/* <Profile author={author}></Profile> */}
-                    <div className="containerProfile">
+                    <div className="containerProfile col-4 mx-4">
                         <div>
                             <div className='headerProfile'>
                                 <h1>Profile</h1>
@@ -198,10 +256,10 @@ export const ProfilePage = () => {
                             </div>
                         </div>  
                     </div>
-                    <div className='headerProfile'>
+                    {/* <div className='headerProfile'>
                         <h1>{author.displayName}</h1>
-                    </div>
-                    <div className="PostList">
+                    </div> */}
+                    <div className="PostList col my-5">
                     {posts.map((post) => (
                         <div style={{textAlign: 'left', color: "white", padding:"20px",margin:"10px", backgroundColor:"#1E2F41", borderRadius:"10px"}}>
                             <h4><b>{post.title}</b></h4>

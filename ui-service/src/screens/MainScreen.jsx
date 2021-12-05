@@ -78,13 +78,13 @@ export const MainScreen = () => {
                     
                     <div style={{display: 'flex'}}>
                     {/* <div style={{display: 'flex', alignItems: "center", flexDirection: "column",  gap: "30px"}}> */}
-                        <Button className="Buttons" onClick={() => {navigate(`/Profile?authorID=${restHost}/author/${authorInfo.AuthorID}`)}}>Go to Profile</Button>
-                        <Button className="Buttons" onClick={() => {navigate("/Inbox")}}>Go to Inbox</Button>
-                        <Button className="Buttons" onClick={() => {navigate("/Friends")}}>Go to Friends</Button>
+                        <Button className="Buttons mx-2" onClick={() => {navigate(`/Profile?authorID=${restHost}/author/${authorInfo.AuthorID}`)}}>Go to Profile</Button>
+                        <Button className="Buttons mx-2" onClick={() => {navigate("/Inbox")}}>Inbox</Button>
+                        <Button className="Buttons mx-2" onClick={() => {navigate("/Friends")}}>Authors</Button>
                         {/* </Link> */}
                         {/* <Button className="Buttons" style={{backgroundColor: "rgb(255,122,0)"}} onClick={() => setShowModal(true)}>Create New Post</Button> */}
                         {/* <Link to="/Inbox"> */}
-                        <Button className="Buttons" onClick={() => {navigate("/Posts")}}>Go to Posts</Button>
+                        <Button className="Buttons mx-2" onClick={() => {navigate("/Posts")}}>Posts</Button>
 
                     </div>
                     
@@ -94,9 +94,9 @@ export const MainScreen = () => {
                     
                     {/* <div style={{display: 'flex', alignItems: "center", flexDirection: "column",  gap: "30px"}}> */}
                     <div style={{display: 'flex'}}>
-                        <Button className="Buttons" onClick={() => {navigate("/Posts/Others")}}>Go to Post Others</Button>
-                        <Button className="Buttons" onClick={() => {navigate("/Author/Foreign")}}>Connect to Foreign Authors</Button>
-                        <Button className="Buttons" onClick={() => {logOutHandler()}}>Logout</Button>
+                        <Button className="Buttons mx-2" onClick={() => {navigate("/Posts/Others")}}>Go to Post Others</Button>
+                        {/* <Button className="Buttons mx-2" onClick={() => {navigate("/Author/Foreign")}}>Connect to Foreign Authors</Button> */}
+                        <Button className="Buttons mx-2" onClick={() => {logOutHandler()}}>Logout</Button>
                
                     </div>
                     
