@@ -23,3 +23,24 @@ exports.registerUser = async (req, res, next) => {
         next(err)
     }
 }
+
+exports.approveRegisterUser = async (req, res, next) => {
+    try{
+        const { RegisterID } = req.params;
+        await db.approveRegisterRequest(RegisterID)
+        return res.status(200).send("success")
+    }
+    catch(err){
+        next(err)
+    }
+}
+exports.rejectRegisterUser = async (req, res, next) => {
+    try{
+        const { RegisterID } = req.params;
+        await db.rejectRegisterRequest(RegisterID)
+        return res.status(200).send("success")
+    }
+    catch(err){
+        next(err)
+    }
+}

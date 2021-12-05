@@ -416,6 +416,29 @@ async function registerRequest(username, password, githubUrl, profileImageUrl){
     [username, password, githubUrl, profileImageUrl])
 }
 
+async function approveRegisterRequest(registerID){
+    const connection = await promisePool.getConnection()
+    try{
+        await connection.beginTransaction()
+        const userInfo = (await connection.query(`SELECT * FROM register WHERE RegisterID = ?`, [registerID]).then(([res]) => res))[0]
+        await connection.query(`DELETE FROM register WHERE RegisterID = ?`, [registerID])
+        await connection.execute(`
+        INSERT INTO 
+        author (AuthorID, Username, Password, GithubURL, ProfileImageURL)
+        VALUES (?, ?, ?, ?, ?)`, 
+        [generateNewId(), userInfo.Username, userInfo.Password, userInfo.GithubURL, userInfo.ProfileImageURL])
+        await connection.commit()
+    }
+    catch(err){
+        await connection.rollback()
+    }
+}
+
+async function rejectRegisterRequest(registerID){
+    return await promisePool.execute(`
+    DELETE FROM register WHERE RegisterID = ?`, [registerID])
+}
+
 
 module.exports.getAllAuthors = getAllAuthors;
 module.exports.getAllAuthorsPaginated = getAllAuthorsPaginated;
@@ -466,3 +489,5 @@ module.exports.removeNode = removeNode;
 
 module.exports.getAllRegistrationRequests = getAllRegistrationRequests;
 module.exports.registerRequest = registerRequest;
+module.exports.approveRegisterRequest = approveRegisterRequest;
+module.exports.rejectRegisterRequest = rejectRegisterRequest;

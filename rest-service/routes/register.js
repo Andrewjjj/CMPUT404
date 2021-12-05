@@ -5,4 +5,7 @@ const registerController = require("../controllers/register")
 router.get("/register", registerController.getRegistrationRequests);
 router.post("/register", registerController.registerUser);
 
+router.post("/register/:RegisterID", registerController.approveRegisterUser);
+router.post("/register/:RegisterID", registerController.rejectRegisterUser);
+
 module.exports = router;

@@ -8,13 +8,14 @@ import axios from 'axios';
 export const FriendScreen = (props) => {
   const [Friends, setFriends]= useState([]);
   
+
   useEffect(() => {
     fetchFriends();
   }, [])
 
   const fetchFriends = async () => {
     try {
-      let response = await axios.get("http://localhost:8080/service/author/")
+      let response = await axios.get(`http://localhost:8080/service/author/`)
       let friends = response.data;
       console.log(friends);
 
