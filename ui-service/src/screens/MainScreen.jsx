@@ -29,7 +29,7 @@ export const MainScreen = () => {
         navigate("/")
     }
 
-    const fetchPosts = async () => {
+    /*const fetchPosts = async () => {
         try{
             let response = await axios.get(`${restHost}/author/${authorInfo.AuthorID}/posts`)
             console.log("response", response.data)
@@ -51,7 +51,7 @@ export const MainScreen = () => {
             console.log(err)
             alert(err)
         }
-    }
+    }*/
 
     const createNewPostHandler = async (title, content, tags) => {
         console.log("Clicked?!")
@@ -65,7 +65,7 @@ export const MainScreen = () => {
         }).then(res => {
             alert(res)
             setShowModal(false);
-            fetchPosts();
+            //fetchPosts();
         })
     }
 
@@ -84,10 +84,11 @@ export const MainScreen = () => {
                         {/* <Button className="Buttons" style={{backgroundColor: "rgb(255,122,0)"}} onClick={() => setShowModal(true)}>Create New Post</Button> */}
                         {/* <Link to="/Inbox"> */}
                         <Button className="Buttons" onClick={() => {navigate("/Posts")}}>Go to Posts</Button>
+
                     </div>
                     
                     <div style={{backgroundColor: "rgb(21,32,43)", marginTop: "0"}}>
-                        {<PostFeed></PostFeed> }
+                        {<PostFeed author={authorInfo}></PostFeed> }
                     </div>
                     
                     <div style={{display: 'flex', alignItems: "center", flexDirection: "column",  gap: "30px"}}>
@@ -104,8 +105,7 @@ export const MainScreen = () => {
             
                 
         </body>
-
-           
+ 
         
         </>
     )
