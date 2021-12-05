@@ -28,6 +28,7 @@ export const PostFeed = (props) => {
     const authorInfo = useStoreState((state) => state.author)
     const restHost = useStoreState((state) => state.restHost)
     const feedAuthor = props.author;
+    const [editingPostID, setEditingPostID] = useState("")
 
     useEffect(() => {
         fetchPosts();
@@ -104,6 +105,31 @@ export const PostFeed = (props) => {
         }
     }
 
+    const editPostHandler = (post) => {
+        if(post.author.id != authorInfo.AuthorID && false){
+            alert('You are not authorized to edit this post')
+            return 0
+        }
+        setEditingPostID(post.id)
+    }
+
+    const deletePostHandler = (post) => {
+        if(post.author.id != authorInfo.AuthorID){
+            alert(`You are not authorized to delete this post:
+                    Your id: ${authorInfo.AuthorID}
+                    Required id: ${post.author.id}`)
+            return 0
+        }
+        try{
+            axios.delete(post.url)
+        }
+        catch(err){
+            console.log(err)
+            alert(`Deletion error: ${err}`)
+        }
+        
+    }
+
     const submitCommentHandler = async (postID) => {
         console.log(postID)
         let newComment = commentInputField[postID];
@@ -167,6 +193,7 @@ export const PostFeed = (props) => {
                 {/* Content Section */}
                 <div className="row rounded rounded-5 py-2 px-4" style={{backgroundColor: "rgb(30,47,65)"}}>
                     {post.content}
+                    {editingPostID === post.id ? "Editing this post" : "Not editing this post"}
                 </div>
                 {/* React Section */}
                 <div className="row my-2">
@@ -182,6 +209,20 @@ export const PostFeed = (props) => {
                         }}>Share</button>
                     </div>
                 </div>
+                {/* Edit Section */}
+                { post.id === authorInfo.AuthorID ? "" :
+                    <div className="row my-2">
+                    <div class="btn-group-sm shadow-0 col" role="group">
+                        {/*TODO: REMOVE THE EDIT BUTTON FOR PRIVATE POSTS */}
+                        <button className="btn" onClick={() => {
+                            editPostHandler(post)
+                        }}>Edit</button>
+                        <button className="btn" onClick={() => {
+                            deletePostHandler(post)
+                        }}>Delete</button>
+                        </div>
+                    </div>
+                }
                 {/* Comment Section */}
                 <div className="mt-2 mx-2">
                     {
