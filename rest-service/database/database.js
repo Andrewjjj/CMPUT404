@@ -79,6 +79,7 @@ async function getAllFollowersByAuthorUID(authorID){
     })
 }
 
+
 async function removeFollower(authorID, followerID){
     return await promisePool.execute(`
     DELETE FROM follow
@@ -172,6 +173,17 @@ async function getAllFriendRequestFromID(targetID){
     ON friend_request.RequesterID = author.AuthorID
     WHERE friend_request.TargetID = ?`,
     [targetID])
+    .then(([res]) => {
+        return res;
+    })
+}
+
+async function checkIfFriendRequested(targetID, requesterID){
+    return await promisePool.execute(`
+    SELECT *
+    FROM friend_request
+    WHERE friend_request.TargetID = ? AND friend_request.RequesterID = ?`,
+    [targetID, requesterID])
     .then(([res]) => {
         return res;
     })
@@ -481,6 +493,7 @@ module.exports.sendFriendRequest = sendFriendRequest;
 module.exports.approveFriendRequest = approveFriendRequest;
 module.exports.rejectFriendRequest = rejectFriendRequest;
 module.exports.getAllFriendRequestFromID = getAllFriendRequestFromID;
+module.exports.checkIfFriendRequested = checkIfFriendRequested;
 
 module.exports.getAllCommentsByPostID = getAllCommentsByPostID;
 module.exports.addCommentsToPost = addCommentsToPost;

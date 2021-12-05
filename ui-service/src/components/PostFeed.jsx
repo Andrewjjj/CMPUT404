@@ -19,15 +19,15 @@ const customStyles = {
 
 export const PostFeed = (props) => {
     
-    const [title, setTitle] = useState("")
-    const [content, setContent] = useState("")
-    const [tags, setTags] = useState([]);
     const [posts, setPosts] = useState([]);
     const [comments, setComments] = useState([]);
+    const [likes, setLikes] = useState([]); 
     const [commentInputField, setCommentInputField] = useState({});
+    const [editBodyField, setEditBodyField] = useState({});
+    const [editTitleField, setEditTitleField] = useState({});
     const authorInfo = useStoreState((state) => state.author)
     const restHost = useStoreState((state) => state.restHost)
-    // const feedAuthor = props.author;
+    //const feedAuthor = props.author;
     const [editingPostID, setEditingPostID] = useState("")
 
     useEffect(() => {
@@ -43,11 +43,31 @@ export const PostFeed = (props) => {
 
             setPosts(posts);
             fetchComments(posts);
+            fetchLikes(posts);
         }
         catch(err){
             console.log(err)
             alert(`Post error: ${err}`)
         }
+    }
+
+    const fetchLikes = async (posts) => {
+        let newLikes = []
+        
+        for(var i = 0; i < posts.length; i++){
+            try{
+                let likesResponse = await axios.get(`${posts[i].id}/likes`)
+                newLikes[i] = likesResponse.data;
+            }
+            catch(err){
+                console.log(err)
+                alert(`Likes error: ${err} with url ${posts[i].id}/likes`)
+            }
+        }
+        console.log("Post Likes", newLikes)
+        //alert(toString(comments))
+        setLikes(newLikes)
+        //setLikes([[1, 2],[1]])
     }
 
     const fetchComments = async (posts) => {
@@ -78,6 +98,24 @@ export const PostFeed = (props) => {
         console.log(commentInputField)
     }
 
+    const editTitleHandler = (postID, edit) => {
+        console.log(postID, edit)
+        setEditTitleField({
+            ...editTitleField,
+            [postID]: edit,
+        })
+        console.log(editTitleField)
+    }
+
+    const editBodyHandler = (postID, edit) => {
+        console.log(postID, edit)
+        setEditBodyField({
+            ...editBodyField,
+            [postID]: edit,
+        })
+        console.log(editBodyField)
+    }
+
     const sharePostHandler = async (post) => {
 
         //TODO: CHECK THAT THE USER IS ALLOWED TO SHARE THIS POST
@@ -104,22 +142,54 @@ export const PostFeed = (props) => {
     }
 
     const editPostHandler = (post) => {
-        if(post.author.id != authorInfo.AuthorID && false){
+        if(`${restHost}/author/${authorInfo.AuthorID}`!= post.author.id && false){
             alert('You are not authorized to edit this post')
             return 0
         }
-        setEditingPostID(post.id)
+        if(editingPostID != post.id){
+            setEditingPostID(post.id)
+        } else{
+            setEditingPostID("")
+        }
+        
     }
 
-    const deletePostHandler = (post) => {
-        if(post.author.id != authorInfo.AuthorID){
+    const submitEditHandler = async (post) => {
+        if(`${restHost}/author/${authorInfo.AuthorID}`!= post.author.id && false){
+            alert('You are not authorized to edit this post')
+            return 0
+        }
+        
+        let newPost = post
+        let newBody = editBodyField[post.id]
+        let newTitle = editTitleField[post.id]
+
+        newPost.content = newBody
+        newPost.title = newTitle
+        //TODO: GET THE TITLE/CONTENT/TAGS FROM THE THINGY
+
+        try{
+            let response = await axios.post(post.url, newPost)
+        }
+        catch(err){
+            console.log(err)
+            alert(`Editing error: ${err}`)
+        }
+        setEditingPostID("")
+        //fetchPosts()
+    }
+
+    const deletePostHandler = async (post) => {
+        if(`${restHost}/author/${authorInfo.AuthorID}` != post.author.id && false){
             alert(`You are not authorized to delete this post:
-                    Your id: ${authorInfo.AuthorID}
+                    Your id: ${restHost}/author/${authorInfo.AuthorID}
                     Required id: ${post.author.id}`)
             return 0
         }
         try{
-            axios.delete(post.url)
+            let response = await axios.delete(post.url, post).then(res => {
+                alert("Successful deletion")
+            })
         }
         catch(err){
             console.log(err)
@@ -184,17 +254,24 @@ export const PostFeed = (props) => {
             style={{backgroundColor: "rgb(30,47,65)"}} key={"post"+i}>
                 {/* Title Section */}
                 <div className="row" style={{textAlign: 'left'}}>
-                    <h5><b>{post.title}</b></h5>
+                    {post.id === editingPostID ? 
+                        <input type="text" id={"edit_title_"+post.id} className="form-control-sm" onInput={(e) => editTitleHandler(post.id, e.target.value)}></input>
+                    :
+                        <h5><b>{post.title}</b></h5>
+                    }
                     <h6 style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>{post.author["displayName"]} </h6>
                 </div>
                 {/* Content Section */}
                 <div className="row rounded rounded-5 py-2 px-4" style={{backgroundColor: "rgb(30,47,65)"}}>
-                    {post.content}
-                    {editingPostID === post.id ? "Editing this post" : "Not editing this post"}
+                    {post.id === editingPostID ?
+                         <input type="text" id={"edit_body_"+post.id} className="form-control-sm" onInput={(e) => editBodyHandler(post.id, e.target.value)}></input>
+                        
+                        : post.content}
                 </div>
                 {/* React Section */}
                 <div className="row my-2">
                   <div class="btn-group-sm shadow-0 col" role="group">
+                        {post.visibility !== "FRIENDS" || likes[i] === undefined ? "" : "Likes: " + likes[i].length }
                          <button type="button" class="btn btn-dark shadow-0" style={{backgroundColor: "rgb(30,47,65)"}}data-mdb-color="dark"
                             onClick={() => {
                                 reactionClickHandler(post.id, post.author.id)
@@ -206,17 +283,35 @@ export const PostFeed = (props) => {
                         }}>Share</button>
                     </div>
                 </div>
+                {/* Tag Section */}
+                <div className="row my-1">
+                        <p className="text-grey">
+                        Tags: 
+                        {post.categories.map((tag, i) => 
+                            <span> {tag}</span>
+                        )}
+                        </p>
+                    </div>
                 {/* Edit Section */}
-                { post.id === authorInfo.AuthorID ? "" :
+                { post.author.id === authorInfo.AuthorID ? "" :
                     <div className="row my-2">
                     <div class="btn-group-sm shadow-0 col" role="group">
-                        {/*TODO: REMOVE THE EDIT BUTTON FOR PRIVATE POSTS */}
+                        {/*TODO: REMOVE THE EDIT BUTTON FOR PRIVATE POSTS
+                        ANOTHER TODO: INVERT THE IF STATEMENT ONCE OUT OF TESTING */}
+                        {post.id === editingPostID ?
+                            <button className="btn" onClick={() => {
+                                editPostHandler(post)
+                            }}>Stop editing</button>:
+                            <button className="btn" onClick={() => {
+                                editPostHandler(post)
+                            }}>Edit</button>}
+                        {post.id === editingPostID ? 
                         <button className="btn" onClick={() => {
-                            editPostHandler(post)
-                        }}>Edit</button>
+                            submitEditHandler(post)
+                        }}>Submit edit</button>:
                         <button className="btn" onClick={() => {
                             deletePostHandler(post)
-                        }}>Delete</button>
+                        }}>Delete</button>}
                         </div>
                     </div>
                 }
@@ -244,15 +339,7 @@ export const PostFeed = (props) => {
                             }}>Submit</button>
                         </div>
                     </div>
-                    {/* Tag Section */}
-                    <div className="row my-1">
-                        <p className="text-grey">
-                        Tags: 
-                        {post.categories.map((tag, i) => 
-                            <span> {tag}</span>
-                        )}
-                        </p>
-                    </div>
+                    
                 </div>
             </div>
             )}

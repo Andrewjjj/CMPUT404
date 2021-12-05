@@ -60,7 +60,7 @@ export const RegistrationScreen = () => {
                     </Form.Group >
                     <Form.Group className="mb-3" controlId="formBasicProfileImage">
                         <Form.Label style={{color: "rgb(150, 150, 150)"}}>Profile Image Link</Form.Label>
-                        <Form.Control style={{backgroundColor: "rgb(21,32,43)", borderColor: "#ff7a00", borderInlineColor: "#ff7a00"}} type="text" placeholder="Password"  value={profileImageUrl} onInput={(e) => setProfileImageUrl(e.currentTarget.value)}/>
+                        <Form.Control style={{backgroundColor: "rgb(21,32,43)", borderColor: "#ff7a00", borderInlineColor: "#ff7a00"}} type="text" placeholder="Image Link"  value={profileImageUrl} onInput={(e) => setProfileImageUrl(e.currentTarget.value)}/>
                     </Form.Group >
                     <Button className="Buttons" variant="primary" type="submit" onClick={registerHandler}>
                         Register

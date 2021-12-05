@@ -5,7 +5,9 @@ const axios = require('axios');
 exports.getAllFriendRequestByAuthor = async (req, res, next) => {
     const { authorID } = req.params
     try{
+        console.log(authorID)
         let friendRequestList = await db.getAllFriendRequestFromID(authorID)
+        console.log(friendRequestList)
         let authorInfo = (await db.getAuthorByAuthorID(authorID))[0]
         friendRequestList = friendRequestList.map(friendRequest => {
             return {
@@ -25,6 +27,7 @@ exports.getAllFriendRequestByAuthor = async (req, res, next) => {
             }
             data.push(newObj)
         }
+        console.log(data)
         res.status(200).json(data)
     }
     catch(err){
@@ -37,18 +40,29 @@ exports.getFriendByFriendID = async (req, res, next) => {
     const { authorID, friendID } = req.params;
     try {
         let friendRequest = await axios.get(friendID);
-
         friendRequest.type = "friendRequest";
 
         res.status(200).json(data);
     } catch(err) {
+        next(err)
+    }
+}
 
+exports.checkIfRequested = async (req, res, next) => {
+    const { authorID, requesterID } = req.params
+    try{
+        let friendRequestList = await db.getAllFriendRequestFromID(authorID, requesterID)
+        res.status(200).json({ isRequested: friendRequestList.length != 0})
+    }
+    catch(err){
+        next(err)
     }
 }
 
 exports.sendFriendRequest = async (req, res, next) => {
     const { authorID, requesterID } = req.params
     try {
+        console.log(authorID, requesterID)
         await db.sendFriendRequest(authorID, requesterID)
         res.status(200).end()
     }

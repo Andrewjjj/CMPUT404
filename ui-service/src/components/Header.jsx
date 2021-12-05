@@ -12,11 +12,11 @@ export const Header = ({title}) => {
         
             <div className='headerc'>
                <div><h1>{title}</h1></div>
-               <div>
+               {/* <div>
                    <Link to='/'> 
                    <button className='friendButton' onClick={useStoreActions((state) => state.logOut)}>Log out</button>
                    </Link>
-                </div>
+                </div> */}
             </div>
         
     );

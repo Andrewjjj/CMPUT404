@@ -6,6 +6,7 @@ router.get("/author/:authorID/friend_request", friendRequestController.getAllFri
 
 router.get("/author/:authorID/friend_request/:friendID", friendRequestController.getFriendByFriendID);
 
+router.get("/author/:authorID/friend_request/:requesterID", friendRequestController.checkIfRequested);
 router.put("/author/:authorID/friend_request/:requesterID", friendRequestController.approveFriendRequest);
 router.post("/author/:authorID/friend_request/:requesterID", friendRequestController.sendFriendRequest);
 router.delete("/author/:authorID/friend_request/:requesterID", friendRequestController.rejectFriendRequest);
