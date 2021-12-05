@@ -54,7 +54,7 @@ export const ProfilePage = () => {
     }
 
     const fetchAuthor = async () => {
-        console.log("Info Author ID: ", ProfileAuthorID, authorInfo.AuthorID)
+        console.log("Info Author ID: ", ProfileAuthorID, authorInfo.id)
         let response = await axios.get(ProfileAuthorID, {
             headers: {
                 "Authorization": `Basic ${Token}`
@@ -67,7 +67,7 @@ export const ProfilePage = () => {
     const fetchFollowing = async () => {
         try{
             // console.log("Info Author ID: ", ProfileAuthorID, authorInfo.AuthorID)
-            let response = await axios.get(`${ProfileAuthorID}/followers/${authorInfo.AuthorID}`, {
+            let response = await axios.get(`${ProfileAuthorID}/followers/${authorInfo.id}`, {
                 headers: {
                     "Authorization": `Basic ${Token}`
                 }
@@ -90,8 +90,8 @@ export const ProfilePage = () => {
                 }
             })
             let friendIdArr = response.data.map(friend => friend.id)
-            console.log(friendIdArr, `${restHost}/author/${authorInfo.AuthorID}`)
-            if(friendIdArr.includes(`${restHost}/author/${authorInfo.AuthorID}`)){
+            console.log(friendIdArr, `${restHost}/author/${authorInfo.id}`)
+            if(friendIdArr.includes(`${restHost}/author/${authorInfo.id}`)){
                 setIsFriend(true)
             }
             else setIsFriend(false)
@@ -106,8 +106,8 @@ export const ProfilePage = () => {
 
     const fetchRequest = async () => {
         try{
-            // console.log("Info Author ID: ", ProfileAuthorID, authorInfo.AuthorID)
-            let response = await axios.get(`${ProfileAuthorID}/friend_request/${authorInfo.AuthorID}`, {
+            console.log("Info Author ID: ", ProfileAuthorID, authorInfo.id)
+            let response = await axios.get(`${ProfileAuthorID}/friend_request/${authorInfo.id}`, {
                 headers: {
                     "Authorization": `Basic ${Token}`
                 }
@@ -138,12 +138,12 @@ export const ProfilePage = () => {
         fetchFollowing()
         fetchFriend()
         fetchRequest()
-        if(ProfileAuthorID == `${restHost}/author/${authorInfo.AuthorID}`) setIsSelf(true);
+        if(ProfileAuthorID == `${restHost}/author/${authorInfo.id}`) setIsSelf(true);
     }, [])
 
     const clickFollowHandler = async () => {
         try{
-            await axios.put(`${ProfileAuthorID}/followers/${authorInfo.AuthorID}`, {
+            await axios.put(`${ProfileAuthorID}/followers/${authorInfo.id}`, {
                 headers: {
                     "Authorization": `Basic ${Token}`
                 }
@@ -159,7 +159,7 @@ export const ProfilePage = () => {
 
     const clickUnfollowHandler = async () => {
         try{
-            await axios.put(`${ProfileAuthorID}/followers/${authorInfo.AuthorID}`, {
+            await axios.put(`${ProfileAuthorID}/followers/${authorInfo.id}`, {
                 headers: {
                     "Authorization": `Basic ${Token}`
                 }
@@ -175,7 +175,7 @@ export const ProfilePage = () => {
 
     const requestFriendHandler = async () => {
         try{
-            await axios.post(`${ProfileAuthorID}/friend_request/${authorInfo.AuthorID}`, {
+            await axios.post(`${ProfileAuthorID}/friend_request/${authorInfo.id}`, {
                 headers: {
                     "Authorization": `Basic ${Token}`
                 }
@@ -191,7 +191,7 @@ export const ProfilePage = () => {
     } 
     const cancelRequestHandler = async () => {
         try{
-            await axios.delete(`${ProfileAuthorID}/friend_request/${authorInfo.AuthorID}`, {
+            await axios.delete(`${ProfileAuthorID}/friend_request/${authorInfo.id}`, {
                 headers: {
                     "Authorization": `Basic ${Token}`
                 }
