@@ -78,7 +78,7 @@ export const MainScreen = () => {
                     
                     <div style={{display: 'flex'}}>
                     {/* <div style={{display: 'flex', alignItems: "center", flexDirection: "column",  gap: "30px"}}> */}
-                        <Button className="Buttons" onClick={() => {navigate(`/Profile/${authorInfo.AuthorID}`)}}>Go to Profile</Button>
+                        <Button className="Buttons" onClick={() => {navigate(`/Profile?authorID=${restHost}/author/${authorInfo.AuthorID}`)}}>Go to Profile</Button>
                         <Button className="Buttons" onClick={() => {navigate("/Inbox")}}>Go to Inbox</Button>
                         <Button className="Buttons" onClick={() => {navigate("/Friends")}}>Go to Friends</Button>
                         {/* </Link> */}

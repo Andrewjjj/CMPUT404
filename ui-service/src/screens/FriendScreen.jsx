@@ -5,7 +5,7 @@ import { List } from '../components/List'
 import { useState, useEffect } from 'react'
 import { useStoreState } from 'easy-peasy'
 import axios from 'axios';
-
+import { useNavigate } from 'react-router-dom';
 // import { Friend } from './Friend.jsx'
 
 export const FriendScreen = (props) => {
@@ -14,6 +14,8 @@ export const FriendScreen = (props) => {
 
   const restHost = useStoreState((state) => state.restHost)
   const authorInfo = useStoreState((state) => state.author)
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetchFollowers();
@@ -64,7 +66,22 @@ export const FriendScreen = (props) => {
       const data = await result.json()
       return data
     }*/
+  const gotoProfile = (id) => {
+    console.log(restHost)
+    console.log(id, restHost)
+    let restUrl = restHost.replace("localhost", "127.0.0.1")
+    if(id.indexOf(`${restUrl}`) == 0){
+      let idArr = id.split("/")
+      let authorId = idArr[idArr.length-1]
+      navigate(`/profile/${authorId}`)
+    }
+    console.log("nvm")
+  }
 
+  const openInNewTab = (url) => {
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+    if (newWindow) newWindow.opener = null
+  }
 
 
   return (
@@ -83,10 +100,10 @@ export const FriendScreen = (props) => {
             </div>
             <div className='friendDivLeft'>
               <div>
-                <button className='friendDivButton' onClick={() => { window.location.href = follower.Hrl }} rel="noreferrer noopener" target="_blank"> Visit Profile </button>
+                <button className='friendDivButton' onClick={() => { navigate(`/Profile?authorID=${follower.id}`)}} rel="noreferrer noopener" target="_blank"> Visit Profile </button>
               </div>
               <div>
-                <button className='friendDivButton' onClick={() => { window.location.href = follower.Github }} rel="noreferrer noopener" target="_blank" target="_blank"> Visit Github </button>
+                <button className='friendDivButton' onClick={() => { openInNewTab(follower.githubLink) }} rel="noreferrer noopener" target="_blank" target="_blank"> Visit Github </button>
               </div>
             </div>
 

@@ -39,11 +39,7 @@ function App() {
           <Routes>
             {isLoggedIn ? (
               <>
-              <Route
-                path="/Posts"
-                name="View Post Screen"
-                element={<PostFeed />}
-                />
+              
               <Route
                 path="/Author/Foreign"
                 name="View Post Screen"
@@ -59,7 +55,7 @@ function App() {
                 name="Inbox Screen"
                 element={<InboxScreen />}/>
               <Route
-                path="/Profile/:ProfileAuthorID"
+                path="/Profile"
                 name="Profile Screen"
                 element={<ProfilePage /> }/>
               {/* <Route
@@ -74,6 +70,11 @@ function App() {
                 path="/Home"
                 name="Home Screen"
                 element={<PostFeed /> }/> */}
+                <Route
+                  path="*"
+                  name="View Post Screen"
+                  element={<PostFeed />}
+                  />
               </>
             ) : <></>}
             { isLoggedInAdmin ? (
