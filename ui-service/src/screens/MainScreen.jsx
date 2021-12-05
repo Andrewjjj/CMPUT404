@@ -28,7 +28,7 @@ export const MainScreen = () => {
         navigate("/")
     }
 
-    const fetchPosts = async () => {
+    /*const fetchPosts = async () => {
         try{
             let response = await axios.get(`${restHost}/author/${authorInfo.AuthorID}/posts`)
             console.log("response", response.data)
@@ -50,7 +50,7 @@ export const MainScreen = () => {
             console.log(err)
             alert(err)
         }
-    }
+    }*/
 
     const createNewPostHandler = async (title, content, tags) => {
         console.log("Clicked?!")
@@ -64,7 +64,7 @@ export const MainScreen = () => {
         }).then(res => {
             alert(res)
             setShowModal(false);
-            fetchPosts();
+            //fetchPosts();
         })
     }
 
@@ -98,7 +98,7 @@ export const MainScreen = () => {
             >Logout</Button>
         </div> 
        <div style={{backgroundColor: "rgb(21,32,43)", marginTop: "0"}}>
-            {<PostFeed></PostFeed> }
+            {<PostFeed author={authorInfo}></PostFeed> }
         </div>
         
         </>
