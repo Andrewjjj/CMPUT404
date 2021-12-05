@@ -21,6 +21,7 @@ export const PostFeed = (props) => {
     
     const [posts, setPosts] = useState([]);
     const [comments, setComments] = useState([]);
+    const [likes, setLikes] = useState([]); 
     const [commentInputField, setCommentInputField] = useState({});
     const [editBodyField, setEditBodyField] = useState({});
     const [editTitleField, setEditTitleField] = useState({});
@@ -42,6 +43,7 @@ export const PostFeed = (props) => {
 
             setPosts(posts);
             fetchComments(posts);
+            fetchLikes(posts);
         }
         catch(err){
             console.log(err)
@@ -50,6 +52,25 @@ export const PostFeed = (props) => {
         
         
         
+    }
+
+    const fetchLikes = async (posts) => {
+        let newLikes = []
+        
+        for(var i = 0; i < posts.length; i++){
+            try{
+                let likesResponse = await axios.get(`${posts[i].id}/likes`)
+                newLikes[i] = likesResponse.data;
+            }
+            catch(err){
+                console.log(err)
+                alert(`Likes error: ${err} with url ${posts[i].id}/likes`)
+            }
+        }
+        console.log("Post Likes", newLikes)
+        //alert(toString(comments))
+        setLikes(newLikes)
+        //setLikes([[1, 2],[1]])
     }
 
     const fetchComments = async (posts) => {
@@ -150,7 +171,7 @@ export const PostFeed = (props) => {
         //TODO: GET THE TITLE/CONTENT/TAGS FROM THE THINGY
 
         try{
-            await axios.post(post.url, newPost)
+            let response = await axios.post(post.url, newPost)
         }
         catch(err){
             console.log(err)
@@ -160,7 +181,7 @@ export const PostFeed = (props) => {
         //fetchPosts()
     }
 
-    const deletePostHandler = (post) => {
+    const deletePostHandler = async (post) => {
         if(`${restHost}/author/${authorInfo.AuthorID}` != post.author.id && false){
             alert(`You are not authorized to delete this post:
                     Your id: ${restHost}/author/${authorInfo.AuthorID}
@@ -168,7 +189,9 @@ export const PostFeed = (props) => {
             return 0
         }
         try{
-            axios.delete(post.url)
+            let response = await axios.delete(post.url, post).then(res => {
+                alert("Successful deletion")
+            })
         }
         catch(err){
             console.log(err)
@@ -250,6 +273,7 @@ export const PostFeed = (props) => {
                 {/* React Section */}
                 <div className="row my-2">
                   <div class="btn-group-sm shadow-0 col" role="group">
+                        {post.visibility !== "FRIENDS" || likes[i] === undefined ? "" : "Likes: " + likes[i].length }
                          <button type="button" class="btn btn-dark shadow-0" style={{backgroundColor: "rgb(30,47,65)"}}data-mdb-color="dark"
                             onClick={() => {
                                 reactionClickHandler(post.id, post.author.id)
