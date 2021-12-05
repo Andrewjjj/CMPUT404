@@ -171,7 +171,7 @@ export const PostFeed = (props) => {
         //TODO: GET THE TITLE/CONTENT/TAGS FROM THE THINGY
 
         try{
-            await axios.post(post.url, newPost)
+            let response = await axios.post(post.url, newPost)
         }
         catch(err){
             console.log(err)
@@ -181,7 +181,7 @@ export const PostFeed = (props) => {
         //fetchPosts()
     }
 
-    const deletePostHandler = (post) => {
+    const deletePostHandler = async (post) => {
         if(`${restHost}/author/${authorInfo.AuthorID}` != post.author.id && false){
             alert(`You are not authorized to delete this post:
                     Your id: ${restHost}/author/${authorInfo.AuthorID}
@@ -189,8 +189,8 @@ export const PostFeed = (props) => {
             return 0
         }
         try{
-            axios.delete(post.url).then(res => {
-                alert("success")
+            let response = await axios.delete(post.url, post).then(res => {
+                alert("Successful deletion")
             })
         }
         catch(err){
