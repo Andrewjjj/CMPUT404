@@ -30,7 +30,7 @@ export const PostFeed = (props) => {
 
     useEffect(() => {
         fetchPosts();
-    }, [posts])
+    }, [])
 
     const fetchPosts = async () => {
         try{
@@ -95,7 +95,7 @@ export const PostFeed = (props) => {
             await axios.post(url, {
                 type: "comment",
                 comment: {
-                    publishedTime: currentDate,
+                    publishedTime: currentDate, //TODO: ADD MORE FIELDS
                     authorID: authorInfo.id,
                     content: commentInputField[postID],
                     contentType: "text/plain", //TODO: ALLOW TEXT/MARKDOWN
@@ -114,16 +114,20 @@ export const PostFeed = (props) => {
         fetchPosts();
     }
 
-    const reactionClickHandler = async (postID, reactionType) => {
+    const reactionClickHandler = async (postID, authorID) => {
+        let url = `${authorID}/inbox`
         try {
-            await axios.post(`${restHost}/${authorInfo.AuthorID}/inbox`)
+            await axios.post(url,{
+                type: "like",
+                senderName: authorInfo.displayName, //TODO: ADD MORE FIELDS
+            })
             .then(res => {
                 alert("success")
             })
         } catch(err) {
             console.log(err)
             alert(err)
-            //alert(`${restHost}/${authorInfo.AuthorID}/inbox`)
+            //alert(url)
         }
         fetchPosts();
     }
@@ -147,7 +151,7 @@ export const PostFeed = (props) => {
                   <div class="btn-group-sm shadow-0 col" role="group">
                          <button type="button" class="btn btn-dark shadow-0" style={{backgroundColor: "rgb(30,47,65)"}}data-mdb-color="dark"
                             onClick={() => {
-                                reactionClickHandler(post.id, "like")
+                                reactionClickHandler(post.id, post.author.id)
                             }}>
                             <i className="far fa-thumbs-up fa-1x"></i>+{post.Likes}
                         </button>
