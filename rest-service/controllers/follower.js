@@ -6,9 +6,10 @@ module.exports.getAllFollowers = async (req, res, next) => {
     try{
         const { authorID } = req.params;
         let followerIDArr = await db.getAllFollowersByAuthorUID(authorID)
-
+        console.log(followerIDArr)
         let followers = []
         for(let followerID of followerIDArr){
+            if(followerID.substring(0, 4) != "http") followerID = `${WEB_HOST}/author/${followerID}`
             let response = await axios.get(followerID)
             followers.push(response.data)
         }

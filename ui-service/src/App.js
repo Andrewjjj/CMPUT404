@@ -56,9 +56,13 @@ function App() {
                 name="Inbox Screen"
                 element={<InboxScreen />}/>
               <Route
-                path="/Profile"
+                path="/Profile/:ProfileAuthorID"
                 name="Profile Screen"
                 element={<ProfilePage /> }/>
+              {/* <Route
+                path="/Profile"
+                name="Profile Screen"
+                element={<ProfilePage /> }/> */}
               <Route
                 path="/Friends"
                 name="Friend Screen"

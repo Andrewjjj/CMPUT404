@@ -106,6 +106,22 @@ async function checkFollower(authorID, followerID){
 }
 
 
+// Friend
+async function getAllFriendsFromID(targetID){
+    return await promisePool.execute(`
+    SELECT Username as displayName, GithubURL as github, AuthorID as id, ProfileImageURL as profileImage
+    FROM friend
+    LEFT JOIN author
+    ON friend.FriendID = author.AuthorID
+    WHERE friend.TargetID = ?`,
+    [targetID])
+    .then(([res]) => {
+        return res;
+    })
+}
+
+
+
 // Friend Request
 async function sendFriendRequest(targetID, requesterID){
     return await promisePool.execute(`
@@ -152,8 +168,8 @@ async function getAllFriendRequestFromID(targetID){
     SELECT Username as displayName, GithubURL as github, AuthorID as id, ProfileImageURL as profileImage
     FROM friend_request
     LEFT JOIN author
-    ON friend_request.targetID = author.AuthorID
-    WHERE friend_request.targetID = ?`,
+    ON friend_request.RequesterID = author.AuthorID
+    WHERE friend_request.TargetID = ?`,
     [targetID])
     .then(([res]) => {
         return res;
@@ -440,6 +456,8 @@ async function rejectRegisterRequest(registerID){
 }
 
 
+
+
 module.exports.getAllAuthors = getAllAuthors;
 module.exports.getAllAuthorsPaginated = getAllAuthorsPaginated;
 module.exports.getAuthorByAuthorID = getAuthorByAuthorID;
@@ -450,6 +468,9 @@ module.exports.getAllFollowersByAuthorUID = getAllFollowersByAuthorUID;
 module.exports.removeFollower = removeFollower;
 module.exports.addFollower = addFollower;
 module.exports.checkFollower = checkFollower;
+
+module.exports.getAllFriendsFromID = getAllFriendsFromID;
+
 
 module.exports.sendFriendRequest = sendFriendRequest;
 module.exports.approveFriendRequest = approveFriendRequest;
