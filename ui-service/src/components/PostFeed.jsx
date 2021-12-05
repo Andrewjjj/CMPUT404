@@ -106,17 +106,35 @@ export const PostFeed = (props) => {
     }
 
     const editPostHandler = (post) => {
-        if(post.author.id != authorInfo.AuthorID && false){
+        if(`${restHost}/author/${authorInfo.AuthorID}`!= post.author.id && false){
             alert('You are not authorized to edit this post')
             return 0
         }
-        setEditingPostID(post.id)
+        if(editingPostID != post.id){
+            setEditingPostID(post.id)
+        } else{
+            setEditingPostID("")
+        }
+        
+    }
+
+    const submitEditHandler = (post) => {
+        if(`${restHost}/author/${authorInfo.AuthorID}`!= post.author.id && false){
+            alert('You are not authorized to edit this post')
+            return 0
+        }
+        if(editingPostID != post.id){
+            setEditingPostID(post.id)
+        } else{
+            setEditingPostID("")
+        }
+        
     }
 
     const deletePostHandler = (post) => {
-        if(post.author.id != authorInfo.AuthorID){
+        if(`${restHost}/author/${authorInfo.AuthorID}` != post.author.id && false){
             alert(`You are not authorized to delete this post:
-                    Your id: ${authorInfo.AuthorID}
+                    Your id: ${restHost}/author/${authorInfo.AuthorID}
                     Required id: ${post.author.id}`)
             return 0
         }
@@ -210,16 +228,24 @@ export const PostFeed = (props) => {
                     </div>
                 </div>
                 {/* Edit Section */}
-                { post.id === authorInfo.AuthorID ? "" :
+                { post.author.id === authorInfo.AuthorID ? "" :
                     <div className="row my-2">
                     <div class="btn-group-sm shadow-0 col" role="group">
                         {/*TODO: REMOVE THE EDIT BUTTON FOR PRIVATE POSTS */}
+                        {post.id === editingPostID ?
+                            <button className="btn" onClick={() => {
+                                editPostHandler(post)
+                            }}>Stop editing</button>:
+                            <button className="btn" onClick={() => {
+                                editPostHandler(post)
+                            }}>Edit</button>}
+                        {post.id === editingPostID ? 
                         <button className="btn" onClick={() => {
-                            editPostHandler(post)
-                        }}>Edit</button>
+                            submitEditHandler(post)
+                        }}>Submit edit</button>:
                         <button className="btn" onClick={() => {
                             deletePostHandler(post)
-                        }}>Delete</button>
+                        }}>Delete</button>}
                         </div>
                     </div>
                 }
