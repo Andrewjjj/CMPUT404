@@ -1,19 +1,30 @@
 const db = require('../database/database')
+const WEB_HOST = process.env.WEB_HOST
 
 exports.getAllFriendRequestByAuthor = async (req, res, next) => {
     const { authorID } = req.params
     try{
         let friendRequestList = await db.getAllFriendRequestFromID(authorID)
+        let authorInfo = (await db.getAuthorByAuthorID(authorID))[0]
         friendRequestList = friendRequestList.map(friendRequest => {
-            const host = friendRequest.host;
             return {
                 ...friendRequest,
-                id: `${host}/author/${friendRequest.id}`,
-                url: `${host}/author/${friendRequest.id}`,
+                id: `${WEB_HOST}/author/${friendRequest.id}`,
+                url: `${WEB_HOST}/author/${friendRequest.id}`,
                 type: "author",
             }
         })
-        res.status(200).json(friendRequestList)
+        let data = []
+        for(let friendRequest of friendRequestList){
+            let newObj = {
+                type: "Follow",
+                summary: `${friendRequest.displayName} wants to be friends with ${authorInfo.displayName}`,
+                actor: friendRequest,
+                object: authorInfo
+            }
+            data.push(newObj)
+        }
+        res.status(200).json(data)
     }
     catch(err){
         next(err)

@@ -17,6 +17,7 @@ export const MainScreen = () => {
     const st = useStoreState(s => s)
 
     useEffect(() => {
+        console.log(`/Profile/${restHost}/author/${authorInfo.AuthorID}`)
         if(!authorInfo) navigate("/")
         // fetchPosts();
         console.log(st)
@@ -76,7 +77,7 @@ export const MainScreen = () => {
                     {/* <Link to="/Friends"> */}
                     
                     <div style={{display: 'flex', alignItems: "center", flexDirection: "column",  gap: "30px"}}>
-                        <Button className="Buttons" onClick={() => {navigate("/Profile")}}>Go to Profile</Button>
+                        <Button className="Buttons" onClick={() => {navigate(`/Profile/${authorInfo.AuthorID}`)}}>Go to Profile</Button>
                         <Button className="Buttons" onClick={() => {navigate("/Inbox")}}>Go to Inbox</Button>
                         <Button className="Buttons" onClick={() => {navigate("/Friends")}}>Go to Friends</Button>
                         {/* </Link> */}
