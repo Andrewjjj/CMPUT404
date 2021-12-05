@@ -89,7 +89,7 @@ export const MainScreen = () => {
                     </div>
                     
                     <div style={{backgroundColor: "rgb(21,32,43)", marginTop: "0"}}>
-                        {/* {<PostFeed author={authorInfo}></PostFeed> } */}
+                        {/*<PostFeed author={authorInfo}></PostFeed>*/}
                     </div>
                     
                     {/* <div style={{display: 'flex', alignItems: "center", flexDirection: "column",  gap: "30px"}}> */}
