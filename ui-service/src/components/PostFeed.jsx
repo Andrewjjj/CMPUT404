@@ -145,7 +145,7 @@ export const PostFeed = (props) => {
         let newBody = editBodyField[post.id]
         let newTitle = editTitleField[post.id]
 
-        newPost.body = newBody
+        newPost.content = newBody
         newPost.title = newTitle
         //TODO: GET THE TITLE/CONTENT/TAGS FROM THE THINGY
 
