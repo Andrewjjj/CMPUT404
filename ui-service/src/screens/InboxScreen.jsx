@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import { useStoreState } from 'easy-peasy'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 export const InboxScreen = (props) => {
 
@@ -10,6 +11,8 @@ export const InboxScreen = (props) => {
 
     const restHost = useStoreState((state) => state.restHost)
     const author = useStoreState((state) => state.author)
+
+    const navigate = useNavigate();
 
     const fetchInbox = async (authorID) => {
         try {
@@ -103,40 +106,55 @@ export const InboxScreen = (props) => {
 
 
     const clearInbox = async function(authorId){
-        let inboxUrl = `${restHost}/author/${authorId}/inbox`
-        const deleteResponse = await axios.delete(inboxUrl);
-        if(deleteResponse.status != 200 && deleteResponse.status < 400){
-            throw "Inbox deletion failed";
+        try {
+            let inboxUrl = `${restHost}/author/${authorId}/inbox`
+            const deleteResponse = await axios.delete(inboxUrl);
+            if(deleteResponse.status != 200 && deleteResponse.status < 400){
+                throw "Inbox deletion failed";
+            }
+            fetchInbox(author.id);
+        } catch(err) {
+            alert(err)
         }
     }
 
     const acceptFriendRequest = async function(authorId, friendRequestId){
-        let friendRequestUrl = `${restHost}/author/${authorId}/friend_request/${friendRequestId}`
-        const putResponse = await axios.put(friendRequestUrl,{});
-        if(putResponse.status >= 200 && putResponse.status < 400){
-            throw "Friend request accept failed";
+        try {
+            let tempArr = friendRequestId.split("/");
+            friendRequestId = tempArr[tempArr.length-1];
+            let friendRequestUrl = `${restHost}/author/${authorId}/friend_request/${friendRequestId}`
+            const putResponse = await axios.put(friendRequestUrl,{});
+            
+            fetchInbox(author.id);
+        } catch(err) {
+            alert(err)
         }
     }
 
     const rejectFriendRequest = async function(authorId, friendRequestId){
-
-        let friendRequestUrl = `${restHost}/author/${authorId}/friend_request/${friendRequestId}`
-        const deleteResponse = await axios.delete(friendRequestUrl);
-        if(deleteResponse.status != 200 && deleteResponse.status < 400){
-            throw "Friend request rejection failed";
+        try {
+            let tempArr = friendRequestId.split("/");
+            friendRequestId = tempArr[tempArr.length-1];
+            let friendRequestUrl = `${restHost}/author/${authorId}/friend_request/${friendRequestId}`
+            const deleteResponse = await axios.delete(friendRequestUrl);
+            
+            fetchInbox(author.id);
+        } catch(err) {
+            alert(err)
         }
     }
 
     const FriendRequest = (props) => {
-        // console.log("fr", props)
+        console.log("fr", props)
 
         const request = props.inbox
         const i = props.idx
 
         return  (
         <div className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2 bg-white" key={"post"+i}>
-            <a href={request.actor.url} >{request.actor.displayName}</a> wants to be friends!
-            <br></br><button className = "btn btn-primary" onClick = {() => {acceptFriendRequest(request.senderID, request.id)}}> Accept friend request </button> <button className="btn btn-danger" onClick = {() => {rejectFriendRequest(request.senderID, request.id)}}> Reject Friend Request</button>
+            <button className='btn btn-light' onClick={() => { navigate(`/Profile?authorID=${request.actor.id}`) }} rel="noreferrer noopener" target="_blank">{request.actor.displayName}</button> wants to be friends!
+            <br></br>
+            <button className = "btn btn-primary" onClick={() => {acceptFriendRequest(request.object.id, request.actor.id)}}> Accept friend request </button> <button className="btn btn-danger" onClick = {() => {rejectFriendRequest(request.object.id, request.actor.id)}}> Reject Friend Request</button>
         </div>
         )
     }
@@ -152,7 +170,7 @@ export const InboxScreen = (props) => {
             <div className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2 bg-white" key={"post"+i}>
                 <a href={like.senderHost + "/author/" + like.senderID} >{like.senderName}</a> liked your post!
                 <br></br>
-                <button className = "btn btn-primary"> Goto liked post </button> <button className="btn btn-danger"> Dismiss </button>
+                {/* <button className = "btn btn-primary"> Goto liked post </button> <button className="btn btn-danger"> Dismiss </button> */}
             </div>
         )
     }
@@ -164,9 +182,9 @@ export const InboxScreen = (props) => {
         //TODO: ADD A REAL LINK TO THE COMMENT
         return  (
             <div className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2 bg-white" key={"post"+i}>
-                <a href={comment.author.id} >{comment.author.displayName}</a> commented '{comment.comment}' on your post!
+                <button className='btn btn-light' onClick={() => { navigate(`/Profile?authorID=${comment.author.id}`) }} rel="noreferrer noopener" target="_blank">{comment.author.displayName}</button> commented '{comment.comment}' on your post!
                 <br></br>
-                <button className = "btn btn-primary"> Goto commented post </button> <button className="btn btn-danger"> Dismiss </button>
+                {/* <button className="btn btn-primary"> Goto commented post </button> <button className="btn btn-danger"> Dismiss </button> */}
             </div>
         )
     }
@@ -177,7 +195,7 @@ export const InboxScreen = (props) => {
 
         return (
             <div className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2 bg-white" key={"post"+i}>
-                <a href={follow.id}>{follow.displayName}</a> has followed you!
+                <button className='btn btn-light' onClick={() => { navigate(`/Profile?authorID=${follow.id}`) }} rel="noreferrer noopener" target="_blank">{follow.displayName}</button> has followed you!
                 <br></br>
             </div>        
         )
@@ -232,7 +250,7 @@ export const InboxScreen = (props) => {
             <Link to="/">
                 <button className="btn btn-danger" href="/">Go Back to Main Menu</button> 
             </Link>
-            <button className="btn btn-danger" onClick = {() => {clearInbox("123456789")}}>Clear Inbox</button>
+            <button className="btn btn-danger" onClick = {() => {clearInbox(author.id)}}>Clear Inbox</button>
         </>
     )
 }
