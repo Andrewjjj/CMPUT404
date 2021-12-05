@@ -115,15 +115,21 @@ export const AdminScreen = (props) => {
                     </div>
                     <div>
                         {registrationList.map(user => (
-                            <>
-                            {user.Username}
-                            <Button className="btn btn-primary" onClick={() => {approveRegistrationRequest(user.RegisterID)}}>
-                                Approve
-                            </Button>
-                            <Button className="btn btn-danger" onClick={() => {rejectRegistrationRequest(user.RegisterID)}}>
-                                Reject
-                            </Button>
-                            </>
+                        <div className="row my-3">   
+                            <div className="col">
+                                <h3 className="mx-4">{user.Username}</h3>
+                            </div>
+                            <div className="col">
+                                <Button className="btn btn-primary mx-3" onClick={() => {approveRegistrationRequest(user.RegisterID)}}>
+                                    Approve
+                                </Button>
+                            </div>
+                            <div className="col">
+                                <Button className="btn btn-danger mx-3" onClick={() => {rejectRegistrationRequest(user.RegisterID)}}>
+                                    Reject
+                                </Button>
+                            </div>
+                            </div>
                         ))}
                     </div>
                 </div>
