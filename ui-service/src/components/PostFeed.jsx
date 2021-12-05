@@ -27,6 +27,7 @@ export const PostFeed = (props) => {
     const [commentInputField, setCommentInputField] = useState({});
     const authorInfo = useStoreState((state) => state.author)
     const restHost = useStoreState((state) => state.restHost)
+    const feedAuthor = props.author;
 
     useEffect(() => {
         fetchPosts();
@@ -35,17 +36,10 @@ export const PostFeed = (props) => {
     const fetchPosts = async () => {
         try{
             let response = await axios.get(`${restHost}/author/${authorInfo.AuthorID}/posts`)
-            // let response = await axios.get("http://localhost:8080/post")
+            
             let posts = response.data
             console.log("Posts: ", posts)
-            // TODO: change this 
-            // await Promise.all(posts.map(async post => {
-            //     response = await axios.get(`http://localhost:8080/post/${post.PostID}/comment`)
-            //     post.Comments = response.data;
-            //     response = await axios.get(`http://localhost:8080/author/${post.AuthorID}`)
-            //     post.AuthorName = await response.data[0].Name;
-            //     post.Tags = ["awesome", "good"]
-            // }))
+
             setPosts(posts);
             fetchComments(posts);
         }
@@ -83,6 +77,31 @@ export const PostFeed = (props) => {
             [postID]: comment,
         })
         console.log(commentInputField)
+    }
+
+    const sharePostHandler = async (post) => {
+
+        //TODO: CHECK THAT THE USER IS ALLOWED TO SHARE THIS POST
+        let success = true;
+        let friends = await axios.get(`${restHost}/author/${authorInfo.AuthorID}/followers`);
+        for(var i = 0; i < friends.length; i++){
+            try{
+                axios.post(`${friends[i].id}/inbox`, post).then(res => {
+                    console.log(`Successfully shared with ${friends[i].name}`)
+                })
+            }
+            catch(err){
+                success = false
+                console.log(err)
+                alert(`Share error: ${err}`)
+            }
+        }
+        if(friends.length < 1){
+            success = false
+        }
+        if(success == true){
+            alert('Shared successfully')
+        }
     }
 
     const submitCommentHandler = async (postID) => {
@@ -159,7 +178,7 @@ export const PostFeed = (props) => {
                             <i className="far fa-thumbs-up fa-1x"></i>+{post.Likes}
                         </button>
                         <button className="btn" onClick={() => {
-                                submitCommentHandler(post.id)
+                                sharePostHandler(post)
                         }}>Share</button>
                     </div>
                 </div>
