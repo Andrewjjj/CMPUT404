@@ -25,9 +25,11 @@ export const PostFeed = (props) => {
     const [posts, setPosts] = useState([]);
     const [comments, setComments] = useState([]);
     const [commentInputField, setCommentInputField] = useState({});
+    const [editBodyField, setEditBodyField] = useState({});
+    const [editTitleField, setEditTitleField] = useState({});
     const authorInfo = useStoreState((state) => state.author)
     const restHost = useStoreState((state) => state.restHost)
-    // const feedAuthor = props.author;
+    //const feedAuthor = props.author;
     const [editingPostID, setEditingPostID] = useState("")
 
     useEffect(() => {
@@ -80,6 +82,24 @@ export const PostFeed = (props) => {
         console.log(commentInputField)
     }
 
+    const editTitleHandler = (postID, edit) => {
+        console.log(postID, edit)
+        setEditTitleField({
+            ...editTitleField,
+            [postID]: edit,
+        })
+        console.log(editTitleField)
+    }
+
+    const editBodyHandler = (postID, edit) => {
+        console.log(postID, edit)
+        setEditBodyField({
+            ...editBodyField,
+            [postID]: edit,
+        })
+        console.log(editBodyField)
+    }
+
     const sharePostHandler = async (post) => {
 
         //TODO: CHECK THAT THE USER IS ALLOWED TO SHARE THIS POST
@@ -118,24 +138,29 @@ export const PostFeed = (props) => {
         
     }
 
-    const submitEditHandler = (post) => {
+    const submitEditHandler = async (post) => {
         if(`${restHost}/author/${authorInfo.AuthorID}`!= post.author.id && false){
             alert('You are not authorized to edit this post')
             return 0
         }
         
         let newPost = post
-        
+        let newBody = editBodyField[post.id]
+        let newTitle = editTitleField[post.id]
+
+        newPost.body = newBody
+        newPost.title = newTitle
         //TODO: GET THE TITLE/CONTENT/TAGS FROM THE THINGY
 
         try{
-            axios.post(post.url, newPost)
+            await axios.post(post.url, newPost)
         }
         catch(err){
             console.log(err)
             alert(`Editing error: ${err}`)
         }
-        
+        setEditingPostID("")
+        fetchPosts()
     }
 
     const deletePostHandler = (post) => {
@@ -211,13 +236,19 @@ export const PostFeed = (props) => {
             style={{backgroundColor: "rgb(30,47,65)"}} key={"post"+i}>
                 {/* Title Section */}
                 <div className="row" style={{textAlign: 'left'}}>
-                    <h5><b>{post.title}</b></h5>
+                    {post.id === editingPostID ? 
+                        <input type="text" id={"edit_title_"+post.id} className="form-control-sm" onInput={(e) => editTitleHandler(post.id, e.target.value)}></input>
+                    :
+                        <h5><b>{post.title}</b></h5>
+                    }
                     <h6 style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>{post.author["displayName"]} </h6>
                 </div>
                 {/* Content Section */}
                 <div className="row rounded rounded-5 py-2 px-4" style={{backgroundColor: "rgb(30,47,65)"}}>
-                    {post.content}
-                    {editingPostID === post.id ? "Editing this post" : "Not editing this post"}
+                    {post.id === editingPostID ?
+                         <input type="text" id={"edit_body_"+post.id} className="form-control-sm" onInput={(e) => editBodyHandler(post.id, e.target.value)}></input>
+                        
+                        : post.content}
                 </div>
                 {/* React Section */}
                 <div className="row my-2">
@@ -246,7 +277,8 @@ export const PostFeed = (props) => {
                 { post.author.id === authorInfo.AuthorID ? "" :
                     <div className="row my-2">
                     <div class="btn-group-sm shadow-0 col" role="group">
-                        {/*TODO: REMOVE THE EDIT BUTTON FOR PRIVATE POSTS */}
+                        {/*TODO: REMOVE THE EDIT BUTTON FOR PRIVATE POSTS
+                        ANOTHER TODO: INVERT THE IF STATEMENT ONCE OUT OF TESTING */}
                         {post.id === editingPostID ?
                             <button className="btn" onClick={() => {
                                 editPostHandler(post)
