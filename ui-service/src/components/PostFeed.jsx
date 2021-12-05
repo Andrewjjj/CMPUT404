@@ -123,10 +123,17 @@ export const PostFeed = (props) => {
             alert('You are not authorized to edit this post')
             return 0
         }
-        if(editingPostID != post.id){
-            setEditingPostID(post.id)
-        } else{
-            setEditingPostID("")
+        
+        let newPost = post
+        
+        //TODO: GET THE TITLE/CONTENT/TAGS FROM THE THINGY
+
+        try{
+            axios.post(post.url, newPost)
+        }
+        catch(err){
+            console.log(err)
+            alert(`Editing error: ${err}`)
         }
         
     }
@@ -227,6 +234,15 @@ export const PostFeed = (props) => {
                         }}>Share</button>
                     </div>
                 </div>
+                {/* Tag Section */}
+                <div className="row my-1">
+                        <p className="text-grey">
+                        Tags: 
+                        {post.categories.map((tag, i) => 
+                            <span> {tag}</span>
+                        )}
+                        </p>
+                    </div>
                 {/* Edit Section */}
                 { post.author.id === authorInfo.AuthorID ? "" :
                     <div className="row my-2">
@@ -273,15 +289,7 @@ export const PostFeed = (props) => {
                             }}>Submit</button>
                         </div>
                     </div>
-                    {/* Tag Section */}
-                    <div className="row my-1">
-                        <p className="text-grey">
-                        Tags: 
-                        {post.categories.map((tag, i) => 
-                            <span> {tag}</span>
-                        )}
-                        </p>
-                    </div>
+                    
                 </div>
             </div>
             )}
