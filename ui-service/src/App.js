@@ -60,15 +60,15 @@ function App() {
                 name="Profile Screen"
                 element={<ProfilePage /> }/>
               <Route
+                path="/Friends"
+                name="Friend Screen"
+                element={<FriendScreen />}/>
+              <Route
                 path="/Home"
                 name="Home Screen"
                 element={<MainScreen /> }/>
               </>
             ) : <></>}
-            {/* <Route
-              path="/Friends"
-              name="Friend Screen"
-              element={<FriendScreen />}/> */}
             { isLoggedInAdmin ? (
               <>
               <Route

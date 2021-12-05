@@ -48,8 +48,38 @@ export const AdminScreen = (props) => {
     }
 
     const fetchRegistrationRequests = async () => {
-        const response = await axios.get(`${restHost}/register`)
-        setRegistrationList(response.data)
+        try{
+            const response = await axios.get(`${restHost}/register`)
+            setRegistrationList(response.data)
+        }
+        catch(err){
+            console.log(err)
+            alert(err)
+        }
+    }
+
+    const approveRegistrationRequest = async (registerID) => {
+        try{
+            await axios.post(`${restHost}/register/${registerID}`)
+            alert("Success")
+            fetchRegistrationRequests()
+        }
+        catch(err){
+            console.log(err)
+            alert(err)
+        }
+    }
+
+    const rejectRegistrationRequest = async (registerID) => {
+        try{
+            await axios.delete(`${restHost}/register/${registerID}`)
+            alert("Success")
+            fetchRegistrationRequests()
+        }
+        catch(err){
+            console.log(err)
+            alert(err)
+        }
     }
 
     return (
@@ -87,10 +117,10 @@ export const AdminScreen = (props) => {
                         {registrationList.map(user => (
                             <>
                             {user.Username}
-                            <Button className="btn btn-primary" onClick={deleteAllNodes}>
+                            <Button className="btn btn-primary" onClick={() => {approveRegistrationRequest(user.RegisterID)}}>
                                 Approve
                             </Button>
-                            <Button className="btn btn-danger" onClick={deleteAllNodes}>
+                            <Button className="btn btn-danger" onClick={() => {rejectRegistrationRequest(user.RegisterID)}}>
                                 Reject
                             </Button>
                             </>
