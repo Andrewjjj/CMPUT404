@@ -187,7 +187,7 @@ export const PostFeed = (props) => {
     const deletePostHandler = async (post) => {
         if(`${restHost}/author/${authorInfo.id}` != post.author.id && false){
             alert(`You are not authorized to delete this post:
-                    Your id: ${restHost}/author/${authorInfo.AuthorID}
+                    Your id: ${restHost}/author/${authorInfo.id}
                     Required id: ${post.author.id}`)
             return 0
         }
@@ -300,7 +300,7 @@ export const PostFeed = (props) => {
                         </p>
                     </div>
                 {/* Edit Section */}
-                { post.author.id === authorInfo.id ? "" :
+                { post.visibility === "PUBLIC" && post.author.id === authorInfo.id ?
                     <div className="row my-2">
                     <div class="btn-group-sm shadow-0 col" role="group">
                         {/*TODO: REMOVE THE EDIT BUTTON FOR PRIVATE POSTS
@@ -320,13 +320,13 @@ export const PostFeed = (props) => {
                             deletePostHandler(post)
                         }}>Delete</button>}
                         </div>
-                    </div>
+                    </div> : ""
                 }
                 {/* Comment Section */}
                 <div className="mt-2 mx-2">
                     {
                         
-                        post.visibility !== "FRIENDS" || post.author.id === `${restHost}/author/${authorInfo.AuthorID}`  ?( comments[i] === undefined ? "" : comments[i].comments.map((comment, j) => 
+                        post.visibility !== "FRIENDS" || post.author.id === `${restHost}/author/${authorInfo.id}`  ?( comments[i] === undefined ? "" : comments[i].comments.map((comment, j) => 
                             <div key={"comment_"+j}>
                                 <div className="column my-2 px-5 text-start">
                                     <div className="col-3 bg-grey" style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>
