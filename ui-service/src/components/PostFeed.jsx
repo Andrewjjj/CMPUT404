@@ -325,7 +325,8 @@ export const PostFeed = (props) => {
                 {/* Comment Section */}
                 <div className="mt-2 mx-2">
                     {
-                        comments[i] === undefined ? "" : comments[i].comments.map((comment, j) => 
+                        
+                        post.visibility !== "FRIENDS" || post.author.id === `${restHost}/author/${authorInfo.AuthorID}`  ?( comments[i] === undefined ? "" : comments[i].comments.map((comment, j) => 
                             <div key={"comment_"+j}>
                                 <div className="column my-2 px-5 text-start">
                                     <div className="col-3 bg-grey" style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>
@@ -336,7 +337,7 @@ export const PostFeed = (props) => {
                                     </div>
                                 </div>
                             </div>
-                        )
+                        )) : ""
                     }
                     <div className="row px-5 py-2">
                         Comment: <input type="text" id={"comment_"+post.id} className="form-control-sm" onInput={(e) => commentChangeHandler(post.id, e.target.value)}></input>
