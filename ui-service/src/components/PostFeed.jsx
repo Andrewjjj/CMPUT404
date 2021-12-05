@@ -46,33 +46,35 @@ export const PostFeed = (props) => {
             //     post.AuthorName = await response.data[0].Name;
             //     post.Tags = ["awesome", "good"]
             // }))
-
-            setPosts(posts)
+            setPosts(posts);
+            fetchComments(posts);
         }
         catch(err){
             console.log(err)
             alert(`Post error: ${err}`)
         }
-        fetchComments(posts)
+        
+        
+        
     }
 
     const fetchComments = async (posts) => {
-        let comments = []
+        let newComments = []
         
         for(var i = 0; i < posts.length; i++){
             try{
                 let commentsResponse = await axios.get(`${posts[i].id}/comments`)
-                comments[i] = commentsResponse.data;
+                newComments[i] = commentsResponse.data;
             }
             catch(err){
                 console.log(err)
                 alert(`Comment error: ${err}`)
             }
         }
-        console.log("Post Comments", comments)
+        console.log("Post Comments", newComments)
         //alert(toString(comments))
-        setComments(comments)
-        //alert(`comment 1: ${comments[0].comments[0].comment}`)
+        setComments(newComments)
+        return 0
     }
 
     const commentChangeHandler = (postID, comment) => {
