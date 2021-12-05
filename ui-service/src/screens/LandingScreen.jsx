@@ -21,7 +21,7 @@ export const LandingScreen = () => {
 
     return (
         <>
-        <body className="background">
+        <div className="background">
             <div className="container" style={{backgroundColor: "rgb(21,32,43)", display: "flex", justifyContent: "center", alignItems: "center", 
                     flexDirection: "column", gap: "50px"}}>
                     <div style={{width: "50%", height: "40%"}}>
@@ -45,7 +45,7 @@ export const LandingScreen = () => {
                     </div>   
                 
             </div>
-        </body>
+        </div>
         
                 
         

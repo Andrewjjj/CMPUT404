@@ -28,7 +28,7 @@ export const LoginUserScreen = () => {
                 ...authorData,
                 isAdmin: false,
             })
-            navigate("/Home")
+            navigate("/Posts")
             // window.location.href = "/"
         }
         catch(err){
@@ -40,7 +40,7 @@ export const LoginUserScreen = () => {
     }
 
     return (
-        <body className="background">
+        <div className="background">
             <div className="container" style={{backgroundColor: "rgb(21,32,43)"}}>
                 <header style={{color: "rgb(255, 122, 0)", fontSize:"200%", textAlign: 'center'}}>
                     Login User
@@ -77,7 +77,7 @@ export const LoginUserScreen = () => {
                 </div>
             </div>
 
-        </body>
+        </div>
         
             
     )

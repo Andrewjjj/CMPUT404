@@ -27,7 +27,7 @@ export const PostFeed = (props) => {
     const [commentInputField, setCommentInputField] = useState({});
     const authorInfo = useStoreState((state) => state.author)
     const restHost = useStoreState((state) => state.restHost)
-    const feedAuthor = props.author;
+    // const feedAuthor = props.author;
     const [editingPostID, setEditingPostID] = useState("")
 
     useEffect(() => {
@@ -127,7 +127,6 @@ export const PostFeed = (props) => {
             console.log(err)
             alert(`Deletion error: ${err}`)
         }
-        
     }
 
     const submitCommentHandler = async (postID) => {
