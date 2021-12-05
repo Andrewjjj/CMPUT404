@@ -46,33 +46,35 @@ export const PostFeed = (props) => {
             //     post.AuthorName = await response.data[0].Name;
             //     post.Tags = ["awesome", "good"]
             // }))
-
-            setPosts(posts)
+            setPosts(posts);
+            fetchComments(posts);
         }
         catch(err){
             console.log(err)
             alert(`Post error: ${err}`)
         }
-        fetchComments(posts)
+        
+        
+        
     }
 
     const fetchComments = async (posts) => {
-        let comments = []
+        let newComments = []
         
         for(var i = 0; i < posts.length; i++){
             try{
                 let commentsResponse = await axios.get(`${posts[i].id}/comments`)
-                comments[i] = commentsResponse.data;
+                newComments[i] = commentsResponse.data;
             }
             catch(err){
                 console.log(err)
                 alert(`Comment error: ${err}`)
             }
         }
-        console.log("Post Comments", comments)
+        console.log("Post Comments", newComments)
         //alert(toString(comments))
-        setComments(comments)
-        //alert(`comment 1: ${comments[0].comments[0].comment}`)
+        setComments(newComments)
+        return 0
     }
 
     const commentChangeHandler = (postID, comment) => {
@@ -86,7 +88,7 @@ export const PostFeed = (props) => {
 
     const submitCommentHandler = async (postID) => {
         console.log(postID)
-        let newComment = "awoo";
+        let newComment = commentInputField[postID];
         let currentDate = new Date();
         let url = `${postID}/comments`
         currentDate = currentDate.toString();
@@ -95,7 +97,7 @@ export const PostFeed = (props) => {
             await axios.post(url, {
                 type: "comment",
                 comment: {
-                    publishedTime: currentDate,
+                    publishedTime: currentDate, //TODO: ADD MORE FIELDS
                     authorID: authorInfo.id,
                     content: commentInputField[postID],
                     contentType: "text/plain", //TODO: ALLOW TEXT/MARKDOWN
@@ -114,16 +116,20 @@ export const PostFeed = (props) => {
         fetchPosts();
     }
 
-    const reactionClickHandler = async (postID, reactionType) => {
+    const reactionClickHandler = async (postID, authorID) => {
+        let url = `${authorID}/inbox`
         try {
-            await axios.post(`${restHost}/${authorInfo.AuthorID}/inbox`)
+            await axios.post(url,{
+                type: "like",
+                senderName: authorInfo.displayName, //TODO: ADD MORE FIELDS
+            })
             .then(res => {
                 alert("success")
             })
         } catch(err) {
             console.log(err)
-            //alert(err)
-            alert()
+            alert(err)
+            //alert(url)
         }
         fetchPosts();
     }
@@ -147,28 +153,16 @@ export const PostFeed = (props) => {
                   <div class="btn-group-sm shadow-0 col" role="group">
                          <button type="button" class="btn btn-dark shadow-0" style={{backgroundColor: "rgb(30,47,65)"}}data-mdb-color="dark"
                             onClick={() => {
-                                reactionClickHandler(post.id, "like")
+                                reactionClickHandler(post.id, post.author.id)
                             }}>
                             <i className="far fa-thumbs-up fa-1x"></i>+{post.Likes}
-                        </button>
-                        <button type="button" class="btn btn-dark shadow-0" style={{backgroundColor: "rgb(30,47,65)"}}data-mdb-color="dark"
-                            onClick={() => {
-                                reactionClickHandler(post.id, "love")
-                            }}>
-                            <i className="far fa-heart fa-1x"></i>+{post.Likes}
-                        </button>
-                        <button type="button" class="btn btn-dark shadow-0" style={{backgroundColor: "rgb(30,47,65)"}}data-mdb-color="dark"
-                            onClick={() => {
-                                reactionClickHandler(post.id, "rocket")
-                            }}>
-                            <i className="fas fa-rocket fa-1x"></i>+{post.Likes}
                         </button>
                     </div>
                 </div>
                 {/* Comment Section */}
                 <div className="mt-2 mx-2">
                     {
-                        comments[i].comments.map((comment, j) => 
+                        comments[i] === undefined ? "" : comments[i].comments.map((comment, j) => 
                             <div key={"comment_"+j}>
                                 <div className="column my-2 px-5 text-start">
                                     <div className="col-3 bg-grey" style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>
@@ -194,12 +188,7 @@ export const PostFeed = (props) => {
                         <p className="text-grey">
                         Tags: 
                         {post.categories.map((tag, i) => 
-                            <button key={"button"+i}
-                                className="btn btn-sm btn-warning mx-1"
-                                onClick={() => {
-                                    alert("Sorry! This hasn't been implemented yet")
-                                }}
-                            >{tag}</button>
+                            <span> {tag}</span>
                         )}
                         </p>
                     </div>
