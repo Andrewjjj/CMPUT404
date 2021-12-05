@@ -17,7 +17,7 @@ export const MainScreen = () => {
     const st = useStoreState(s => s)
 
     useEffect(() => {
-        console.log(`/Profile/${restHost}/author/${authorInfo.AuthorID}`)
+        console.log(`/Profile/${restHost}/author/${authorInfo.id}`)
         if(!authorInfo) navigate("/")
         // fetchPosts();
         console.log(st)
@@ -31,7 +31,7 @@ export const MainScreen = () => {
 
     /*const fetchPosts = async () => {
         try{
-            let response = await axios.get(`${restHost}/author/${authorInfo.AuthorID}/posts`)
+            let response = await axios.get(`${restHost}/author/${authorInfo.id}/posts`)
             console.log("response", response.data)
             // return;
 
@@ -78,7 +78,7 @@ export const MainScreen = () => {
                     
                     <div style={{display: 'flex'}}>
                     {/* <div style={{display: 'flex', alignItems: "center", flexDirection: "column",  gap: "30px"}}> */}
-                        <Button className="Buttons mx-2" onClick={() => {navigate(`/Profile?authorID=${restHost}/author/${authorInfo.AuthorID}`)}}>Go to Profile</Button>
+                        <Button className="Buttons mx-2" onClick={() => {navigate(`/Profile?authorID=${restHost}/author/${authorInfo.id}`)}}>Go to Profile</Button>
                         <Button className="Buttons mx-2" onClick={() => {navigate("/Inbox")}}>Inbox</Button>
                         <Button className="Buttons mx-2" onClick={() => {navigate("/Friends")}}>Authors</Button>
                         {/* </Link> */}

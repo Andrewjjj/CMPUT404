@@ -37,8 +37,8 @@ export const PostFeed = (props) => {
 
     const fetchPosts = async () => {
         try{
-            let response = await axios.get(`${restHost}/author/${authorInfo.AuthorID}/posts`)
-            
+            let response = await axios.get(`${restHost}/author/${authorInfo.id}/posts`)
+            // let response = await axios.get("http://localhost:8080/post")
             let posts = response.data
             console.log("Posts: ", posts)
 
@@ -50,9 +50,6 @@ export const PostFeed = (props) => {
             console.log(err)
             alert(`Post error: ${err}`)
         }
-        
-        
-        
     }
 
     const fetchLikes = async (posts) => {
@@ -75,6 +72,7 @@ export const PostFeed = (props) => {
     }
 
     const fetchComments = async (posts) => {
+        console.log(posts)
         let newComments = []
         
         for(var i = 0; i < posts.length; i++){
@@ -123,7 +121,7 @@ export const PostFeed = (props) => {
 
         //TODO: CHECK THAT THE USER IS ALLOWED TO SHARE THIS POST
         let success = true;
-        let friends = await axios.get(`${restHost}/author/${authorInfo.AuthorID}/followers`);
+        let friends = await axios.get(`${restHost}/author/${authorInfo.id}/followers`);
         for(var i = 0; i < friends.length; i++){
             try{
                 axios.post(`${friends[i].id}/inbox`, post).then(res => {
@@ -145,7 +143,7 @@ export const PostFeed = (props) => {
     }
 
     const editPostHandler = (post) => {
-        if(`${restHost}/author/${authorInfo.AuthorID}`!= post.author.id && false){
+        if(`${restHost}/author/${authorInfo.id}`!= post.author.id && false){
             alert('You are not authorized to edit this post')
             return 0
         }
@@ -158,7 +156,7 @@ export const PostFeed = (props) => {
     }
 
     const submitEditHandler = async (post) => {
-        if(`${restHost}/author/${authorInfo.AuthorID}`!= post.author.id && false){
+        if(`${restHost}/author/${authorInfo.id}`!= post.author.id && false){
             alert('You are not authorized to edit this post')
             return 0
         }
@@ -187,7 +185,7 @@ export const PostFeed = (props) => {
     }
 
     const deletePostHandler = async (post) => {
-        if(`${restHost}/author/${authorInfo.AuthorID}` != post.author.id && false){
+        if(`${restHost}/author/${authorInfo.id}` != post.author.id && false){
             alert(`You are not authorized to delete this post:
                     Your id: ${restHost}/author/${authorInfo.AuthorID}
                     Required id: ${post.author.id}`)
@@ -302,7 +300,7 @@ export const PostFeed = (props) => {
                         </p>
                     </div>
                 {/* Edit Section */}
-                { post.author.id === authorInfo.AuthorID ? "" :
+                { post.author.id === authorInfo.id ? "" :
                     <div className="row my-2">
                     <div class="btn-group-sm shadow-0 col" role="group">
                         {/*TODO: REMOVE THE EDIT BUTTON FOR PRIVATE POSTS

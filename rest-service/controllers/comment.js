@@ -6,10 +6,10 @@ exports.getAllComments = async (req, res, next) => {
         const { authorID, postID } = req.params;
         const { page, size } = req.query
         let comments = await db.getAllCommentsByPostID(postID)
-        console.log(comments)
+        // console.log(comments)
         let authorList = {}
         await Promise.all(comments.map(async comment => {
-            console.log(comment)
+            // console.log(comment)
             const authorID = comment.AuthorID
             let author = await db.getAuthorByAuthorID(authorID);
             let authorInfo = {

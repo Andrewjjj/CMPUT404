@@ -1,5 +1,6 @@
 const db = require('../database/database')
 const WEB_HOST = process.env.WEB_HOST
+const axios = require('axios');
 
 exports.getAllFriendRequestByAuthor = async (req, res, next) => {
     const { authorID } = req.params
@@ -19,7 +20,7 @@ exports.getAllFriendRequestByAuthor = async (req, res, next) => {
         let data = []
         for(let friendRequest of friendRequestList){
             let newObj = {
-                type: "Follow",
+                type: "friendRequest",
                 summary: `${friendRequest.displayName} wants to be friends with ${authorInfo.displayName}`,
                 actor: friendRequest,
                 object: authorInfo
@@ -30,6 +31,19 @@ exports.getAllFriendRequestByAuthor = async (req, res, next) => {
         res.status(200).json(data)
     }
     catch(err){
+        next(err)
+    }
+}
+
+// TODO:
+exports.getFriendByFriendID = async (req, res, next) => {
+    const { authorID, friendID } = req.params;
+    try {
+        let friendRequest = await axios.get(friendID);
+        friendRequest.type = "friendRequest";
+
+        res.status(200).json(data);
+    } catch(err) {
         next(err)
     }
 }
