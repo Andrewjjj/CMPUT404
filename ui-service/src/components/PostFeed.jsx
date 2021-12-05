@@ -25,6 +25,7 @@ export const PostFeed = (props) => {
     const [commentInputField, setCommentInputField] = useState({});
     const [editBodyField, setEditBodyField] = useState({});
     const [editTitleField, setEditTitleField] = useState({});
+    const [editPost, setEditPost] = useState({});
     const authorInfo = useStoreState((state) => state.author)
     const restHost = useStoreState((state) => state.restHost)
     //const feedAuthor = props.author;
@@ -59,7 +60,7 @@ export const PostFeed = (props) => {
         
         for(var i = 0; i < posts.length; i++){
             try{
-                let likesResponse = await axios.get(`${posts[i].id}/likes`)
+                let likesResponse = await axios.get(`${posts[i].id}/likes????`)
                 newLikes[i] = likesResponse.data;
             }
             catch(err){
@@ -168,16 +169,20 @@ export const PostFeed = (props) => {
 
         newPost.content = newBody
         newPost.title = newTitle
+        // console.log(newPost)
+        // return;
         //TODO: GET THE TITLE/CONTENT/TAGS FROM THE THINGY
 
         try{
-            let response = await axios.post(post.url, newPost)
+            let response = await axios.post(post.id, newPost)
+            setEditingPostID("")
+            fetchPosts();
+
         }
         catch(err){
             console.log(err)
             alert(`Editing error: ${err}`)
         }
-        setEditingPostID("")
         //fetchPosts()
     }
 
@@ -189,9 +194,11 @@ export const PostFeed = (props) => {
             return 0
         }
         try{
-            let response = await axios.delete(post.url, post).then(res => {
+            let response = await axios.delete(post.id, post).then(res => {
                 alert("Successful deletion")
             })
+            fetchPosts();
+
         }
         catch(err){
             console.log(err)
