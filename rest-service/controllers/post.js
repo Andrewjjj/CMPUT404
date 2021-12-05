@@ -128,7 +128,22 @@ module.exports.createAuthorPost = async (req, res, next) => {
         const { authorID } = req.params;
         const { title, source, origin, description, 
             contentType, content, categories, published, 
-            visibility, unlisted } = req.body;
+            visibility, unlisted, blob } = req.body;
+
+        switch(contentType) {
+            case "text/plain":
+                break;
+            case "text/markdown":
+                break;
+            case "application/base64":
+                break;
+            case "image/jpeg;base64":
+                content = await db.createImage("JPEG", blob)
+                break;
+            case "image/png;base64":
+                content = await db.createImage("PNG", blob)
+                break;
+        }
 
         let postID = await db.createPost(authorID, title, source, origin, description, contentType, 
             content, published, visibility, unlisted);
