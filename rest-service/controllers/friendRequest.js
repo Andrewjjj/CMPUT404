@@ -35,19 +35,6 @@ exports.getAllFriendRequestByAuthor = async (req, res, next) => {
     }
 }
 
-// TODO:
-exports.getFriendByFriendID = async (req, res, next) => {
-    const { authorID, friendID } = req.params;
-    try {
-        let friendRequest = await axios.get(friendID);
-        friendRequest.type = "friendRequest";
-
-        res.status(200).json(data);
-    } catch(err) {
-        next(err)
-    }
-}
-
 exports.checkIfRequested = async (req, res, next) => {
     const { authorID, requesterID } = req.params
     try{
