@@ -71,35 +71,40 @@ export const MainScreen = () => {
     
     return(
         <>
-       
-        <div id="mainscreen" className="text-center my-5" style={{backgroundColor: "rgb(21,32,43)", display: "flex", justifyContent: "space-around"}}>
-            {/* <Link to="/Friends"> */}
-            <div className="row">
-                <div className="col">
-                    <Button className="Buttons" onClick={() => {navigate("/Profile")}}>Go to Profile</Button>
-
+        <body className="background">
+            <div id="mainscreen" className="text-center my-5" style={{backgroundColor: "rgb(21,32,43)", display: "flex", justifyContent: "center"}}>
+                    {/* <Link to="/Friends"> */}
+                    
+                    <div style={{display: 'flex', alignItems: "center", flexDirection: "column",  gap: "30px"}}>
+                        <Button className="Buttons" onClick={() => {navigate("/Profile")}}>Go to Profile</Button>
+                        <Button className="Buttons" onClick={() => {navigate("/Inbox")}}>Go to Inbox</Button>
                         <Button className="Buttons" onClick={() => {navigate("/Friends")}}>Go to Friends</Button>
-                    {/* </Link> */}
-                    {/* <Button className="Buttons" style={{backgroundColor: "rgb(255,122,0)"}} onClick={() => setShowModal(true)}>Create New Post</Button> */}
-                    {/* <Link to="/Inbox"> */}
+                        {/* </Link> */}
+                        {/* <Button className="Buttons" style={{backgroundColor: "rgb(255,122,0)"}} onClick={() => setShowModal(true)}>Create New Post</Button> */}
+                        {/* <Link to="/Inbox"> */}
                         <Button className="Buttons" onClick={() => {navigate("/Posts")}}>Go to Posts</Button>
-                </div>
-            </div>
-            <div className="row">
-                <div className="col">
-                    <Button className="Buttons" onClick={() => {navigate("/Posts/Others")}}>Go to Post Others</Button>
-                    <Button className="Buttons" onClick={() => {navigate("/Inbox")}}>Go to Inbox</Button>
-                    <Button className="Buttons" onClick={() => {navigate("/Author/Foreign")}}>Connect to Foreign Authors</Button>
-                </div>
-            </div>
-            {/* </Link>   */}
-            <Button
-                onClick={() => {logOutHandler()}}
-            >Logout</Button>
-        </div> 
-       <div style={{backgroundColor: "rgb(21,32,43)", marginTop: "0"}}>
-            {<PostFeed></PostFeed> }
-        </div>
+                    </div>
+                    
+                    <div style={{backgroundColor: "rgb(21,32,43)", marginTop: "0"}}>
+                        {<PostFeed></PostFeed> }
+                    </div>
+                    
+                    <div style={{display: 'flex', alignItems: "center", flexDirection: "column",  gap: "30px"}}>
+                        <Button className="Buttons" onClick={() => {navigate("/Posts/Others")}}>Go to Post Others</Button>
+                        <Button className="Buttons" onClick={() => {navigate("/Author/Foreign")}}>Connect to Foreign Authors</Button>
+                        <Button className="Buttons" onClick={() => {logOutHandler()}}>Logout</Button>
+               
+                    </div>
+                    
+                    {/* </Link>   */}
+                   
+                
+            </div> 
+            
+                
+        </body>
+
+           
         
         </>
     )
