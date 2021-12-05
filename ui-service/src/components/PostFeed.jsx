@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { WithContext as ReactTags } from 'react-tag-input';
 import { useStoreActions, useStoreState } from 'easy-peasy'
+import { CommentSection } from './CommentSection';
 
 import { Link } from 'react-router-dom'
 import axios from 'axios'
@@ -26,6 +27,7 @@ export const PostFeed = (props) => {
     const [editBodyField, setEditBodyField] = useState({});
     const [editTitleField, setEditTitleField] = useState({});
     const [editPost, setEditPost] = useState({});
+    //const feedAuthor = useState(props.author);
     const authorInfo = useStoreState((state) => state.author)
     const restHost = useStoreState((state) => state.restHost)
     //const feedAuthor = props.author;
@@ -269,7 +271,6 @@ export const PostFeed = (props) => {
                     <h6 style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>{post.author["displayName"]} </h6>
                 </div>
                 {/* Content Section */}
-                {post.contentType}
                 <div className="row rounded rounded-5 py-2 px-4" style={{backgroundColor: "rgb(30,47,65)"}}>
                     {post.id === editingPostID ?
                          <input type="text" id={"edit_body_"+post.id} className="form-control-sm" onInput={(e) => editBodyHandler(post.id, e.target.value)}></input>
@@ -324,32 +325,7 @@ export const PostFeed = (props) => {
                     </div> : ""
                 }
                 {/* Comment Section */}
-                <div className="mt-2 mx-2">
-                    {
-                        
-                        post.visibility !== "FRIENDS" || post.author.id === `${restHost}/author/${authorInfo.id}`  ?( comments[i] === undefined ? "" : comments[i].comments.map((comment, j) => 
-                            <div key={"comment_"+j}>
-                                <div className="column my-2 px-5 text-start">
-                                    <div className="col-3 bg-grey" style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>
-                                        {comment.author.displayName}
-                                    </div>
-                                    <div className="col text-start">
-                                        {comment.comment}
-                                    </div>
-                                </div>
-                            </div>
-                        )) : ""
-                    }
-                    <div className="row px-5 py-2">
-                        Comment: <input type="text" id={"comment_"+post.id} className="form-control-sm" onInput={(e) => commentChangeHandler(post.id, e.target.value)}></input>
-                        <div className="col text-end">
-                            <button className="btn" onClick={() => {
-                                submitCommentHandler(post.id)
-                            }}>Submit</button>
-                        </div>
-                    </div>
-                    
-                </div>
+                <CommentSection post={post} comments={comments[i]} submitHandler={submitCommentHandler} changeHandler={commentChangeHandler}></CommentSection>
             </div>
             )}
         </div>
