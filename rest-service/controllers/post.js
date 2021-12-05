@@ -4,41 +4,28 @@ const WEB_HOST = process.env.WEB_HOST
 module.exports.getPost = async(req, res, next) => {
     try {
         const { authorID, postID } = req.params;
-        let data = await db.getPostByPostID(postID);
+        let postInfo = await db.getPostByPostID(postID);
+        let authorInfo = await db.getAuthorByAuthorID(authorID);
+        authorInfo = authorInfo[0]
+
+        authorInfo.type = "author";
+        authorInfo.id = `${WEB_HOST}/author/${authorID}`
 
         let categories = await db.getPostCategories(postID);
         let categoryArr = categories.map(category => {
-            return category.Category;
+            return category.category;
         })
 
-        let authorInfo = {
-            type: "author",
-            id: `${WEB_HOST}/author/${authorID}`,
-            displayName: data.Username,
-            url: `${WEB_HOST}/author/${authorID}`,
-            github: data.GithubURL,
-            profileImage: data.ProfileImageURL,
-        }
-
-        let postInfo = {
+        let post = {
+            ...postInfo,
             type: "post",
-            title: data.Title,
-            id: `${WEB_HOST}/author/${authorID}/posts/${data.PostID}`,
-            source: data.Source,
-            origin: data.Origin,
-            description: data.Description,
-            contentType: data.ContentType,
-            content: data.Content,
-            author: authorInfo,
-            categories: categoryArr, 
+            id: `${WEB_HOST}/author/${authorID}/posts/${postInfo.id}`,
+            categories: categoryArr,
             count: 0,
-            comments: `${WEB_HOST}/author/${authorID}/posts/${data.PostID}/comments`,
-            published: data.Published,
-            visibility: data.Visibility,
-            unlisted: data.Unlisted,
+            comments: `${WEB_HOST}/author/${authorID}/posts/${postInfo.id}/comments`,
         }
 
-        res.status(200).json(postInfo)
+        res.status(200).json(post)
     } catch (err) {
         next(err);
     }
@@ -103,30 +90,30 @@ module.exports.getAuthorPosts = async (req, res, next) => {
         let authorInfo = await db.getAuthorByAuthorID(authorID)
         authorInfo = authorInfo[0]
 
-        authorInfo.type = "post";
+        authorInfo.type = "author";
         authorInfo.id = `${WEB_HOST}/author/${authorID}`
 
         let postsInfo = await Promise.all(posts.map(async (post) => {
-            let categories = await db.getPostCategories(post.PostID);
+            let categories = await db.getPostCategories(post.id);
             let categoryArr = categories.map(category => {
-                return category.Category;
+                return category.category;
             })
             return {
                 type: "post",
-                title: post.Title,
-                id: `${WEB_HOST}/author/${authorID}/posts/${post.PostID}`,
-                source: post.Source,
-                origin: post.Origin,
-                description: post.Description,
-                contentType: post.ContentType,
-                content: post.Content,
+                title: post.title,
+                id: `${WEB_HOST}/author/${authorID}/posts/${post.id}`,
+                source: post.source,
+                origin: post.origin,
+                description: post.description,
+                contentType: post.contentType,
+                content: post.content,
                 author: authorInfo,
                 categories: categoryArr,
                 count: 0,
-                comments: `${WEB_HOST}/author/${authorID}/posts/${post.PostID}/comments`,
-                published: post.Published,
-                visibility: post.Visibility,
-                unlisted: post.Unlisted,
+                comments: `${WEB_HOST}/author/${authorID}/posts/${post.postID}/comments`,
+                published: post.published,
+                visibility: post.visibility,
+                unlisted: post.unlisted,
             }
         }))
 

@@ -32,6 +32,7 @@ export const AuthorForeignScreen = () => {
                     "Authorization": `Basic ${token}`
                 }
             })
+            console.log(response);
             // console.log(response.data.items)
             setAuthors(response.data.items)
         }

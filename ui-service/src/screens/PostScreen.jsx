@@ -18,7 +18,7 @@ export const PostScreen = (props) => {
 
     const fetchPosts = async () => {
         try{
-            let response = await axios.get(`http://localhost:8080/author/${authorInfo.AuthorID}/posts`)
+            let response = await axios.get(`http://localhost:8080/author/${authorInfo.id}/posts`)
             console.log("response", response.data)
             let posts = response.data
             setPosts(posts)

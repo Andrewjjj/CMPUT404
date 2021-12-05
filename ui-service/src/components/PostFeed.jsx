@@ -34,7 +34,8 @@ export const PostFeed = (props) => {
 
     const fetchPosts = async () => {
         try{
-            let response = await axios.get(`${restHost}/author/${authorInfo.AuthorID}/posts`)
+            console.log(authorInfo)
+            let response = await axios.get(`${restHost}/author/${authorInfo.id}/posts`)
             // let response = await axios.get("http://localhost:8080/post")
             let posts = response.data
             console.log("Posts: ", posts)

@@ -1,16 +1,28 @@
 const db = require("../database/database");
 const axios = require('axios');
+const WEB_HOST = process.env.WEB_HOST
 
 module.exports.getInbox = async (req, res, next) => {
     try {
         const { authorID } = req.params;
 
         let inboxList = await db.getInbox(authorID)
+        console.log(inboxList)
 
         let inboxResponseArr = []
         for(let inbox of inboxList){
-            let response = await axios.get(inbox.ID)
-            inboxResponseArr.push(response.data)
+            if (inbox.type == "friendRequest") {
+                inbox.id = `${WEB_HOST}/author/${authorID}/friend_request`
+            } else if (inbox.type == "like") {
+                inbox.id = `${WEB_HOST}/author/${authorID}/likes`
+            } else if (inbox.type == "comment") {
+                inbox.id = `${WEB_HOST}/author/${authorID}/comments`
+            }
+
+            let response = await axios.get(inbox.id)
+            response.data.map(data => {
+                inboxResponseArr.push(data);
+            })
         }
 
         res.status(200).json({

@@ -6,14 +6,26 @@ import axios from 'axios'
 export const InboxScreen = (props) => {
 
     //const [posts, setPosts] = useState([]);
-    const [inbox, setInbox] = useState([]);
+    const [inbox, setInbox] = useState({});
 
     const restHost = useStoreState((state) => state.restHost)
     const author = useStoreState((state) => state.author)
+
+    const fetchInbox = async (authorID) => {
+        try {
+            let fetchInboxUrl = `${restHost}/author/${authorID}/inbox`
+            let response = await axios.get(fetchInboxUrl)
+            setInbox(response.data);
+            // console.log(response.data)
+            console.log(inbox)
+        } catch(err) {
+            console.log(err)
+            alert(err)
+        }
+    }
+
     useEffect(() => {
-        console.log(author)
         fetchInbox(author.id);
-        
     }, [])
 
     /*const fetchPosts = async () => {
@@ -64,12 +76,6 @@ export const InboxScreen = (props) => {
         setInbox(testJson)
         // setPosts(parsePosts(testJson));
     }*/
-
-    const fetchInbox = async (authorID) => {
-        let fetchInboxUrl = `${restHost}/author/${authorID}/inbox`
-        let response = await axios.get(fetchInboxUrl)
-        console.log("inbox Data: ", response.data)
-    }
 
     // const parsePosts = function(postsArray){
 
@@ -129,7 +135,7 @@ export const InboxScreen = (props) => {
 
         return  (
         <div className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2 bg-white" key={"post"+i}>
-            <a href={request.senderHost + "/author/" + request.senderID} >{request.senderName}</a> wants to be friends!
+            <a href={request.url} >{request.displayName}</a> wants to be friends!
             <br></br><button className = "btn btn-primary" onClick = {() => {acceptFriendRequest(request.senderID, request.id)}}> Accept friend request </button> <button className="btn btn-danger" onClick = {() => {rejectFriendRequest(request.senderID, request.id)}}> Reject Friend Request</button>
         </div>
         )
@@ -167,7 +173,7 @@ export const InboxScreen = (props) => {
 
     const InboxComponent = (inbox, i) => {
         console.log("IBX", inbox)
-        if (inbox.type === "friendRequest") {
+        if (inbox.type === "author") {
             // displayArray[i] = friendRequest(postsArray[i], i)
             return <FriendRequest inbox={inbox} idx={i}/>
         } else if (inbox.type === "like") {
@@ -185,7 +191,7 @@ export const InboxScreen = (props) => {
     return (
         <>
             <div className="bg-grey">
-            {inbox.map((content, i) => (
+            {inbox.items.map((content, i) => (
                 <InboxComponent {...content} key={`InboxComponent_${i}`} />
             ))}
             </div>
