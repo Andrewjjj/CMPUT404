@@ -7,6 +7,7 @@ module.exports.loginAuthor = async (req, res, next) => {
         if (username == null || password == null) return res.status(400).send("Invalid Login Credentials")
         
         let loginInfo = await db.loginAuthor(username, password);
+        console.log(loginInfo)
         if (loginInfo.length < 1) return res.status(400).send("No user exists")
         
         return res.status(200).json(loginInfo[0]);
