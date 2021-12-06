@@ -29,6 +29,12 @@ export const AdminAuthorScreen = (props) => {
         }
     }
 
+    const deleteAuthorHandler = async (author) => {
+        await axios.delete(`${author.id}`);
+        alert("success");
+        window.location.reload();
+    }
+
     const logOutHandler = () => {
         logOut()
         navigate("/")
@@ -37,7 +43,7 @@ export const AdminAuthorScreen = (props) => {
     return (
         <div className="container">
             <div  align="center">
-                <Button className="Buttons mx-2" onClick={() => {navigate("/Admin/Authors")}}>View Authors</Button>
+                <Button className="Buttons mx-2" onClick={() => {navigate("/Admin")}}>Return to main</Button>
                 <Button className="Buttons mx-2" onClick={() => {logOutHandler()}}>Logout</Button>
             </div>
             <div className="row">
@@ -46,8 +52,8 @@ export const AdminAuthorScreen = (props) => {
                         <img className= 'profileImage' src= {author["profileImage"]} alt=""></img>
                         {author.displayName}
                         <Button className="Buttons mx-2" onClick={() => {navigate("/Admin/Authors")}}>Edit Profile</Button>
-                        <Button className="Buttons mx-2" onClick={() => {logOutHandler()}}>View Friends</Button>
-                        <Button className="Buttons mx-2" onClick={() => {navigate("/Admin/Authors")}}>Delete Author</Button>
+                        <Button className="Buttons mx-2" onClick={() => {navigate("/Admin/Authors/Friends")}}>View Friends</Button>
+                        <Button className="Buttons mx-2" onClick={() => {deleteAuthorHandler(author)}}>Delete Author</Button>
                     </div>
                 )}
             </div>
