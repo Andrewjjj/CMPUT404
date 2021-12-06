@@ -10,6 +10,7 @@ import { AdminScreen } from './screens/AdminScreen'
 import { AdminAuthorScreen } from './screens/AdminAuthorScreen'
 import { AdminCreateAuthorScreen} from './screens/AdminCreateAuthorScreen'
 import { AdminFriendsScreen } from './screens/AdminFriendScreen'
+import { AdminProfileScreen } from './screens/AdminProfileScreen'
 import { BlankPage } from './screens/BlankPage'
 import { ProfilePage } from "./screens/ProfilePage"
 import { BrowserRouter, Route, Routes, Redirect } from "react-router-dom";
@@ -96,6 +97,10 @@ function App() {
                 path="/Admin/Authors/Friends"
                 name="Admin View Friends Screen"
                 element={<AdminFriendsScreen />}/>
+              <Route
+                path="/Admin/Authors/Profile"
+                name="Admin View Profile Screen"
+                element={<AdminProfileScreen />}/>
               <Route
                 path="/Admin/Authors/Create"
                 name="Admin Create Author Screen"
