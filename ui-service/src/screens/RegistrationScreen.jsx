@@ -46,7 +46,7 @@ export const RegistrationScreen = () => {
                     <Form>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label style={{color: "rgb(150, 150, 150)"}}>Username</Form.Label>
-                        <Form.Control style={{backgroundColor: "rgb(21,32,43)", borderColor: "#ff7a00" }} type="email" placeholder="Enter email" value={username} onInput={(e) => setUsername(e.currentTarget.value)}/>
+                        <Form.Control style={{backgroundColor: "rgb(21,32,43)", borderColor: "#ff7a00" }} type="text" placeholder="Enter email" value={username} onInput={(e) => setUsername(e.currentTarget.value)}/>
                        
                     </Form.Group>
 
