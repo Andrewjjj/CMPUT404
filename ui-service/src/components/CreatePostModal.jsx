@@ -76,6 +76,7 @@ export const CreatePostModal = (props) => {
 
     const createPostHandler = async () => {
         console.log(fileContent)
+        const formData = new FormData();
         try {
             let axiosConfig = {};
             let postData;
@@ -99,32 +100,44 @@ export const CreatePostModal = (props) => {
                     postData = contentRef.current.value;
                     break;
                 case "application/base64":
-                    axiosConfig = {
-                        headers: {
-                            "content-type": "text/markdown"
-                        }
-                    }
+                    // axiosConfig = {
+                    //     headers: {
+                    //         "content-type": "text/markdown"
+                    //     }
+                    // }
                     postData = content;
                     break;
                 case "image/jpeg;base64":
-                    axiosConfig = {
-                        headers: {
-                            "content-type": "image/jpeg;base64"
-                        }
-                    }
-                    postData = fileContent
+                    formData.append("file", fileContent, "image.jpeg")
+                    // axiosConfig = {
+                    //     headers: {
+                    //         "content-type": "multipart/form-data"
+                    //     }
+                    // }
+                    // postData = fileContent
                     break;
                 case "image/png;base64":
-                    axiosConfig = {
-                        headers: {
-                            "content-type": "image/png;base64"
-                        }
-                    }
-                    postData = fileContent
+                    formData.append("file", fileContent, "image.png")
+                    // axiosConfig = {
+                    //     headers: {
+                    //         "content-type": "multipart/form-data"
+                    //     }
+                    // }
+                    // postData = fileContent
                     break;
                 default:
                     return;
             }
+            // formData.append("content", postData)
+            formData.append("title", title)
+            formData.append("source", "")
+            formData.append("origin", "")
+            formData.append("description", description)
+            formData.append("contentType", contentType)
+            formData.append("categories", JSON.stringify(tags))
+            formData.append("published",  new Date(Date.now()).toString())
+            formData.append("visibility", visibility)
+            formData.append("unlisted", unlisted)
             console.log({
                 content: postData,
                 title: title,
@@ -137,18 +150,7 @@ export const CreatePostModal = (props) => {
                 visibility: visibility,
                 unlisted: unlisted,
             })
-            let response = await axios.post(`${restHost}/author/${authorInfo.id}/posts`, {
-                content: postData,
-                title: title,
-                source: "",
-                origin: "",
-                description: description,
-                contentType: contentType,
-                categories: tags,
-                published: new Date(Date.now()).toString(),
-                visibility: visibility,
-                unlisted: unlisted,
-            }, axiosConfig)
+            let response = await axios.post(`${restHost}/author/${authorInfo.id}/posts`, formData, axiosConfig)
             console.log(response)
             alert("Success")
             props.setVisible(false);

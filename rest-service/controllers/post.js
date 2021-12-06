@@ -67,7 +67,7 @@ module.exports.createPost = async (req, res, next) => {
         const { title, source, origin, description, 
             contentType, content, categories, published, 
             visibility, unlisted } = req.body;
-
+        console.log(req.body)
         let categoryArr = categories.map(category => {
             return [postID, category]
         })
@@ -126,13 +126,29 @@ module.exports.getAuthorPosts = async (req, res, next) => {
 module.exports.createAuthorPost = async (req, res, next) => {
     try {
         const { authorID } = req.params;
+        console.log(req.file, req.files)
         console.log(authorID)
+        console.log(req.body)
         const { title, source, origin, description, 
             contentType, content, categories, published, 
-            visibility, unlisted } = req.body;
-        console.log( title, source, origin, description, 
+            visibility, unlisted, blob } = req.body;
+        console.log(title, source, origin, description, 
             contentType, content, categories, published, 
-            visibility, unlisted )
+            visibility, unlisted)
+        switch(contentType) {
+            case "text/plain":
+                break;
+            case "text/markdown":
+                break;
+            case "application/base64":
+                break;
+            case "image/jpeg;base64":
+                content = await db.createImage("JPEG", blob)
+                break;
+            case "image/png;base64":
+                content = await db.createImage("PNG", blob)
+                break;
+        }
 
         let postID = await db.createPost(authorID, title, source, origin, description, contentType, 
             content, published, visibility, unlisted);

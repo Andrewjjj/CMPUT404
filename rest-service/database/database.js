@@ -12,9 +12,8 @@ const dbConfig = {
 const promisePool = mysql.createPool(dbConfig).promise()
 
 const generateNewId = () => {
-    return uuidv4().replaceAll("-", "")
+    return uuidv4().replace(/-/g, "")
 }
-
 // Author
 async function getAllAuthors() {
     return await promisePool.execute(
@@ -472,7 +471,16 @@ async function rejectRegisterRequest(registerID){
     DELETE FROM register WHERE RegisterID = ?`, [registerID])
 }
 
-
+async function createImage(imgType, blob) {
+    let imgID = generateNewId();
+    return await promisePool.execute(`
+    INSERT INTO image (ImageID, ImageType, Blob)
+    VALUES (?, ?, ?)`,
+    [imgID, imgType, blob])
+    .then(() => {
+        return imgID;
+    })
+}
 
 
 module.exports.getAllAuthors = getAllAuthors;
@@ -530,3 +538,5 @@ module.exports.getAllRegistrationRequests = getAllRegistrationRequests;
 module.exports.registerRequest = registerRequest;
 module.exports.approveRegisterRequest = approveRegisterRequest;
 module.exports.rejectRegisterRequest = rejectRegisterRequest;
+
+module.exports.createImage = createImage;

@@ -4,6 +4,8 @@ import { CreatePostModal } from '../components/CreatePostModal';
 import { Button } from 'react-bootstrap'
 import { WithContext as ReactTags } from 'react-tag-input';
 import { useStoreActions, useStoreState } from 'easy-peasy'
+import { CommentSection } from './CommentSection';
+import { ReactionSection } from './ReactionSection';
 
 import { Link } from 'react-router-dom'
 import axios from 'axios'
@@ -28,6 +30,7 @@ export const PostFeed = (props) => {
     const [editBodyField, setEditBodyField] = useState({});
     const [editTitleField, setEditTitleField] = useState({});
     const [editPost, setEditPost] = useState({});
+    //const feedAuthor = useState(props.author);
     const authorInfo = useStoreState((state) => state.author)
     const restHost = useStoreState((state) => state.restHost)
     //const feedAuthor = props.author;
@@ -59,7 +62,7 @@ export const PostFeed = (props) => {
         
         for(var i = 0; i < posts.length; i++){
             try{
-                let likesResponse = await axios.get(`${posts[i].id}/likes????`)
+                let likesResponse = await axios.get(`${posts[i].id}/likes`)
                 newLikes[i] = likesResponse.data;
             }
             catch(err){
@@ -189,7 +192,7 @@ export const PostFeed = (props) => {
     const deletePostHandler = async (post) => {
         if(`${restHost}/author/${authorInfo.id}` != post.author.id && false){
             alert(`You are not authorized to delete this post:
-                    Your id: ${restHost}/author/${authorInfo.AuthorID}
+                    Your id: ${restHost}/author/${authorInfo.id}
                     Required id: ${post.author.id}`)
             return 0
         }
@@ -250,7 +253,7 @@ export const PostFeed = (props) => {
             })
         } catch(err) {
             console.log(err)
-            alert(err)
+            alert("Like Error:" + err)
             //alert(url)
         }
         fetchPosts();
@@ -287,23 +290,10 @@ export const PostFeed = (props) => {
                     {post.id === editingPostID ?
                          <input type="text" id={"edit_body_"+post.id} className="form-control-sm" onInput={(e) => editBodyHandler(post.id, e.target.value)}></input>
                         
-                        : post.content}
+                        : post.contentType === "text/plain" ? (post.content) : "awoo"}
                 </div>
                 {/* React Section */}
-                <div className="row my-2">
-                  <div class="btn-group-sm shadow-0 col" role="group">
-                        {post.visibility !== "FRIENDS" || likes[i] === undefined ? "" : "Likes: " + likes[i].length }
-                         <button type="button" class="btn btn-dark shadow-0" style={{backgroundColor: "rgb(30,47,65)"}}data-mdb-color="dark"
-                            onClick={() => {
-                                reactionClickHandler(post.id, post.author.id)
-                            }}>
-                            <i className="far fa-thumbs-up fa-1x"></i>+{post.Likes}
-                        </button>
-                        <button className="btn" onClick={() => {
-                                sharePostHandler(post)
-                        }}>Share</button>
-                    </div>
-                </div>
+                <ReactionSection post={post} likes={likes[i]} clickHandler={reactionClickHandler} shareHandler={sharePostHandler}></ReactionSection>
                 {/* Tag Section */}
                 <div className="row my-1">
                         <p className="text-grey">
@@ -314,7 +304,7 @@ export const PostFeed = (props) => {
                         </p>
                     </div>
                 {/* Edit Section */}
-                { post.author.id === authorInfo.id ? "" :
+                { post.visibility === "PUBLIC" && post.author.id === authorInfo.id ?
                     <div className="row my-2">
                     <div class="btn-group-sm shadow-0 col" role="group">
                         {/*TODO: REMOVE THE EDIT BUTTON FOR PRIVATE POSTS
@@ -334,35 +324,10 @@ export const PostFeed = (props) => {
                             deletePostHandler(post)
                         }}>Delete</button>}
                         </div>
-                    </div>
+                    </div> : ""
                 }
                 {/* Comment Section */}
-                <div className="mt-2 mx-2">
-                    {
-                        
-                        post.visibility !== "FRIENDS" || post.author.id === `${restHost}/author/${authorInfo.AuthorID}`  ?( comments[i] === undefined ? "" : comments[i].comments.map((comment, j) => 
-                            <div key={"comment_"+j}>
-                                <div className="column my-2 px-5 text-start">
-                                    <div className="col-3 bg-grey" style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>
-                                        {comment.author.displayName}
-                                    </div>
-                                    <div className="col text-start">
-                                        {comment.comment}
-                                    </div>
-                                </div>
-                            </div>
-                        )) : ""
-                    }
-                    <div className="row px-5 py-2">
-                        Comment: <input type="text" id={"comment_"+post.id} className="form-control-sm" onInput={(e) => commentChangeHandler(post.id, e.target.value)}></input>
-                        <div className="col text-end">
-                            <button className="btn" onClick={() => {
-                                submitCommentHandler(post.id)
-                            }}>Submit</button>
-                        </div>
-                    </div>
-                    
-                </div>
+                <CommentSection post={post} comments={comments[i]} submitHandler={submitCommentHandler} changeHandler={commentChangeHandler}></CommentSection>
             </div>
             )}
         </div>
