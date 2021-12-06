@@ -342,11 +342,15 @@ export const PostFeed = (props) => {
 
 
     return (
-        <div id={PostFeed}>
+        <div style={{backgroundColor: "rgb(21,32,43)"}} id={PostFeed}>
             <CreatePostModal isVisible={showModal} setVisible={setShowModal} refresh={fetchPosts} submitPostHandler={createNewPostHandler} ></CreatePostModal>
-            <div align="center">
-            <   Button onClick={() => setShowModal(true)}>Create New Post</Button>
+
+
+            <div style={{display: "flex", justifyContent: "center", flexDirection: 'column'}}>
+                <Button className="CreativeButton" onClick={() => setShowModal(true)}>Create New Post</Button>
             </div>
+            
+
             {posts.map((post, i) => 
             <div className=" w-50 mt-3 mx-auto border p-4 rounded-5 z-depth-2 text-white"
             style={{backgroundColor: "rgb(30,47,65)"}} key={"post"+i}>
