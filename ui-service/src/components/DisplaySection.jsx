@@ -11,6 +11,61 @@ export const DisplaySection = (props) => {
     const authorInfo = useStoreState((state) => state.author)
     const restHost = useStoreState((state) => state.restHost)
 
+
+    const PostContentComponent = ({contentType, content}) => {
+        // const [previewImg, setPreviewImg] = useState(null) 
+    
+        // useEffect(() => {
+        // }, [])
+        console.log(contentType)
+        switch (contentType){
+            case "text/plain":
+                return (
+                    <>
+                    {content}
+                    </>
+                )
+            case "text/markdown":
+                return (
+                    <>
+                    {content}
+                    </>
+                )
+            case "application/base64":
+                return (
+                    <>
+                    {content}
+                    </>
+                )
+            case "image/jpeg;base64":
+                // setPreviewImg(`data:image/jpeg;base64,${content}`)
+
+                console.log("Content!!",content)
+                // URL.createObjectURL(blob)
+                // axios.
+                if(!content) return <></>
+                return (
+                    <>
+                    <img src={`data:image/jpeg;base64,${content}`} />
+                    </>
+                )
+            case "image/png;base64":
+                // setPreviewImg(`data:image/png;base64,${content}`)
+
+                console.log("Content!!",content)
+                // console.log(new Buffer.from(content).toString("base64"))
+                // console.log(new Buffer.from(content.data).toString("base64"))
+                if(!content) return <></>
+                return (
+                    <>
+                    <img src={`data:image/png;base64,${content}`} />
+                    </>
+                )
+            default:
+                return <>????</>
+        }
+    }   
+
     return (
         <div id={DisplaySection}>
                 {/* Title Section */}
@@ -18,10 +73,12 @@ export const DisplaySection = (props) => {
                 <h6 style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>{props.post.author["displayName"]} </h6>
                 {/* Content Section */}
                 <div>
-                {props.post.contentType === "text/markdown" ? 
+                <PostContentComponent contentType={props.post.contentType} content={props.post.content}/>
+
+                {/* {props.post.contentType === "text/markdown" ? 
                     <ReactMarkdown>{props.post.content}</ReactMarkdown>
                 :
-                    props.post.content}
+                    props.post.content} */}
                 </div>
                 {/* Tag Section */}
                 <div className="row my-1">

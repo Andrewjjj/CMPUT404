@@ -13,14 +13,16 @@ router.get("/author/:authorID/posts", postController.getAuthorPosts);
 router.post("/author/:authorID/posts", upload.fields([{name: 'file', maxCount: 1}]),
     (req, res, next) => {
         // console.log("Files: ", req.files.file[0].buffer)
-        if(req.files[0]){
+        if(req.files){
             req.body.content = req.files.file[0].buffer
-            console.log("REQ.BODY 1: " , req.body)
+            // console.log("REQ.BODY 1: " , req.body)
             next()
         }
         else{
             next()
         }
 }, postController.createAuthorPost);
+
+router.get("/images/:imageID", postController.getImage)
 
 module.exports = router;

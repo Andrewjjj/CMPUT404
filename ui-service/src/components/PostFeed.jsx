@@ -50,7 +50,11 @@ export const PostFeed = (props) => {
             // let response = await axios.get("http://localhost:8080/post")
             let posts = response.data
             console.log("Posts: ", posts)
-
+            // posts = await posts.map(async post => {
+            //     if(post.contentType != "image/png;base64" || post.contentType != "image/png;base64") return post;
+            //     // await axios.get("")
+            // })
+            console.log("POST", posts)
             setPosts(posts);
             fetchComments(posts);
             fetchLikes(posts);
@@ -280,6 +284,60 @@ export const PostFeed = (props) => {
     const createNewPostHandler = () => {
 
     }
+
+    // const PostContentComponent = ({contentType, content}) => {
+    //     // const [previewImg, setPreviewImg] = useState(null) 
+    
+    //     // useEffect(() => {
+    //     // }, [])
+    //     console.log(contentType)
+    //     switch (contentType){
+    //         case "text/plain":
+    //             return (
+    //                 <>
+    //                 {content}
+    //                 </>
+    //             )
+    //         case "text/markdown":
+    //             return (
+    //                 <>
+    //                 {content}
+    //                 </>
+    //             )
+    //         case "application/base64":
+    //             return (
+    //                 <>
+    //                 {content}
+    //                 </>
+    //             )
+    //         case "image/jpeg;base64":
+    //             // setPreviewImg(`data:image/jpeg;base64,${content}`)
+
+    //             console.log("Content!!",content)
+    //             // URL.createObjectURL(blob)
+    //             // axios.
+    //             if(!content) return <></>
+    //             return (
+    //                 <>
+    //                 <img src={`data:image/jpeg;base64,${content}`} />
+    //                 </>
+    //             )
+    //         case "image/png;base64":
+    //             // setPreviewImg(`data:image/png;base64,${content}`)
+
+    //             console.log("Content!!",content)
+    //             // console.log(new Buffer.from(content).toString("base64"))
+    //             // console.log(new Buffer.from(content.data).toString("base64"))
+    //             if(!content) return <></>
+    //             return (
+    //                 <>
+    //                 <img src={`data:image/png;base64,${content}`} />
+    //                 </>
+    //             )
+    //         default:
+    //             return <>????</>
+    //     }
+    // }   
 
 
     return (
