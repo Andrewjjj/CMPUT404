@@ -17,7 +17,7 @@ export const DisplaySection = (props) => {
     
         // useEffect(() => {
         // }, [])
-        console.log(contentType)
+        // console.log(contentType)
         switch (contentType){
             case "text/plain":
                 return (
@@ -26,6 +26,7 @@ export const DisplaySection = (props) => {
                     </>
                 )
             case "text/markdown":
+                console.log("MARKDOWNNNn")
                 return (
                     <>
                     <ReactMarkdown>{content}</ReactMarkdown>
@@ -40,7 +41,7 @@ export const DisplaySection = (props) => {
             case "image/jpeg;base64":
                 // setPreviewImg(`data:image/jpeg;base64,${content}`)
 
-                console.log("Content!!",content)
+                // console.log("Content!!",content)
                 // URL.createObjectURL(blob)
                 // axios.
                 if(!content) return <></>
@@ -52,7 +53,7 @@ export const DisplaySection = (props) => {
             case "image/png;base64":
                 // setPreviewImg(`data:image/png;base64,${content}`)
 
-                console.log("Content!!",content)
+                // console.log("Content!!",content)
                 // console.log(new Buffer.from(content).toString("base64"))
                 // console.log(new Buffer.from(content.data).toString("base64"))
                 if(!content) return <></>

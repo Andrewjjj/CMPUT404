@@ -129,9 +129,10 @@ export const InboxScreen = (props) => {
             let friendRequestUrl = `${restHost}/author/${authorId}/friend_request/${friendRequestId}`
             const putResponse = await axios.put(friendRequestUrl,{});
             
+            alert("Success");
             fetchInbox(author.id);
         } catch(err) {
-            alert(err)
+            console.log(err)
         }
     }
 
@@ -144,9 +145,10 @@ export const InboxScreen = (props) => {
             let friendRequestUrl = `${restHost}/author/${authorId}/friend_request/${friendRequestId}`
             const deleteResponse = await axios.delete(friendRequestUrl);
             
+            alert("Success");
             fetchInbox(author.id);
         } catch(err) {
-            alert(err)
+            console.log(err)
         }
     }
 

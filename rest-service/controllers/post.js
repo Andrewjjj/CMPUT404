@@ -1,15 +1,5 @@
 const db = require("../database/database");
 const WEB_HOST = process.env.WEB_HOST
-const b2a = require('base64-arraybuffer')
-
-function toArrayBuffer(buf) {
-    const ab = new ArrayBuffer(buf.length);
-    const view = new Uint8Array(ab);
-    for (let i = 0; i < buf.length; ++i) {
-        view[i] = buf[i];
-    }
-    return ab;
-}
 
 module.exports.getPost = async(req, res, next) => {
     try {
@@ -168,9 +158,9 @@ module.exports.createAuthorPost = async (req, res, next) => {
                 break;
         }
 
-        // console.log(authorID, title, source, origin, description)
-        // console.log("TPYE")
-        // console.log(contentType, content, published, visibility, unlisted)
+        console.log(authorID, title, source, origin, description)
+        console.log("TPYE")
+        console.log(contentType, content, published, visibility, unlisted)
         let postID = await db.createPost(authorID, title, source, origin, description, contentType, 
             content, published, visibility, unlisted);
         categories = JSON.parse(categories)

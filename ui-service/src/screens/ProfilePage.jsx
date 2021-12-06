@@ -60,6 +60,7 @@ export const ProfilePage = () => {
                 "Authorization": `Basic ${Token}`
             }
         })
+        console.log("AUthor Data:", response.data)
         setAuthor(response.data)
         fetchPosts()
     }
@@ -77,7 +78,7 @@ export const ProfilePage = () => {
         }
         catch(err){
             console.log(err)
-            alert(err)
+            // alert(err)
         }
     }
 
@@ -100,7 +101,7 @@ export const ProfilePage = () => {
         }
         catch(err){
             console.log(err)
-            alert(err)
+            // alert(err)
         }
     }
 
@@ -112,20 +113,12 @@ export const ProfilePage = () => {
                     "Authorization": `Basic ${Token}`
                 }
             })
+            console.log(response.data)
             setIsRequested(response.data.isRequested)
-            // console.log("1", response.data.isRequested)
-            // let friendIdArr = response.data.map(friend => friend.id)
-            // console.log(friendIdArr, `${restHost}/author/${authorInfo.AuthorID}`)
-            // if(friendIdArr.includes(`${restHost}/author/${authorInfo.AuthorID}`)){
-                // setIsRequested(true)
-            // }
-            // else setIsRequested(false)
-            // console.log(response.data)
-            // setIsFollowing(response.data.isFollowing)
         }
         catch(err){
             console.log(err)
-            alert(err)
+            // alert(err)
         }
     }
 
@@ -148,6 +141,10 @@ export const ProfilePage = () => {
                     "Authorization": `Basic ${Token}`
                 }
             })
+            await axios.post(`${ProfileAuthorID}/inbox`, {
+                id: authorInfo.id,
+                type: "follow",
+            })
             alert("Following Successful!")
             fetchFollowing()
         }
@@ -159,12 +156,12 @@ export const ProfilePage = () => {
 
     const clickUnfollowHandler = async () => {
         try{
-            await axios.put(`${ProfileAuthorID}/followers/${authorInfo.id}`, {
+            await axios.delete(`${ProfileAuthorID}/followers/${authorInfo.id}`, {
                 headers: {
                     "Authorization": `Basic ${Token}`
                 }
             })
-            alert("Following Successful!")
+            alert("Un-follow Successful!")
             fetchFollowing()
         }
         catch(err){
@@ -179,6 +176,10 @@ export const ProfilePage = () => {
                 headers: {
                     "Authorization": `Basic ${Token}`
                 }
+            })
+            await axios.post(`${ProfileAuthorID}/inbox`, {
+                id: authorInfo.id,
+                type: "friendRequest",
             })
             alert("Request Sent Successfully!")
             fetchRequest()
@@ -213,7 +214,7 @@ export const ProfilePage = () => {
     }
     
     return (
-        <div style={{ backgroundColor: "rgb(21, 32, 43)", height: "753px" }}>
+        <div>
             <div className="row mx-5">
                 {Object.keys(author).length != 0 ? (
                 <>

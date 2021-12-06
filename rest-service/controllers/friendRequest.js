@@ -38,7 +38,9 @@ exports.getAllFriendRequestByAuthor = async (req, res, next) => {
 exports.checkIfRequested = async (req, res, next) => {
     const { authorID, requesterID } = req.params
     try{
-        let friendRequestList = await db.getAllFriendRequestFromID(authorID, requesterID)
+        console.log(authorID, requesterID)
+        let friendRequestList = await db.checkIfFriendRequested(authorID, requesterID)
+        console.log(friendRequestList)
         res.status(200).json({ isRequested: friendRequestList.length != 0})
     }
     catch(err){
@@ -62,6 +64,7 @@ exports.approveFriendRequest = async (req, res, next) => {
     const { authorID, requesterID } = req.params
     try {
         await db.approveFriendRequest(authorID, requesterID)
+        await db.removeInboxByFriendRequest(authorID, requesterID);
         res.status(200).end()
     }
     catch(err){
@@ -73,6 +76,7 @@ exports.rejectFriendRequest = async (req, res, next) => {
     const { authorID, requesterID } = req.params
     try {
         await db.rejectFriendRequest(authorID, requesterID)
+        await db.removeInboxByFriendRequest(authorID, requesterID);
         res.status(200).end()
     }
     catch(err){

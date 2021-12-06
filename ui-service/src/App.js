@@ -26,6 +26,7 @@ function App() {
   const isRehydrated = useStoreRehydrated()
   
   useEffect(() => {
+    // setRestHost("https://fast-chamber-90421.herokuapp.com")
     setRestHost("http://localhost:8080")
     console.log(restHost, isLoggedIn, isRehydrated)
   }, [])
