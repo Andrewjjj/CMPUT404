@@ -3,16 +3,16 @@ import { InputGroup, FormControl, Button } from 'react-bootstrap';
 import { NodeList } from "../components/NodeList";
 import { Header } from "../components/Header";
 import { useState, useEffect } from "react";
-import { useStoreState } from 'easy-peasy'
-
+import { useStoreState, useStoreActions } from 'easy-peasy'
+import { useNavigate } from 'react-router-dom'
 import axios from "axios";
 
 export const AdminScreen = (props) => {
     const [Nodes, setNodes] = useState([]);
     const [host, setHost] = useState("");
-
+    const logOut = useStoreActions((state) => state.logOut)
     const [registrationList, setRegistrationList] = useState([])
-
+    const navigate = useNavigate()
     const restHost = useStoreState((state) => state.restHost)
 
     useEffect(() => {
@@ -82,7 +82,13 @@ export const AdminScreen = (props) => {
         }
     }
 
+    const logOutHandler = () => {
+        logOut()
+        navigate("/")
+    }
+
     return (
+
         <div className="container">
             <div className="row">
                 <div className="col">
@@ -134,6 +140,9 @@ export const AdminScreen = (props) => {
                     </div>
                 </div>
 
+            </div>
+            <div  align="center">
+                <Button className="Buttons mx-2" onClick={() => {logOutHandler()}}>Logout</Button>
             </div>
         </div>
     )

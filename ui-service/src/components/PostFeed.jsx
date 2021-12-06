@@ -143,7 +143,8 @@ export const PostFeed = (props) => {
 
         //TODO: CHECK THAT THE USER IS ALLOWED TO SHARE THIS POST
         let success = true;
-        let friends = await axios.get(`${restHost}/author/${authorInfo.id}/followers`);
+        let friendsResponse = await axios.get(`${restHost}/author/${authorInfo.id}/followers`);
+        let friends = friendsResponse.data.items
         for(var i = 0; i < friends.length; i++){
             try{
                 axios.post(`${friends[i].id}/inbox`, post).then(res => {
@@ -160,7 +161,7 @@ export const PostFeed = (props) => {
             success = false
         }
         if(success == true){
-            alert('Shared successfully')
+            //alert('Shared successfully')
         }
     }
 
@@ -341,13 +342,15 @@ export const PostFeed = (props) => {
 
 
     return (
-        <div id={PostFeed}>
+        <div style={{backgroundColor: "rgb(21,32,43)"}} id={PostFeed}>
             <CreatePostModal isVisible={showModal} setVisible={setShowModal} refresh={fetchPosts} submitPostHandler={createNewPostHandler} ></CreatePostModal>
 
-            <div>
-                This is a Post Screen!
+
+            <div style={{display: "flex", justifyContent: "center", flexDirection: 'column'}}>
+                <Button className="CreativeButton" onClick={() => setShowModal(true)}>Create New Post</Button>
             </div>
-            <Button onClick={() => setShowModal(true)}>Create New Post</Button>
+            
+
             {posts.map((post, i) => 
             <div className=" w-50 mt-3 mx-auto border p-4 rounded-5 z-depth-2 text-white"
             style={{backgroundColor: "rgb(30,47,65)"}} key={"post"+i}>

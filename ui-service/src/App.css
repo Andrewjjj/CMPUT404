@@ -13,13 +13,19 @@
   }
 }
 
-/* .background{
+ .background{
   background-color: rgb(21,32,43);
-  height: 100vh;
+  height: 10vh;
   width: 100%; 
   
-} */
+} 
 
+#colortheme{
+
+  background-color: rgb(21,32,43);
+  color: aliceblue;
+  border-color: aliceblue;
+}
 
 .App-header {
   background-color: #282c34;
@@ -34,6 +40,7 @@
 
 .App-link {
   color: #61dafb;
+  
 }
 
 
@@ -63,13 +70,48 @@
 .Buttons{
 
   background-color: #FF7A00;
+  color: #FF7A00;
   color: rgb(255, 255, 255);
   
 }
+.Buttons:after{
+  background-color: #FF7A00;
+  color: #FF7A00;
 
+}
 .Buttons:hover{
   background-color: #d46700;
+
 }
+.Buttons:focus{
+  background-color: #8f4500;
+
+}
+
+.CreativeButton{
+  background-color: #ff4800;
+  color: #ff4800;
+  color: rgb(255, 255, 255);
+ 
+
+}
+.CreativeButton:after{
+  background-color: #ff4800;
+  color: #ff4800;
+
+}
+.CreativeButton:hover{
+  background-color: #a52f00;
+
+}
+
+.CreativeButton:focus{
+  background-color: #cc3a00;
+}
+
+
+
+
 
 .container::-webkit-scrollbar
 {

@@ -148,6 +148,10 @@ export const ProfilePage = () => {
                     "Authorization": `Basic ${Token}`
                 }
             })
+            await axios.post(`${ProfileAuthorID}/inbox`, {
+                id: authorInfo.id,
+                type: "follow",
+            })
             alert("Following Successful!")
             fetchFollowing()
         }
@@ -179,6 +183,10 @@ export const ProfilePage = () => {
                 headers: {
                     "Authorization": `Basic ${Token}`
                 }
+            })
+            await axios.post(`${ProfileAuthorID}/inbox`, {
+                id: authorInfo.id,
+                type: "friendRequest",
             })
             alert("Request Sent Successfully!")
             fetchRequest()

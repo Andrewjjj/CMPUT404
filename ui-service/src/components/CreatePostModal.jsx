@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Modal from 'react-modal';
 import { WithContext as ReactTags } from 'react-tag-input';
-import { Dropdown, Form } from 'react-bootstrap'
+import { Dropdown, Form, Button} from 'react-bootstrap'
 import axios from 'axios';
 import { useStoreState } from 'easy-peasy';
 
@@ -12,7 +12,8 @@ const customStyles = {
         width: '45%',
         marginLeft: "auto",
         marginRight: "auto",
-
+        backgroundColor: "rgb(21,32,43)",
+        color: "aliceblue",
 
     },
 };
@@ -189,16 +190,16 @@ export const CreatePostModal = (props) => {
             case "text/plain":
                 return (
                     <>
-                        <div className="row">
-                            content: <textarea ref={contentRef} type="text" className="form-control" ></textarea>
+                        <div  className="row">
+                            content: <textarea id="colortheme" ref={contentRef} type="text" className="form-control" ></textarea>
                         </div>
                     </>
                 )
             case "text/markdown":
                 return (
                     <>
-                        <div className="row">
-                            Markdown content: <textarea ref={contentRef} type="text" className="form-control" ></textarea>
+                        <div id="colortheme" className="row">
+                            Markdown content: <textarea id="colortheme" ref={contentRef} type="text" className="form-control" ></textarea>
                         </div>
                     </>
                 )
@@ -212,8 +213,8 @@ export const CreatePostModal = (props) => {
                     return <>File Ready to be Uploaded</>
                 }
                 return (
-                    <Form.Group controlId="formFile1" className="mb-3">
-                        <Form.Label>Select a JPEG File</Form.Label>
+                    <Form.Group id="colortheme" controlId="formFile1" className="mb-3">
+                        <Form.Label id="colortheme">Select a JPEG File</Form.Label>
                         <Form.Control onChange={() => handleDisplayFileDetails("jpeg")} type="file" ref={inputRef} />
                     </Form.Group>
                 )
@@ -224,7 +225,7 @@ export const CreatePostModal = (props) => {
                 return (
                     <>
                         <Form.Group controlId="formFile" className="mb-3">
-                            <Form.Label>Select a PNG File</Form.Label>
+                            <Form.Label id="colortheme">Select a PNG File</Form.Label>
                             <Form.Control onChange={() => handleDisplayFileDetails("png")} type="file" ref={inputRef} />
                         </Form.Group>
                     </>
@@ -249,32 +250,34 @@ export const CreatePostModal = (props) => {
     }, [content])
 
     return (
-        <Modal
+       
+         <Modal
+            id="colortheme"
             isOpen={props.isVisible}
             style={customStyles}>
-            <div className="text-center">
+            <div id="colortheme" className="text-center">
                 Create a Post
             </div>
-            <div className="row">
-                Title: <input type="text" className="form-control" onInput={e => setTitleHandler(e.target.value)}></input>
+            <div id="colortheme" className="row">
+                Title: <input id="colortheme" type="text" className="form-control" onInput={e => setTitleHandler(e.target.value)}></input>
             </div>
             <div className="row">
-                Description: <input type="text" className="form-control" onInput={e => setDescription(e.target.value)}></input>
+                Description: <input id="colortheme" type="text" className="form-control" onInput={e => setDescription(e.target.value)}></input>
             </div>
             <div className="row my-2">
                 content Type:
                 <div className="col">
                     <Dropdown onChange={() => console.log("123")}>
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
+                        <Dropdown.Toggle className="Buttons" variant="success" id="dropdown-basic">
                             {dropdownText}
                         </Dropdown.Toggle>
 
-                        <Dropdown.Menu onSelect={() => { console.log("4") }}>
-                            <Dropdown.Item onClick={() => { setDropdownText("Plain Text (text/plain)"); setContentType("text/plain") }}>Plain Text (text/plain)</Dropdown.Item>
-                            <Dropdown.Item onClick={() => { setDropdownText("Plain Text (text/markdown)"); setContentType("text/markdown") }}>Markdown Text (text/markdown)</Dropdown.Item>
-                            <Dropdown.Item onClick={() => { setDropdownText("Plain Text (application/plain)"); setContentType("application/base64") }}>Bitmap</Dropdown.Item>
-                            <Dropdown.Item onClick={() => { setDropdownText("Image (JPEG)"); setContentType("image/jpeg;base64") }}>Image - JPEG</Dropdown.Item>
-                            <Dropdown.Item onClick={() => { setDropdownText("Image (PNG)"); setContentType("image/png;base64") }}>Image - PNG</Dropdown.Item>
+                        <Dropdown.Menu id="colortheme" onSelect={() => { console.log("4") }}>
+                            <Dropdown.Item id="colortheme"  onClick={() => { setDropdownText("Plain Text (text/plain)"); setContentType("text/plain") }}>Plain Text (text/plain)</Dropdown.Item>
+                            <Dropdown.Item id="colortheme" onClick={() => { setDropdownText("Plain Text (text/markdown)"); setContentType("text/markdown") }}>Markdown Text (text/markdown)</Dropdown.Item>
+                            <Dropdown.Item id="colortheme" onClick={() => { setDropdownText("Plain Text (application/plain)"); setContentType("application/base64") }}>Bitmap</Dropdown.Item>
+                            <Dropdown.Item id="colortheme" onClick={() => { setDropdownText("Image (JPEG)"); setContentType("image/jpeg;base64") }}>Image - JPEG</Dropdown.Item>
+                            <Dropdown.Item id="colortheme" onClick={() => { setDropdownText("Image (PNG)"); setContentType("image/png;base64") }}>Image - PNG</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </div>
@@ -282,7 +285,7 @@ export const CreatePostModal = (props) => {
             <PostContentComponent />
 
             <div className="row my-3">
-                Tags: <ReactTags
+                Tags: <ReactTags id="colortheme"
                     tags={tags}
                     // suggestions={suggestions}
                     delimiters={delimiters}
@@ -298,35 +301,35 @@ export const CreatePostModal = (props) => {
                 <div className="col">
                     Visibility:
                     <Dropdown>
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
+                        <Dropdown.Toggle className="Buttons" variant="success" id="dropdown-basic">
                             {visibility}
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu onSelect={() => { console.log("4") }}>
-                            <Dropdown.Item onClick={() => { setVisibility("PUBLIC") }}>PUBLIC</Dropdown.Item>
-                            <Dropdown.Item onClick={() => { setVisibility("FRIENDS") }}>FRIENDS</Dropdown.Item>
+                            <Dropdown.Item id="colortheme" onClick={() => { setVisibility("PUBLIC") }}>PUBLIC</Dropdown.Item>
+                            <Dropdown.Item id="colortheme" onClick={() => { setVisibility("FRIENDS") }}>FRIENDS</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </div>
                 <div className="col">
                     Unlisted:
                     <Dropdown>
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
+                        <Dropdown.Toggle className="Buttons" variant="success" id="dropdown-basic">
                             {!unlisted ? "True" : "False"}
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu onSelect={() => { console.log("4") }}>
-                            <Dropdown.Item onClick={() => { setUnlisted(false) }}>True</Dropdown.Item>
-                            <Dropdown.Item onClick={() => { setUnlisted(true) }}>False</Dropdown.Item>
+                            <Dropdown.Item id="colortheme" onClick={() => { setUnlisted(false) }}>True</Dropdown.Item>
+                            <Dropdown.Item id="colortheme" onClick={() => { setUnlisted(true) }}>False</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </div>
             </div>
-            <div className="my-5">
-                <button className="btn btn-primary"
-                    onClick={createPostHandler}>Create Post</button>
-                <button className="btn btn-danger"
-                    onClick={() => props.setVisible(false)}>Close</button>
+            <div style={{display: 'flex', justifyContent:'space-evenly'}} className="my-5">
+                <Button className="CreativeButton"
+                    onClick={createPostHandler}>Create Post</Button>
+                <Button className="Buttons"
+                    onClick={() => props.setVisible(false)}>Close</Button>
             </div>
         </Modal>
     );
