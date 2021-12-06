@@ -72,41 +72,44 @@ export const MainScreen = () => {
     
     return(
         <>
-        <div className="background">
-            <div id="mainscreen" className="text-center my-5" style={{backgroundColor: "rgb(21,32,43)", display: "flex", justifyContent: "center"}}>
-                    {/* <Link to="/Friends"> */}
-                    
-                    <div style={{display: 'flex'}}>
-                    {/* <div style={{display: 'flex', alignItems: "center", flexDirection: "column",  gap: "30px"}}> */}
-                        <Button className="Buttons mx-2" onClick={() => {navigate(`/Profile?authorID=${restHost}/author/${authorInfo.id}`)}}>Go to Profile</Button>
-                        <Button className="Buttons mx-2" onClick={() => {navigate("/Inbox")}}>Inbox</Button>
-                        <Button className="Buttons mx-2" onClick={() => {navigate("/Friends")}}>Authors</Button>
-                        {/* </Link> */}
-                        {/* <Button className="Buttons" style={{backgroundColor: "rgb(255,122,0)"}} onClick={() => setShowModal(true)}>Create New Post</Button> */}
-                        {/* <Link to="/Inbox"> */}
-                        <Button className="Buttons mx-2" onClick={() => {navigate("/Posts")}}>Posts</Button>
-                        <Button className="Buttons mx-2" onClick={() => {navigate("/Server")}}>Server</Button>
-                    </div>
-                    
-                    <div style={{backgroundColor: "rgb(21,32,43)", marginTop: "0"}}>
-                        {/*<PostFeed author={authorInfo}></PostFeed>*/}
-                    </div>
-                    
-                    {/* <div style={{display: 'flex', alignItems: "center", flexDirection: "column",  gap: "30px"}}> */}
-                    <div style={{display: 'flex'}}>
-                        <Button className="Buttons mx-2" onClick={() => {navigate("/Posts/Others")}}>Go to Post Others</Button>
-                        {/* <Button className="Buttons mx-2" onClick={() => {navigate("/Author/Foreign")}}>Connect to Foreign Authors</Button> */}
-                        <Button className="Buttons mx-2" onClick={() => {logOutHandler()}}>Logout</Button>
-               
-                    </div>
-                    
-                    {/* </Link>   */}
-                   
+        <body className="background">
+            <div style={{backgroundColor: "rgb(21, 32, 43)"}}>
+                <div id="mainscreen" className="text-center my-5" style={{backgroundColor: "rgb(21,32,43)", display: "flex", justifyContent: "center"}}>
+                        {/* <Link to="/Friends"> */}
+                        
+                        <div style={{display: 'flex'}}>
+                        {/* <div style={{display: 'flex', alignItems: "center", flexDirection: "column",  gap: "30px"}}> */}
+                            <Button className="Buttons mx-2" onClick={() => {navigate(`/Profile?authorID=${restHost}/author/${authorInfo.id}`)}}>Go to Profile</Button>
+                            <Button className="Buttons mx-2" onClick={() => {navigate("/Inbox")}}>Inbox</Button>
+                            <Button className="Buttons mx-2" onClick={() => {navigate("/Friends")}}>Authors</Button>
+                            {/* </Link> */}
+                            {/* <Button className="Buttons" style={{backgroundColor: "rgb(255,122,0)"}} onClick={() => setShowModal(true)}>Create New Post</Button> */}
+                            {/* <Link to="/Inbox"> */}
+                            <Button className="Buttons mx-2" onClick={() => {navigate("/Posts")}}>Posts</Button>
+                            <Button className="Buttons mx-2" onClick={() => {navigate("/Server")}}>Server</Button>
+                        </div>
+                        
+                        <div style={{backgroundColor: "rgb(21,32,43)", marginTop: "0"}}>
+                            {/*<PostFeed author={authorInfo}></PostFeed>*/}
+                        </div>
+                        
+                        {/* <div style={{display: 'flex', alignItems: "center", flexDirection: "column",  gap: "30px"}}> */}
+                        <div style={{display: 'flex'}}>
+                            <Button className="Buttons mx-2" onClick={() => {navigate("/Posts/Others")}}>Go to Post Others</Button>
+                            {/* <Button className="Buttons mx-2" onClick={() => {navigate("/Author/Foreign")}}>Connect to Foreign Authors</Button> */}
+                            <Button className="Buttons mx-2" onClick={() => {logOutHandler()}}>Logout</Button>
                 
-            </div> 
-            
+                        </div>
+                        
+                        {/* </Link>   */}
+                    
+                    
+                </div> 
                 
-        </div>
+                    
+            </div>
+        </body>
+       
  
         
         </>
