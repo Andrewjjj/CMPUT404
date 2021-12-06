@@ -253,9 +253,6 @@ export const InboxScreen = (props) => {
                 <InboxComponent {...content} key={`InboxComponent_${i}`} />
             ))}
             </div>
-            <Link to="/">
-                <button className="btn btn-danger" href="/">Go Back to Main Menu</button> 
-            </Link>
             <button className="btn btn-danger" onClick = {() => {clearInbox(author.id)}}>Clear Inbox</button>
         </>
     )
