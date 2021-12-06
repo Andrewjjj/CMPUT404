@@ -7,6 +7,8 @@ import { InboxScreen } from "./screens/InboxScreen"
 import { LandingScreen } from "./screens/LandingScreen"
 import { FriendScreen } from "./screens/FriendScreen"
 import { AdminScreen } from './screens/AdminScreen'
+import { AdminAuthorScreen } from './screens/AdminAuthorScreen'
+import { AdminCreateAuthorScreen} from './screens/AdminCreateAuthorScreen'
 import { BlankPage } from './screens/BlankPage'
 import { ProfilePage } from "./screens/ProfilePage"
 import { BrowserRouter, Route, Routes, Redirect } from "react-router-dom";
@@ -85,6 +87,14 @@ function App() {
                 path="/Admin"
                 name="Node Screen"
                 element={<AdminScreen />}/>
+              <Route
+                path="/Admin/Authors"
+                name="Admin Author Screen"
+                element={<AdminAuthorScreen />}/>
+              <Route
+                path="/Admin/Authors/Create"
+                name="Admin Create Author Screen"
+                element={<AdminCreateAuthorScreen />}/>
               </>
             ) : <></>}
             <Route
