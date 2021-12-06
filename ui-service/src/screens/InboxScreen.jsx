@@ -17,6 +17,8 @@ export const InboxScreen = (props) => {
     const fetchInbox = async (authorID) => {
         try {
             let fetchInboxUrl = `${restHost}/author/${authorID}/inbox`
+            console.log("url ", restHost)
+            console.log(author)
             let response = await axios.get(fetchInboxUrl)
             console.log("RESPONSE" ,response.data)
             setInbox(response.data);
@@ -122,6 +124,8 @@ export const InboxScreen = (props) => {
         try {
             let tempArr = friendRequestId.split("/");
             friendRequestId = tempArr[tempArr.length-1];
+            tempArr = authorId.split("/");
+            authorId = tempArr[tempArr.length-1];
             let friendRequestUrl = `${restHost}/author/${authorId}/friend_request/${friendRequestId}`
             const putResponse = await axios.put(friendRequestUrl,{});
             
@@ -135,6 +139,8 @@ export const InboxScreen = (props) => {
         try {
             let tempArr = friendRequestId.split("/");
             friendRequestId = tempArr[tempArr.length-1];
+            tempArr = authorId.split("/");
+            authorId = tempArr[tempArr.length-1];
             let friendRequestUrl = `${restHost}/author/${authorId}/friend_request/${friendRequestId}`
             const deleteResponse = await axios.delete(friendRequestUrl);
             
@@ -152,9 +158,9 @@ export const InboxScreen = (props) => {
 
         return  (
         <div className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2 bg-white" key={"post"+i}>
-            <button className='btn btn-light' onClick={() => { navigate(`/Profile?authorID=${request.actor.id}`) }} rel="noreferrer noopener" target="_blank">{request.actor.displayName}</button> wants to be friends!
+            <button className='btn btn-light' onClick={() => { navigate(`/Profile?authorID=${request.id}`) }} rel="noreferrer noopener" target="_blank">{request.displayName}</button> wants to be friends!
             <br></br>
-            <button className = "btn btn-primary" onClick={() => {acceptFriendRequest(request.object.id, request.actor.id)}}> Accept friend request </button> <button className="btn btn-danger" onClick = {() => {rejectFriendRequest(request.object.id, request.actor.id)}}> Reject Friend Request</button>
+            <button className = "btn btn-primary" onClick={() => {acceptFriendRequest(request.targetID, request.id)}}> Accept friend request </button> <button className="btn btn-danger" onClick = {() => {rejectFriendRequest(request.targetID, request.id)}}> Reject Friend Request</button>
         </div>
         )
     }
@@ -168,7 +174,7 @@ export const InboxScreen = (props) => {
         //TODO: ADD A REAL LINK TO THE POST THAT WAS LIKED
         return  (
             <div className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2 bg-white" key={"post"+i}>
-                <a href={like.senderHost + "/author/" + like.senderID} >{like.senderName}</a> liked your post!
+                <button className='btn btn-light' onClick={() => { navigate(`/Profile?authorID=${like.id}`) }} rel="noreferrer noopener" target="_blank">{like.displayName}</button> liked your post!
                 <br></br>
                 {/* <button className = "btn btn-primary"> Goto liked post </button> <button className="btn btn-danger"> Dismiss </button> */}
             </div>
@@ -182,7 +188,7 @@ export const InboxScreen = (props) => {
         //TODO: ADD A REAL LINK TO THE COMMENT
         return  (
             <div className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2 bg-white" key={"post"+i}>
-                <button className='btn btn-light' onClick={() => { navigate(`/Profile?authorID=${comment.author.id}`) }} rel="noreferrer noopener" target="_blank">{comment.author.displayName}</button> commented '{comment.comment}' on your post!
+                <button className='btn btn-light' onClick={() => { navigate(`/Profile?authorID=${comment.author.id}`) }} rel="noreferrer noopener" target="_blank">{comment.author.displayName}</button> commented <h4>'{comment.comment}'</h4> on your post!
                 <br></br>
                 {/* <button className="btn btn-primary"> Goto commented post </button> <button className="btn btn-danger"> Dismiss </button> */}
             </div>
@@ -247,9 +253,6 @@ export const InboxScreen = (props) => {
                 <InboxComponent {...content} key={`InboxComponent_${i}`} />
             ))}
             </div>
-            <Link to="/">
-                <button className="btn btn-danger" href="/">Go Back to Main Menu</button> 
-            </Link>
             <button className="btn btn-danger" onClick = {() => {clearInbox(author.id)}}>Clear Inbox</button>
         </>
     )

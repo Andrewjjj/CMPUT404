@@ -44,7 +44,7 @@ module.exports.updatePost = async (req, res, next) => {
         
         await db.updatePost(postID, title, source, origin, description, contentType, content, published, visibility, unlisted)
         await db.removePostCategories(postID)
-        await db.addPostCategories(categoryArr)
+        if (categoryArr.length > 0) await db.addPostCategories(categoryArr)
         res.status(200).send("Success")
     } catch(err) {
         next(err);
@@ -68,13 +68,14 @@ module.exports.createPost = async (req, res, next) => {
             contentType, content, categories, published, 
             visibility, unlisted } = req.body;
         console.log(req.body)
+
         let categoryArr = categories.map(category => {
             return [postID, category]
         })
 
         await db.createPostWithPostID(postID, authorID, title, source, origin, description, contentType, 
             content, published, visibility, unlisted);
-        await db.addPostCategories(categoryArr);
+        if (categoryArr.length > 0) await db.addPostCategories(categoryArr);
 
         res.status(200).send("Success")
     } catch(err) {

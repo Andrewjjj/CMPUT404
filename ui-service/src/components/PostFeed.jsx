@@ -39,6 +39,7 @@ export const PostFeed = (props) => {
     // const [password, setPassword] = useState("")
 
     const [commentInputField, setCommentInputField] = useState({});
+    const [commentMarkdownField, setCommentMarkdownField] = useState({});
     const [editBodyField, setEditBodyField] = useState({});
     const [editTitleField, setEditTitleField] = useState({});
     const [editPost, setEditPost] = useState({});
@@ -123,6 +124,15 @@ export const PostFeed = (props) => {
         console.log(commentInputField)
     }
 
+    const commentMarkdownHandler = (postID, value) => {
+        //console.log(postID, value)
+        setCommentMarkdownField({
+            ...commentMarkdownField,
+            [postID]: value,
+        })
+        console.log(commentMarkdownField)
+    } 
+
     const editTitleHandler = (postID, edit) => {
         // console.log(postID, edit)
         setEditTitleField({
@@ -145,7 +155,8 @@ export const PostFeed = (props) => {
 
         //TODO: CHECK THAT THE USER IS ALLOWED TO SHARE THIS POST
         let success = true;
-        let friends = await axios.get(`${restHost}/author/${authorInfo.id}/followers`);
+        let friendsResponse = await axios.get(`${restHost}/author/${authorInfo.id}/followers`);
+        let friends = friendsResponse.data.items
         for(var i = 0; i < friends.length; i++){
             try{
                 axios.post(`${friends[i].id}/inbox`, post).then(res => {
@@ -162,7 +173,7 @@ export const PostFeed = (props) => {
             success = false
         }
         if(success == true){
-            alert('Shared successfully')
+            //alert('Shared successfully')
         }
     }
 
@@ -233,6 +244,11 @@ export const PostFeed = (props) => {
         let newComment = commentInputField[postID];
         let currentDate = new Date();
         let url = `${postID}/comments`
+        let useMarkdown = commentMarkdownField[postID];
+        let contentType = "text/plain"
+        if(useMarkdown === true){
+            contentType = "text/markdown"
+        }
         currentDate = currentDate.toString();
         console.log(newComment)
         try{
@@ -242,7 +258,7 @@ export const PostFeed = (props) => {
                     publishedTime: currentDate, //TODO: ADD MORE FIELDS
                     authorID: authorInfo.id,
                     content: commentInputField[postID],
-                    contentType: "text/plain", //TODO: ALLOW TEXT/MARKDOWN
+                    contentType: contentType, //TODO: ALLOW TEXT/MARKDOWN
                 }
                 // id: "1234",
                 //published: currentDate
@@ -398,29 +414,31 @@ export const PostFeed = (props) => {
 
 
     return (
-        <div id={PostFeed}>
+        <div style={{backgroundColor: "rgb(21,32,43)"}} id={PostFeed}>
             <CreatePostModal isVisible={showModal} setVisible={setShowModal} refresh={fetchPosts} submitPostHandler={createNewPostHandler} ></CreatePostModal>
 
-            <div>
-                This is a Post Screen!
+
+            <div style={{display: "flex", justifyContent: "center", flexDirection: 'column'}}>
+                <Button className="CreativeButton" onClick={() => setShowModal(true)}>Create New Post</Button>
             </div>
-            <Button onClick={() => setShowModal(true)}>Create New Post</Button>
+            
+
             {posts.map((post, i) => 
-                <div className=" w-50 mt-3 mx-auto border p-4 rounded-5 z-depth-2 text-white"
-                style={{backgroundColor: "rgb(30,47,65)"}} key={"post"+i}>
-                    {/* Title Section */}
-                    {post.id ===editingPostID ? 
-                        <UpperEditSection post={post} bodyHandler={editBodyHandler} titleHandler={editTitleHandler}></UpperEditSection>
-                    :
-                        <DisplaySection post={post} ></DisplaySection>
-                    }
-                    {/* Edit Section */}
-                    <EditSection post={post} editingPostID={editingPostID} editHandler = {editPostHandler} submitHandler = {submitEditHandler} deleteHandler = {deletePostHandler}></EditSection>
-                    {/* React Section */}
-                    <ReactionSection post={post} likes={likes[i]} clickHandler={reactionClickHandler} shareHandler={sharePostHandler}></ReactionSection>
-                    {/* Comment Section */}
-                    <CommentSection post={post} comments={comments[i]} submitHandler={submitCommentHandler} changeHandler={commentChangeHandler}></CommentSection>
-                </div>
+            <div className=" w-50 mt-3 mx-auto border p-4 rounded-5 z-depth-2 text-white"
+            style={{backgroundColor: "rgb(30,47,65)"}} key={"post"+i}>
+                {/* Title Section */}
+                {post.id ===editingPostID ? 
+                    <UpperEditSection post={post} bodyHandler={editBodyHandler} titleHandler={editTitleHandler}></UpperEditSection>
+                :
+                    <DisplaySection post={post} ></DisplaySection>
+                }
+                {/* Edit Section */}
+                <EditSection post={post} editingPostID={editingPostID} editHandler = {editPostHandler} submitHandler = {submitEditHandler} deleteHandler = {deletePostHandler}></EditSection>
+                {/* React Section */}
+                <ReactionSection post={post} likes={likes[i]} clickHandler={reactionClickHandler} shareHandler={sharePostHandler}></ReactionSection>
+                {/* Comment Section */}
+                <CommentSection post={post} comments={comments[i]} submitHandler={submitCommentHandler} changeHandler={commentChangeHandler} checkHandler={commentMarkdownHandler}></CommentSection>
+            </div>
             )}
         </div>
      );
