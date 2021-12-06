@@ -113,6 +113,7 @@ export const ProfilePage = () => {
                     "Authorization": `Basic ${Token}`
                 }
             })
+            console.log(response.data)
             setIsRequested(response.data.isRequested)
             // console.log("1", response.data.isRequested)
             // let friendIdArr = response.data.map(friend => friend.id)
