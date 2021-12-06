@@ -60,6 +60,7 @@ export const ProfilePage = () => {
                 "Authorization": `Basic ${Token}`
             }
         })
+        console.log("AUthor Data:", response.data)
         setAuthor(response.data)
         fetchPosts()
     }
@@ -77,7 +78,7 @@ export const ProfilePage = () => {
         }
         catch(err){
             console.log(err)
-            alert(err)
+            // alert(err)
         }
     }
 
@@ -100,7 +101,7 @@ export const ProfilePage = () => {
         }
         catch(err){
             console.log(err)
-            alert(err)
+            // alert(err)
         }
     }
 
@@ -112,6 +113,7 @@ export const ProfilePage = () => {
                     "Authorization": `Basic ${Token}`
                 }
             })
+            console.log(response.data)
             setIsRequested(response.data.isRequested)
             // console.log("1", response.data.isRequested)
             // let friendIdArr = response.data.map(friend => friend.id)
@@ -125,7 +127,7 @@ export const ProfilePage = () => {
         }
         catch(err){
             console.log(err)
-            alert(err)
+            // alert(err)
         }
     }
 

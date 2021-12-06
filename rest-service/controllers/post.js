@@ -1,15 +1,5 @@
 const db = require("../database/database");
 const WEB_HOST = process.env.WEB_HOST
-const b2a = require('base64-arraybuffer')
-
-function toArrayBuffer(buf) {
-    const ab = new ArrayBuffer(buf.length);
-    const view = new Uint8Array(ab);
-    for (let i = 0; i < buf.length; ++i) {
-        view[i] = buf[i];
-    }
-    return ab;
-}
 
 module.exports.getPost = async(req, res, next) => {
     try {
