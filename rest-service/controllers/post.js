@@ -126,15 +126,19 @@ module.exports.getAuthorPosts = async (req, res, next) => {
 module.exports.createAuthorPost = async (req, res, next) => {
     try {
         const { authorID } = req.params;
+        console.log(authorID)
         const { title, source, origin, description, 
             contentType, content, categories, published, 
             visibility, unlisted } = req.body;
+        console.log( title, source, origin, description, 
+            contentType, content, categories, published, 
+            visibility, unlisted )
 
         let postID = await db.createPost(authorID, title, source, origin, description, contentType, 
             content, published, visibility, unlisted);
 
         let categoryArr = categories.map(category => {
-            return [postID, category]
+            return [postID, category.text]
         })
 
         await db.addPostCategories(categoryArr)

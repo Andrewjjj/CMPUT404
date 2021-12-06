@@ -264,7 +264,7 @@ export const PostFeed = (props) => {
 
     return (
         <div id={PostFeed}>
-            <CreatePostModal isVisible={showModal} setVisible={setShowModal} submitPostHandler={createNewPostHandler}></CreatePostModal>
+            <CreatePostModal isVisible={showModal} setVisible={setShowModal} refresh={fetchPosts} submitPostHandler={createNewPostHandler} ></CreatePostModal>
 
             <div>
                 This is a Post Screen!
