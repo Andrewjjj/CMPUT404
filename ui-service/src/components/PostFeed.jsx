@@ -6,6 +6,7 @@ import { WithContext as ReactTags } from 'react-tag-input';
 import { useStoreActions, useStoreState } from 'easy-peasy'
 import { CommentSection } from './CommentSection';
 import { ReactionSection } from './ReactionSection';
+import { EditSection } from './EditSection';
 
 import { Link } from 'react-router-dom'
 import axios from 'axios'
@@ -292,8 +293,6 @@ export const PostFeed = (props) => {
                         
                         : post.contentType === "text/plain" ? (post.content) : "awoo"}
                 </div>
-                {/* React Section */}
-                <ReactionSection post={post} likes={likes[i]} clickHandler={reactionClickHandler} shareHandler={sharePostHandler}></ReactionSection>
                 {/* Tag Section */}
                 <div className="row my-1">
                         <p className="text-grey">
@@ -302,30 +301,11 @@ export const PostFeed = (props) => {
                             <span> {tag}</span>
                         )}
                         </p>
-                    </div>
+                </div>
                 {/* Edit Section */}
-                { post.visibility === "PUBLIC" && post.author.id === authorInfo.id ?
-                    <div className="row my-2">
-                    <div class="btn-group-sm shadow-0 col" role="group">
-                        {/*TODO: REMOVE THE EDIT BUTTON FOR PRIVATE POSTS
-                        ANOTHER TODO: INVERT THE IF STATEMENT ONCE OUT OF TESTING */}
-                        {post.id === editingPostID ?
-                            <button className="btn" onClick={() => {
-                                editPostHandler(post)
-                            }}>Stop editing</button>:
-                            <button className="btn" onClick={() => {
-                                editPostHandler(post)
-                            }}>Edit</button>}
-                        {post.id === editingPostID ? 
-                        <button className="btn" onClick={() => {
-                            submitEditHandler(post)
-                        }}>Submit edit</button>:
-                        <button className="btn" onClick={() => {
-                            deletePostHandler(post)
-                        }}>Delete</button>}
-                        </div>
-                    </div> : ""
-                }
+                <EditSection post={post} editingPostID={editingPostID} editHandler = {editPostHandler} submitHandler = {submitEditHandler} deleteHandler = {deletePostHandler}></EditSection>
+                {/* React Section */}
+                <ReactionSection post={post} likes={likes[i]} clickHandler={reactionClickHandler} shareHandler={sharePostHandler}></ReactionSection>
                 {/* Comment Section */}
                 <CommentSection post={post} comments={comments[i]} submitHandler={submitCommentHandler} changeHandler={commentChangeHandler}></CommentSection>
             </div>
