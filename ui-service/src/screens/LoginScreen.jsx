@@ -17,6 +17,7 @@ export const LoginUserScreen = () => {
 
     const handleLogin = async () => {
         try{
+            console.log(restHost)
             const response = await axios.post(`${restHost}/login/author`, {
                 username: username,
                 password: password,

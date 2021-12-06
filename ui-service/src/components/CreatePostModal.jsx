@@ -88,9 +88,10 @@ export const CreatePostModal = (props) => {
                     //         "content-type": "text/markdown"
                     //     }
                     // }
-                    console.log(contentRef.current.value, content)
+                    console.log("123123123", contentRef.current.value, content)
                     // contentRef.current.value/
                     postData = contentRef.current.value;
+                    formData.append("content", contentRef.current.value)
                     break;
                 case "text/markdown":
                     // axiosConfig = {
@@ -99,6 +100,7 @@ export const CreatePostModal = (props) => {
                     //     }
                     // }
                     postData = contentRef.current.value;
+                    formData.append("content", contentRef.current.value)
                     break;
                 case "application/base64":
                     // axiosConfig = {

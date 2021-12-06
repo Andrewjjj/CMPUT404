@@ -26,9 +26,10 @@ export const DisplaySection = (props) => {
                     </>
                 )
             case "text/markdown":
+                console.log("MARKDOWNNNn")
                 return (
                     <>
-                    {content}
+                    <ReactMarkdown>{content}</ReactMarkdown>
                     </>
                 )
             case "application/base64":

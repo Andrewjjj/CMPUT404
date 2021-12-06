@@ -75,7 +75,7 @@ export const PostOutsourceScreen = (props) => {
 
 
     return (
-        <div className="background w-50 mx-auto my-5 border">
+        <div className="w-50 mx-auto my-5 border shadow-2 p-3">
             <div className="p-3">
                 <CreatePostModal isVisible={showModal} setVisible={setShowModal} submitPostHandler={createNewPostHandler}></CreatePostModal>
                 <div className="my-2">
