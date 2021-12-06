@@ -30,7 +30,7 @@ export const ReactionSection = (props) => {
             {/* Reaction Section */}
             <div className="row my-2">
                 <div class="btn-group-sm shadow-0 col" role="group">
-                     {props.post.visibility !== "FRIENDS" || props.likes === undefined ? "" : "Likes: " + props.likes.length }
+                     {props.likes === undefined ? "" : "Likes: " + props.likes.length }
                          <button type="button" class="btn btn-dark shadow-0" style={{backgroundColor: "rgb(30,47,65)"}}data-mdb-color="dark"
                             onClick={() => {
                                 props.clickHandler(props.post.id, props.post.author.id)
