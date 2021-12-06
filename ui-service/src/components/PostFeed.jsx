@@ -284,13 +284,13 @@ export const PostFeed = (props) => {
             })
             .then(res => {
                 alert("success")
+                fetchPosts();
             })
         } catch(err) {
             console.log(err)
             // alert("Like Error:" + err)
             //alert(url)
         }
-        fetchPosts();
     }
 
 
