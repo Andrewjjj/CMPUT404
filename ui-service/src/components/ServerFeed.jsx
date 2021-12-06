@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
-import { CreatePostModal } from '../components/CreatePostModal';
-import { Button } from 'react-bootstrap'
-import { WithContext as ReactTags } from 'react-tag-input';
 import { useStoreActions, useStoreState } from 'easy-peasy'
 import { CommentSection } from './CommentSection';
 import { ReactionSection } from './ReactionSection';
 import { EditSection } from './EditSection';
 import { DisplaySection } from './DisplaySection';
 import { UpperEditSection } from './UpperEditSection';
-
-import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 Modal.setAppElement('#root');
@@ -34,10 +29,8 @@ export const ServerFeed = (props) => {
     const [editBodyField, setEditBodyField] = useState({});
     const [editTitleField, setEditTitleField] = useState({});
     const [editPost, setEditPost] = useState({});
-    //const feedAuthor = useState(props.author);
     const authorInfo = useStoreState((state) => state.author)
     const restHost = useStoreState((state) => state.restHost)
-    //const feedAuthor = props.author;
     const [editingPostID, setEditingPostID] = useState("")
     const [showModal, setShowModal] = useState(false)
     useEffect(() => {
@@ -47,7 +40,6 @@ export const ServerFeed = (props) => {
     const fetchPosts = async () => {
         try{
             let response = await axios.get(`${restHost}/authors`)
-            // let response = await axios.get("http://localhost:8080/post")
             let authors = response.data.items
             console.log("Authors: ", authors)
 
@@ -81,9 +73,7 @@ export const ServerFeed = (props) => {
             }
         }
         console.log("Post Likes", newLikes)
-        //alert(toString(comments))
         setLikes(newLikes)
-        //setLikes([[1, 2],[1]])
     }
 
     const fetchComments = async (posts) => {
@@ -101,7 +91,6 @@ export const ServerFeed = (props) => {
             }
         }
         console.log("Post Comments", newComments)
-        //alert(toString(comments))
         setComments(newComments)
     }
 
@@ -115,7 +104,6 @@ export const ServerFeed = (props) => {
     }
 
     const commentMarkdownHandler = (postID, value) => {
-        //console.log(postID, value)
         setCommentMarkdownField({
             ...commentMarkdownField,
             [postID]: value,
@@ -142,9 +130,6 @@ export const ServerFeed = (props) => {
     }
 
     const sharePostHandler = async (post) => {
-
-        //TODO: CHECK THAT THE USER IS ALLOWED TO SHARE THIS POST
-        let success = true;
         let friendsResponse = await axios.get(`${restHost}/author/${authorInfo.id}/followers`);
         let friends = friendsResponse.data.items
         for(var i = 0; i < friends.length; i++){
@@ -154,24 +139,13 @@ export const ServerFeed = (props) => {
                 })
             }
             catch(err){
-                success = false
                 console.log(err)
                 alert(`Share error: ${err}`)
             }
         }
-        if(friends.length < 1){
-            success = false
-        }
-        if(success == true){
-            //alert('Shared successfully')
-        }
     }
 
     const editPostHandler = (post) => {
-        if(`${restHost}/author/${authorInfo.id}`!= post.author.id && false){
-            alert('You are not authorized to edit this post')
-            return 0
-        }
         if(editingPostID != post.id){
             setEditingPostID(post.id)
         } else{
@@ -181,10 +155,6 @@ export const ServerFeed = (props) => {
     }
 
     const submitEditHandler = async (post) => {
-        if(`${restHost}/author/${authorInfo.id}`!= post.author.id && false){
-            alert('You are not authorized to edit this post')
-            return 0
-        }
         
         let newPost = post
         let newBody = editBodyField[post.id]
@@ -192,9 +162,6 @@ export const ServerFeed = (props) => {
 
         newPost.content = newBody
         newPost.title = newTitle
-        // console.log(newPost)
-        // return;
-        //TODO: GET THE TITLE/CONTENT/TAGS FROM THE THINGY
 
         try{
             let response = await axios.post(post.id, newPost)
@@ -206,16 +173,9 @@ export const ServerFeed = (props) => {
             console.log(err)
             alert(`Editing error: ${err}`)
         }
-        //fetchPosts()
     }
 
     const deletePostHandler = async (post) => {
-        if(`${restHost}/author/${authorInfo.id}` != post.author.id && false){
-            alert(`You are not authorized to delete this post:
-                    Your id: ${restHost}/author/${authorInfo.id}
-                    Required id: ${post.author.id}`)
-            return 0
-        }
         try{
             let response = await axios.delete(post.id, post).then(res => {
                 alert("Successful deletion")
@@ -245,13 +205,11 @@ export const ServerFeed = (props) => {
             await axios.post(url, {
                 type: "comment",
                 comment: {
-                    publishedTime: currentDate, //TODO: ADD MORE FIELDS
+                    publishedTime: currentDate, 
                     authorID: authorInfo.id,
                     content: commentInputField[postID],
-                    contentType: contentType, //TODO: ALLOW TEXT/MARKDOWN
+                    contentType: contentType, 
                 }
-                // id: "1234",
-                //published: currentDate
             }).then(res => {
                 alert("success")
             })
@@ -259,7 +217,6 @@ export const ServerFeed = (props) => {
         catch(err){
             console.log(err)
             alert(err)
-            //alert(newComment)
         }
         fetchPosts();
     }
@@ -278,7 +235,6 @@ export const ServerFeed = (props) => {
         } catch(err) {
             console.log(err)
             alert("Like Error:" + err)
-            //alert(url)
         }
         fetchPosts();
     }

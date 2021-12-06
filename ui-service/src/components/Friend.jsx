@@ -5,7 +5,6 @@ export const Friend = ( {friend} ) => {
             <div className ='friendDivRight'>
                 <img className= 'profileImage' src= {friend.Image} alt=""></img>
                 <h4>{friend.Name}</h4>
-                {/* <p>{friend.type}</p> */}
             </div> 
             <div className='friendDivLeft'>
                 <div>

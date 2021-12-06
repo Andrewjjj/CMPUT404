@@ -1,7 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
 import { MainScreen } from "./screens/MainScreen"
-import { PostScreen } from "./screens/PostScreen"
 import { PostOutsourceScreen } from "./screens/PostOutsourceScreen"
 import { InboxScreen } from "./screens/InboxScreen"
 import { LandingScreen } from "./screens/LandingScreen"
@@ -11,7 +10,6 @@ import { AdminAuthorScreen } from './screens/AdminAuthorScreen'
 import { AdminCreateAuthorScreen} from './screens/AdminCreateAuthorScreen'
 import { AdminFriendsScreen } from './screens/AdminFriendScreen'
 import { AdminProfileScreen } from './screens/AdminProfileScreen'
-import { BlankPage } from './screens/BlankPage'
 import { ProfilePage } from "./screens/ProfilePage"
 import { BrowserRouter, Route, Routes, Redirect } from "react-router-dom";
 import { LoginUserScreen, LoginAdminScreen } from './screens/LoginScreen';
@@ -72,10 +70,6 @@ function App() {
                 path="/Friends"
                 name="Friend Screen"
                 element={<FriendScreen />}/>
-              {/* <Route
-                path="/Home"
-                name="Home Screen"
-                element={<PostFeed /> }/> */}
                 <Route
                   path="*"
                   name="View Post Screen"

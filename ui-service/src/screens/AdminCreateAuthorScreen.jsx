@@ -63,8 +63,6 @@ export const AdminCreateAuthorScreen = () => {
                     <Button className="Buttons" variant="primary" type="submit" onClick={registerHandler}>
                         Create User
                     </Button>
-                    {/* <Link to="/Login">
-                    </Link> */}
                    
                     </Form>
                 </div>

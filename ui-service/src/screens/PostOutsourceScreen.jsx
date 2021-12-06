@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { Button, Input, Form } from 'react-bootstrap';
 
 import { CreatePostModal } from '../components/CreatePostModal';
@@ -47,8 +46,6 @@ export const PostOutsourceScreen = (props) => {
                     "Authorization": `Basic ${token}`
                 }
             })
-            // if(!response.data.items)
-            // console.log("response", response.data)
             let posts = [response.data]
             setPosts(posts)
         }
@@ -60,7 +57,6 @@ export const PostOutsourceScreen = (props) => {
 
     useEffect(() => {
         if (!authorInfo) navigate("/")
-        // fetchPosts()
     }, [])
 
     const createNewPostHandler = () => {

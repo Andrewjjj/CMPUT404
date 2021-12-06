@@ -8,13 +8,10 @@ import { useStoreState } from 'easy-peasy'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthorForeignScreen } from './AuthorForeignScreen';
-// import { Friend } from './Friend.jsx'
 
 export const FriendScreen = (props) => {
   const [authors, setAuthors] = useState([]);
   const [friends, setFriends] = useState([]);
-  // const [followers, setFollowers] = useState([]);
-  // const [friendRequests, setFriendRequests] = useState([]);
   const [foreignAuthors, setForeignAuthors] = useState([])
   const [host, setHost] = useState("")
   const [username, setUsername] = useState("")
@@ -28,38 +25,8 @@ export const FriendScreen = (props) => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    // fetchFollowers();
-    // fetchFriendRequests();
     fetchAuthors()
   }, [])
-
-  // const fetchFollowers = async () => {
-  //   console.log(authorInfo)
-  //   try {
-  //     let response = await axios.get(`${restHost}/author/${authorInfo.AuthorID}/followers`)
-  //     let followers = response.data.items;
-  //     console.log("friends", followers)
-  //     setFollowers(followers);
-  //   }
-  //   catch (err) {
-  //     console.log(err)
-  //     alert(err)
-  //   }
-  // }
-
-  // const fetchFriendRequests = async () => {
-  //   try {
-  //     let response = await axios.get(`${restHost}/author/${authorInfo.AuthorID}/friend_request`)
-  //     let friendRequests = response.data;
-  //     // console.log(friendRequests)
-  //     setFriendRequests(friendRequests)
-  //     // setFriends(friends);
-  //   }
-  //   catch (err) {
-  //     console.log(err)
-  //     alert(err)
-  //   }
-  // }
 
   const fetchAuthors = async () => {
     try {
@@ -68,19 +35,12 @@ export const FriendScreen = (props) => {
 
       let friendResponse = await axios.get(`${restHost}/author/${authorInfo.id}/friends`)
       let friends = friendResponse.data
-      // console.log(friends)
-
-      // console.log(authors)
-      // setFriendRequests()
       let authorArr = authors.filter(e => e.id != `${restHost.replace("localhost", "127.0.0.1")}/author/${authorInfo.id}`)
-      // let friendsIdArr = friends.map(e => e.id)
       authorArr = authorArr.filter(e => !friends.map(e => e.id).includes(e.id))
       console.log(friends, authorArr)
       setFriends(friends)
       setAuthors(authorArr)
 
-      // console.log(friendRequests)
-      // setFriends(friends);
     }
     catch (err) {
       console.log(err)
@@ -88,24 +48,6 @@ export const FriendScreen = (props) => {
     }
   }
 
-
-  /*
-  //Fetch friends from json server
-  useEffect( () => {
-    const getFriends= async () => {
-      const friendsFromServer= await fetchFriends()
-      setFriends(friendsFromServer)
-    }
-    
-    getFriends()
-  }, [])
-
-  const fetchFriends= async () =>
-    {
-      const result = await fetch('http://localhost:5000/Friends') //Temporary Server
-      const data = await result.json()
-      return data
-    }*/
   const gotoProfile = (id) => {
     console.log(restHost)
     console.log(id, restHost)
@@ -123,31 +65,6 @@ export const FriendScreen = (props) => {
     if (newWindow) newWindow.opener = null
   }
 
-
-  // const ModalComponent = () => {
-  //   return (
-  //     <Modal show={show} onHide={handleClose}>
-  //       <Modal.Header closeButton>
-  //         <Modal.Title>{modalHeader}</Modal.Title>
-  //       </Modal.Header>
-  //       <Modal.Body>{modalContent}</Modal.Body>
-  //       <Modal.Footer>
-  //         <Button variant="secondary" onClick={handleClose}>
-  //           Close
-  //         </Button>
-  //       </Modal.Footer>
-  //     </Modal>
-  //   )
-  // }
-
-//   useEffect(() => {
-//     // axios.interceptors.request.use(request => {
-//     //     console.log('Starting Request', request)
-//     //     return request
-//     // })
-//     console.log(authors)
-// }, [])
-
   const connectToForeignHostHandler = async () => {
       try {
 
@@ -158,7 +75,6 @@ export const FriendScreen = (props) => {
                   "Authorization": `Basic ${token}`
               }
           })
-          // console.log(response.data.items)
           setForeignAuthors(response.data.items)
       }
       catch (err) {
@@ -181,7 +97,6 @@ export const FriendScreen = (props) => {
             <div className='friendDivRight'>
               <img className='profileImage' src={follower.profileImage} alt=""></img>
               <h4>{follower.displayName}</h4>
-              {/* <p>{friend.type}</p> */}
             </div>
             <div className='friendDivLeft'>
               <div>
@@ -193,7 +108,6 @@ export const FriendScreen = (props) => {
             </div>
 
           </div>
-          // <Friend key = {friend.id} friend={friend} />
         ))}
       </>
       <div>
@@ -207,7 +121,6 @@ export const FriendScreen = (props) => {
             <div className='friendDivRight'>
               <img className='profileImage' src={follower.profileImage} alt=""></img>
               <h4>{follower.displayName}</h4>
-              {/* <p>{friend.type}</p> */}
             </div>
             <div className='friendDivLeft'>
               <div>
@@ -219,7 +132,6 @@ export const FriendScreen = (props) => {
             </div>
 
           </div>
-          // <Friend key = {friend.id} friend={friend} />
         ))}
       </>
       <div>
@@ -228,8 +140,6 @@ export const FriendScreen = (props) => {
         </div>
       </div>
       <div className="m-5">
-        {/* <ModalComponent /> */}
-        {/* <Button onClick={() => { navigator("/Home") }}>Go Back</Button> */}
         <div className="row border mx-5 my-2 text-white">
           Get Authors URL: <input type="text" value={host} onInput={(e) => { setHost(e.currentTarget.value) }} />
         </div>
@@ -253,7 +163,6 @@ export const FriendScreen = (props) => {
             <div className='friendDivRight'>
               <img className='profileImage' src={follower.profileImage} alt=""></img>
               <h4>{follower.displayName}</h4>
-              {/* <p>{friend.type}</p> */}
             </div>
             <div className='friendDivLeft'>
               <div>
@@ -265,10 +174,8 @@ export const FriendScreen = (props) => {
             </div>
 
           </div>
-          // <Friend key = {friend.id} friend={friend} />
         ))}
       </>
-      {/* <List friends={friends} /> */}
 
     </div>
   )

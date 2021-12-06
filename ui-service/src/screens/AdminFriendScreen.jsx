@@ -1,15 +1,9 @@
 import React from 'react'
-import { Link } from "react-router-dom";
-import { Header } from '../components/Header'
-import { List } from '../components/List'
 import { useState, useEffect } from 'react'
-import { Button } from 'react-bootstrap'
 import { useStoreState } from 'easy-peasy'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { AuthorForeignScreen } from './AuthorForeignScreen';
 import { useParams, useSearchParams } from 'react-router-dom'
-// import { Friend } from './Friend.jsx'
 
 export const AdminFriendsScreen = (props) => {
 
@@ -40,18 +34,6 @@ export const AdminFriendsScreen = (props) => {
       console.log(err)
       alert(err)
     }
-  }
-
-  const gotoProfile = (id) => {
-    console.log(restHost)
-    console.log(id, restHost)
-    let restUrl = restHost.replace("localhost", "127.0.0.1")
-    if (id.indexOf(`${restUrl}`) == 0) {
-      let idArr = id.split("/")
-      let authorId = idArr[idArr.length - 1]
-      navigate(`/profile/${authorId}`)
-    }
-    console.log("nvm")
   }
 
   const openInNewTab = (url) => {

@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
-import { CreatePostModal } from '../components/CreatePostModal';
-import { Button } from 'react-bootstrap'
-import { WithContext as ReactTags } from 'react-tag-input';
 import { useStoreActions, useStoreState } from 'easy-peasy'
-import { CommentSection } from './CommentSection';
-
-import { Link } from 'react-router-dom'
-import axios from 'axios'
 
 Modal.setAppElement('#root');
 

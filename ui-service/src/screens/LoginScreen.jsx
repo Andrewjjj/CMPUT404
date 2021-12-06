@@ -9,7 +9,6 @@ export const LoginUserScreen = () => {
 
 	const logIn = useStoreActions((state) => state.logIn);
 	const restHost = useStoreState((state) => state.restHost);
-    // console.log(restHost)
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     
@@ -30,7 +29,6 @@ export const LoginUserScreen = () => {
                 isAdmin: false,
             })
             navigate("/Posts")
-            // window.location.href = "/"
         }
         catch(err){
             console.log("Login Failed. Check your email / password")

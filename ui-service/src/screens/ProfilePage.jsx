@@ -1,5 +1,3 @@
-
-
 import { useEffect, useState } from 'react'
 import { Profile } from '../components/Profile';
 import { Feed } from '../components/Feed'
@@ -11,13 +9,10 @@ import axios from 'axios'
 
 export const ProfilePage = () => {
 
-    // const { ProfileAuthorID } = useParams()
     const [searchParams, setSearchParams] = useSearchParams();
 
     const ProfileAuthorID = searchParams.get('authorID')
     const Token = searchParams.get('token')
-    // const src = searchParams.get('src')
-    // const f = searchParams.get('f')
 
     const [posts, setPosts] = useState([]) 
     const [author, setAuthor] = useState({})
@@ -43,8 +38,6 @@ export const ProfilePage = () => {
                 console.log(response.data)
                 alert("Wrong Format Receieved")
             }
-            // console.log("Post", response.data)
-            // setPosts(response.data)
         }
         catch(err){
             console.log(err)
@@ -67,24 +60,20 @@ export const ProfilePage = () => {
 
     const fetchFollowing = async () => {
         try{
-            // console.log("Info Author ID: ", ProfileAuthorID, authorInfo.AuthorID)
             let response = await axios.get(`${ProfileAuthorID}/followers/${authorInfo.id}`, {
                 headers: {
                     "Authorization": `Basic ${Token}`
                 }
             })
-            // console.log(response.data)
             setIsFollowing(response.data.isFollowing)
         }
         catch(err){
             console.log(err)
-            // alert(err)
         }
     }
 
     const fetchFriend = async () => {
         try{
-            // console.log("Info Author ID: ", ProfileAuthorID, authorInfo.AuthorID)
             let response = await axios.get(`${ProfileAuthorID}/friends`, {
                 headers: {
                     "Authorization": `Basic ${Token}`
@@ -96,12 +85,9 @@ export const ProfilePage = () => {
                 setIsFriend(true)
             }
             else setIsFriend(false)
-            // console.log(response.data)
-            // setIsFollowing(response.data.isFollowing)
         }
         catch(err){
             console.log(err)
-            // alert(err)
         }
     }
 
@@ -118,7 +104,6 @@ export const ProfilePage = () => {
         }
         catch(err){
             console.log(err)
-            // alert(err)
         }
     }
 
@@ -126,7 +111,6 @@ export const ProfilePage = () => {
 
     useEffect(() => {
         console.log("ProfileAuthorID", ProfileAuthorID)
-        // setAuthor(authorInfo)
         fetchAuthor()
         fetchFollowing()
         fetchFriend()
@@ -218,7 +202,6 @@ export const ProfilePage = () => {
             <div className="row mx-5">
                 {Object.keys(author).length != 0 ? (
                 <>
-                    {/* <Profile author={author}></Profile> */}
                     <div className="containerProfile col-4 mx-4">
                         <div>
                             <div className='headerProfile'>
@@ -250,16 +233,12 @@ export const ProfilePage = () => {
                                                 )}
                                                 </>
                                             )}
-                                        {/* <Button className='profileDivButton my-2' onClick={() => {window.location.href=author.github}} rel="noreferrer noopener" target="_blank"> Add as Friend </Button> */}
                                         </>
                                     )}
                                 </div> 
                             </div>
                         </div>  
                     </div>
-                    {/* <div className='headerProfile'>
-                        <h1>{author.displayName}</h1>
-                    </div> */}
                     <div className="PostList col my-5">
                     {posts.map((post) => (
                         <div style={{textAlign: 'left', color: "white", padding:"20px",margin:"10px", backgroundColor:"#1E2F41", borderRadius:"10px"}}>

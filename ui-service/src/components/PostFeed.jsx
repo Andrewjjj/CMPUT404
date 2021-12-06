@@ -30,23 +30,13 @@ export const PostFeed = (props) => {
     const [comments, setComments] = useState([]);
     const [likes, setLikes] = useState([]); 
 
-    // const [foreignPosts, setForeignPosts] = useState([]);
-    // const [foreignComments, setForeignComments] = useState([]);
-    // const [foreignLikes, setForeignLikes] = useState([]); 
-
-    // const [hostURL, setHostURL] = useState("")
-    // const [username, setUsername] = useState("")
-    // const [password, setPassword] = useState("")
-
     const [commentInputField, setCommentInputField] = useState({});
     const [commentMarkdownField, setCommentMarkdownField] = useState({});
     const [editBodyField, setEditBodyField] = useState({});
     const [editTitleField, setEditTitleField] = useState({});
     const [editPost, setEditPost] = useState({});
-    //const feedAuthor = useState(props.author);
     const authorInfo = useStoreState((state) => state.author)
     const restHost = useStoreState((state) => state.restHost)
-    //const feedAuthor = props.author;
     const [editingPostID, setEditingPostID] = useState("")
 
 
@@ -57,23 +47,14 @@ export const PostFeed = (props) => {
 
     const fetchPosts = async () => {
         try{
-            // console.lo
             let response = await axios.get(`${restHost}/author/${authorInfo.id}/posts`)
-            // let response = await axios.get("http://localhost:8080/post")
             let posts = response.data
-            // console.log("Posts: ", posts)
-            // posts = await posts.map(async post => {
-            //     if(post.contentType != "image/png;base64" || post.contentType != "image/png;base64") return post;
-            //     // await axios.get("")
-            // })
-            // console.log("POST", posts)
             setPosts(posts);
             fetchComments(posts);
             fetchLikes(posts);
         }
         catch(err){
             console.log(err)
-            // alert(`Post error: ${err}`)
         }
     }
 
@@ -87,18 +68,13 @@ export const PostFeed = (props) => {
             }
             catch(err){
                 console.log(err)
-                // alert(`Likes error: ${err} with url ${posts[i].id}/likes`)
             }
         }
-        // console.log("Post Likes", newLikes)
-        //alert(toString(comments))
         setLikes(newLikes)
         console.log(newLikes)
-        //setLikes([[1, 2],[1]])
     }
 
     const fetchComments = async (posts) => {
-        // console.log(posts)
         let newComments = []
         
         for(var i = 0; i < posts.length; i++){
@@ -108,16 +84,13 @@ export const PostFeed = (props) => {
             }
             catch(err){
                 console.log(err)
-                // alert(`Comment error: ${err}`)
             }
         }
         console.log("Post Comments", newComments)
-        //alert(toString(comments))
         setComments(newComments)
     }
 
     const commentChangeHandler = (postID, comment) => {
-        // console.log(postID, comment)
         setCommentInputField({
             ...commentInputField,
             [postID]: comment,
@@ -126,7 +99,6 @@ export const PostFeed = (props) => {
     }
 
     const commentMarkdownHandler = (postID, value) => {
-        //console.log(postID, value)
         setCommentMarkdownField({
             ...commentMarkdownField,
             [postID]: value,
@@ -135,7 +107,6 @@ export const PostFeed = (props) => {
     } 
 
     const editTitleHandler = (postID, edit) => {
-        // console.log(postID, edit)
         setEditTitleField({
             ...editTitleField,
             [postID]: edit,
@@ -144,7 +115,6 @@ export const PostFeed = (props) => {
     }
 
     const editBodyHandler = (postID, edit) => {
-        // console.log(postID, edit)
         setEditBodyField({
             ...editBodyField,
             [postID]: edit,
@@ -154,8 +124,6 @@ export const PostFeed = (props) => {
 
     const sharePostHandler = async (post) => {
 
-        //TODO: CHECK THAT THE USER IS ALLOWED TO SHARE THIS POST
-        let success = true;
         let friendsResponse = await axios.get(`${restHost}/author/${authorInfo.id}/friends`);
         let friends = friendsResponse.data;
         console.log("friends", friends)
@@ -169,17 +137,12 @@ export const PostFeed = (props) => {
             catch(err){
                 success = false
                 console.log(err)
-                // alert(`Share error: ${err}`)
+                alert(`Share error: ${err}`)
             }
         }))
-        alert("successfully shared")
     }
 
     const editPostHandler = (post) => {
-        if(`${restHost}/author/${authorInfo.id}`!= post.author.id && false){
-            alert('You are not authorized to edit this post')
-            return 0
-        }
         if(editingPostID != post.id){
             setEditingPostID(post.id)
         } else{
@@ -189,10 +152,6 @@ export const PostFeed = (props) => {
     }
 
     const submitEditHandler = async (post) => {
-        if(`${restHost}/author/${authorInfo.id}`!= post.author.id && false){
-            alert('You are not authorized to edit this post')
-            return 0
-        }
         
         let newPost = post
         let newBody = editBodyField[post.id]
@@ -200,9 +159,6 @@ export const PostFeed = (props) => {
 
         newPost.content = newBody
         newPost.title = newTitle
-        // console.log(newPost)
-        // return;
-        //TODO: GET THE TITLE/CONTENT/TAGS FROM THE THINGY
 
         try{
             let response = await axios.post(post.id, newPost)
@@ -212,18 +168,10 @@ export const PostFeed = (props) => {
         }
         catch(err){
             console.log(err)
-            // alert(`Editing error: ${err}`)
         }
-        //fetchPosts()
     }
 
     const deletePostHandler = async (post) => {
-        if(`${restHost}/author/${authorInfo.id}` != post.author.id && false){
-            alert(`You are not authorized to delete this post:
-                    Your id: ${restHost}/author/${authorInfo.id}
-                    Required id: ${post.author.id}`)
-            return 0
-        }
         try{
             let response = await axios.delete(post.id, post).then(res => {
                 alert("Successful deletion")
@@ -233,7 +181,6 @@ export const PostFeed = (props) => {
         }
         catch(err){
             console.log(err)
-            // alert(`Deletion error: ${err}`)
         }
     }
 
@@ -253,21 +200,17 @@ export const PostFeed = (props) => {
             await axios.post(url, {
                 type: "comment",
                 comment: {
-                    publishedTime: currentDate, //TODO: ADD MORE FIELDS
+                    publishedTime: currentDate, 
                     authorID: authorInfo.id,
                     content: commentInputField[postID],
-                    contentType: contentType, //TODO: ALLOW TEXT/MARKDOWN
+                    contentType: contentType, 
                 }
-                // id: "1234",
-                //published: currentDate
             }).then(res => {
                 alert("success")
             })
         }
         catch(err){
             console.log(err)
-            // alert(err)
-            //alert(newComment)
         }
         fetchPosts();
     }
@@ -286,130 +229,12 @@ export const PostFeed = (props) => {
             })
         } catch(err) {
             console.log(err)
-            // alert("Like Error:" + err)
-            //alert(url)
         }
     }
-
 
     const createNewPostHandler = () => {
 
     }
-
-    // const PostContentComponent = ({contentType, content}) => {
-    //     // const [previewImg, setPreviewImg] = useState(null) 
-    
-    //     // useEffect(() => {
-    //     // }, [])
-    //     console.log(contentType)
-    //     switch (contentType){
-    //         case "text/plain":
-    //             return (
-    //                 <>
-    //                 {content}
-    //                 </>
-    //             )
-    //         case "text/markdown":
-    //             return (
-    //                 <>
-    //                 {content}
-    //                 </>
-    //             )
-    //         case "application/base64":
-    //             return (
-    //                 <>
-    //                 {content}
-    //                 </>
-    //             )
-    //         case "image/jpeg;base64":
-    //             // setPreviewImg(`data:image/jpeg;base64,${content}`)
-
-    //             console.log("Content!!",content)
-    //             // URL.createObjectURL(blob)
-    //             // axios.
-    //             if(!content) return <></>
-    //             return (
-    //                 <>
-    //                 <img src={`data:image/jpeg;base64,${content}`} />
-    //                 </>
-    //             )
-    //         case "image/png;base64":
-    //             // setPreviewImg(`data:image/png;base64,${content}`)
-
-    //             console.log("Content!!",content)
-    //             // console.log(new Buffer.from(content).toString("base64"))
-    //             // console.log(new Buffer.from(content.data).toString("base64"))
-    //             if(!content) return <></>
-    //             return (
-    //                 <>
-    //                 <img src={`data:image/png;base64,${content}`} />
-    //                 </>
-    //             )
-    //         default:
-    //             return <>????</>
-    //     }
-    // }   
-
-    // const fetchForeignPosts = async () => {
-    //     try{
-    //         let token = btoa(`${username}:${password}`)
-    //         let response = await axios.get(`${hostURL}`, {
-    //             headers: {
-    //                 "Authorization": `Basic ${token}`
-    //             }
-    //         })
-    //         console.log("response", response.data)
-    //         let posts = response.data.items
-    //         setForeignPosts(posts)
-    //         fetchComments(posts);
-    //         fetchLikes(posts);
-
-    //     }
-    //     catch(err){
-    //         console.log(err)
-    //         alert(err)
-    //     }
-    // }
-
-
-    // const fetchForeignLikes = async (posts) => {
-    //     let newLikes = []
-    //     console.log("PostS: ", posts)
-    //     for(var i = 0; i < posts.length; i++){
-    //         try{
-    //             let likesResponse = await axios.get(`${posts[i].id}/likes`)
-    //             newLikes[i] = likesResponse.data;
-    //         }
-    //         catch(err){
-    //             console.log(err)
-    //             // alert(`Likes error: ${err} with url ${posts[i].id}/likes`)
-    //         }
-    //     }
-    //     // console.log("Post Likes", newLikes)
-    //     //alert(toString(comments))
-    //     setForeignLikes(newLikes)
-    //     //setLikes([[1, 2],[1]])
-    // }
-
-    // const fetchForeignComments = async (posts) => {
-    //     // console.log(posts)
-    //     let newComments = []
-        
-    //     for(var i = 0; i < posts.length; i++){
-    //         try{
-    //             let commentsResponse = await axios.get(`${posts[i].id}/comments`)
-    //             newComments[i] = commentsResponse.data;
-    //         }
-    //         catch(err){
-    //             console.log(err)
-    //             // alert(`Comment error: ${err}`)
-    //         }
-    //     }
-    //     console.log("Post Comments", newComments)
-    //     //alert(toString(comments))
-    //     setForeignComments(newComments)
-    // }
-
 
     return (
         <div style={{backgroundColor: "rgb(21,32,43)"}} id={PostFeed}>

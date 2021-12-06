@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react'
-import { Link } from 'react-router-dom'
 import { useStoreState } from 'easy-peasy'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
@@ -7,7 +6,6 @@ import { Button } from 'react-bootstrap'
 
 export const InboxScreen = (props) => {
 
-    //const [posts, setPosts] = useState([]);
     const [inbox, setInbox] = useState({});
 
     const restHost = useStoreState((state) => state.restHost)
@@ -33,79 +31,6 @@ export const InboxScreen = (props) => {
     useEffect(() => {
         fetchInbox(author.id);
     }, [])
-
-    /*const fetchPosts = async () => {
-        let testJson = [
-            {
-                "type": "friendRequest",
-                "id": "agdfgdfgdfghj",
-                "senderName": "October Snake",
-                "senderID": "somegobbeldygookhere",
-                "recipent": "Madeline Noodle",
-                "senderHost": "inserturlhere",
-                "date": "2021-10-09T13:07:04+00:00"
-            },
-
-            {
-                "type": "like",
-                "id": "agdfgdfgdfghj",
-                "senderName": "October Snake",
-                "senderID": "somegobbeldygookhere",
-                "recipent": "Madeline Noodle",
-                "senderHost": "inserturlhere",
-                "postURL": "insertpostIDhere",
-                "date": "2021-10-09T13:07:04+00:00"
-            },
-
-            {
-                "type": "comment",
-                "id": "agdfgdfgdfghj",
-                "senderName": "Jill Yukon",
-                "senderID": "somegobbeldygookhere",
-                "recipient": "Madeleine Noodle",
-                "senderHost": "inserturlhere",
-                "postURL": "insertpostIDhere",
-                "date": "2021-10-09T13:07:04+00:00",
-                "contentType": "text/plain",
-                "content": "Nice cat! But it could be better...."
-            }
-
-            
-        ]
-
-        let authorid = "123456789";
-        let inboxUrl = "http://localhost:8080" + authorid + "/inbox";
-        //let response = await axios.get(inboxUrl);
-
-        //let responseJson = response.data;
-        let responseJson = testJson;
-        setInbox(testJson)
-        // setPosts(parsePosts(testJson));
-    }*/
-
-    // const parsePosts = function(postsArray){
-
-    //     var displayArray = []
-
-    //     for(var i = 0;i < postsArray.length; i++){
-    //         var postType = postsArray[i].type
-    //         if (postType === "friendRequest") {
-    //             displayArray[i] = friendRequest(postsArray[i], i)
-    //         } else if (postType === "like") {
-    //             displayArray[i] = likedPost(postsArray[i], i)
-    //         } else if (postType === "comment") {
-    //             displayArray[i] = commentedPost(postsArray[i], i)
-    //         } else{
-    //             throw "Error: Unrecognized item in inbox";
-    //         }
-    //     }
-
-    //     if(displayArray.length == 0){
-    //         return <h2>Your inbox is empty.</h2>
-    //     }
-
-    //     return displayArray
-    // }
 
 
     const clearInbox = async function(authorId){
@@ -169,18 +94,15 @@ export const InboxScreen = (props) => {
     }
 
     const LikedPost = (props) => {
-        // console.log("liked", props)
 
         const like = props.inbox
         const i = props.idx
 
-        //TODO: ADD A REAL LINK TO THE POST THAT WAS LIKED
         return  (
             
             <div id="colortheme" className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2" key={"post"+i}>
                 <button className='btn btn-light' onClick={() => { navigate(`/Profile?authorID=${like.id}`) }} rel="noreferrer noopener" target="_blank">{like.displayName}</button> liked your post!
                 <br></br>
-                {/* <button className = "btn btn-primary"> Goto liked post </button> <button className="btn btn-danger"> Dismiss </button> */}
             </div>
             
            
@@ -188,15 +110,12 @@ export const InboxScreen = (props) => {
     }
 
     const CommentedPost = (props) => {
-        // console.log("Comment", props)
         const comment = props.inbox
         const i = props.idx
-        //TODO: ADD A REAL LINK TO THE COMMENT
         return  (
             <div id="colortheme" className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2" key={"post"+i}>
                 <button className='btn btn-light' onClick={() => { navigate(`/Profile?authorID=${comment.author.id}`) }} rel="noreferrer noopener" target="_blank">{comment.author.displayName}</button> commented <h4>'{comment.comment}'</h4> on your post!
                 <br></br>
-                {/* <button className="btn btn-primary"> Goto commented post </button> <button className="btn btn-danger"> Dismiss </button> */}
             </div>
         )
     }
@@ -234,7 +153,6 @@ export const InboxScreen = (props) => {
     }
 
     const InboxComponent = (inbox, i) => {
-        // console.log("IBX", inbox)
         if (inbox.type === "friendRequest") {
             return <FriendRequest inbox={inbox} idx={i}/>
         } else if (inbox.type === "like") {
@@ -248,7 +166,6 @@ export const InboxScreen = (props) => {
         } else {
             console.log("Unrecognized:", inbox)
             return <></>
-            // throw "Error: Unrecognized item in inbox";
         }
     }
 

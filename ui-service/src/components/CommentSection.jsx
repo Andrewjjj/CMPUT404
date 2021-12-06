@@ -1,21 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
-import { WithContext as ReactTags } from 'react-tag-input';
 import { useStoreActions, useStoreState } from 'easy-peasy'
 import ReactMarkdown from 'react-markdown';
-import { Link } from 'react-router-dom'
-import axios from 'axios'
 
 Modal.setAppElement('#root');
-
-const customStyles = {
-    content: {
-        width: '60%',
-        marginLeft: "auto",
-        marginRight: "auto",
-    },
-};
-
 
 export const CommentSection = (props) => {
 

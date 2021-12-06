@@ -83,55 +83,26 @@ export const CreatePostModal = (props) => {
             let postData;
             switch (contentType) {
                 case "text/plain":
-                    // axiosConfig = {
-                    //     headers: {
-                    //         "content-type": "text/markdown"
-                    //     }
-                    // }
                     console.log("123123123", contentRef.current.value, content)
-                    // contentRef.current.value/
                     postData = contentRef.current.value;
                     formData.append("content", contentRef.current.value)
                     break;
                 case "text/markdown":
-                    // axiosConfig = {
-                    //     headers: {
-                    //         "content-type": "text/markdown"
-                    //     }
-                    // }
                     postData = contentRef.current.value;
                     formData.append("content", contentRef.current.value)
                     break;
                 case "application/base64":
-                    // axiosConfig = {
-                    //     headers: {
-                    //         "content-type": "text/markdown"
-                    //     }
-                    // }
                     postData = content;
                     break;
                 case "image/jpeg;base64":
                     formData.append("file", fileContent, "image.jpeg")
-                    // axiosConfig = {
-                    //     headers: {
-                    //         "content-type": "multipart/form-data"
-                    //     }
-                    // }
-                    // postData = fileContent
                     break;
                 case "image/png;base64":
                     formData.append("file", fileContent, "image.png")
-                    // axiosConfig = {
-                    //     headers: {
-                    //         "content-type": "multipart/form-data"
-                    //     }
-                    // }
-                    // postData = fileContent
                     break;
                 default:
                     return;
             }
-            // formData.append("content", postData)
             formData.append("title", title)
             formData.append("source", "")
             formData.append("origin", "")
@@ -163,9 +134,6 @@ export const CreatePostModal = (props) => {
             console.log(err)
             alert(err)
         }
-        // console.log("??")
-        // props.submitPostHandler(title, content, tags.map(e => e.text))
-        // console.log("??2")
     }
 
     const handleDisplayFileDetails = (fileType) => {
@@ -181,10 +149,6 @@ export const CreatePostModal = (props) => {
         }
         setFileContent(files)
     }
-
-    // useEffect(() => {
-    //     setFileContent(null);
-    // }, [contentType])
 
     const PostContentComponent = () => {
         console.log("??")
@@ -289,7 +253,6 @@ export const CreatePostModal = (props) => {
             <div className="row my-3">
                 Tags: <ReactTags id="colortheme"
                     tags={tags}
-                    // suggestions={suggestions}
                     delimiters={delimiters}
                     handleDelete={handleDelete}
                     handleAddition={handleAddition}

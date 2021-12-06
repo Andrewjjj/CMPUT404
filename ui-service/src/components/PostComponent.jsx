@@ -36,11 +36,9 @@ export const PostComponent = (props) => {
     useEffect(() => {
         console.log("Post", post)
         fetchComments(post.url)
-        // const post = props.post;
     }, [])
 
     const likeClickHandler = async (postURL) => {
-        // console.log(comments)
         
         try{
             await axios.post(`${postURL}inbox`, {
@@ -55,33 +53,9 @@ export const PostComponent = (props) => {
     }
 
     const submitCommentHandler = async (postUrl) => {
-        console.log({
-            "type":"comment",
-            // "author": {
-            //     "type":"author",
-            //     "id":"http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
-            //     "url":"http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
-            //     "host":"http://127.0.0.1:5454/",
-            //     "displayName":"Greg Johnson",
-            //     "github": "http://github.com/gjohnson",
-            //     "profileImage": "https://i.imgur.com/k7XVwpB.jpeg"
-            // },
-            "comment":newCommentRef.current.value,
-            "contentType":"text/plain",
-            "published": new Date(Date.now()).toString(),
-        })
         try{
             await axios.post(`${postUrl}comments`, {
                 "type":"comment",
-                // "author": {
-                //     "type":"author",
-                //     "id":"http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
-                //     "url":"http://127.0.0.1:5454/author/1d698d25ff008f7538453c120f581471",
-                //     "host":"http://127.0.0.1:5454/",
-                //     "displayName":"Greg Johnson",
-                //     "github": "http://github.com/gjohnson",
-                //     "profileImage": "https://i.imgur.com/k7XVwpB.jpeg"
-                // },
                 "comment":newCommentRef.current.value,
                 "contentType":"text/plain",
                 "published": new Date(Date.now()).toString(),

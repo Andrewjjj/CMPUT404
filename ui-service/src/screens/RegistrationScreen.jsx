@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
-import { Link } from 'react-router-dom'
 import {Button, Input, Form} from 'react-bootstrap';
 import { useStoreState } from 'easy-peasy'
 import { useNavigate} from 'react-router-dom'
@@ -65,8 +64,6 @@ export const RegistrationScreen = () => {
                     <Button className="Buttons" variant="primary" type="submit" onClick={registerHandler}>
                         Register
                     </Button>
-                    {/* <Link to="/Login">
-                    </Link> */}
                    
                     </Form>
                 </div>

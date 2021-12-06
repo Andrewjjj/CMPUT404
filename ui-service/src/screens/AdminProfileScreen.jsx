@@ -9,42 +9,15 @@ import axios from 'axios'
 
 export const AdminProfileScreen = () => {
 
-    // const { ProfileAuthorID } = useParams()
     const [searchParams, setSearchParams] = useSearchParams();
 
     const ProfileAuthorID = searchParams.get('authorID')
     const Token = searchParams.get('token')
-    // const src = searchParams.get('src')
-    // const f = searchParams.get('f')
 
     const [posts, setPosts] = useState([]) 
     const [author, setAuthor] = useState({})
 
     const restHost = useStoreState((state) => state.restHost)
-
-    const fetchPosts = async () => {
-        try{
-            let response = await axios.get(`${ProfileAuthorID}/posts`, {
-                headers: {
-                    "Authorization": `Basic ${Token}`
-                }
-            })
-            if(Array.isArray(response.data)) {
-                setPosts(response.data)
-            } 
-            else{
-                console.log(response.data)
-                alert("Wrong Format Receieved")
-            }
-            // console.log("Post", response.data)
-            // setPosts(response.data)
-        }
-        catch(err){
-            console.log(err)
-            alert(err)
-        }
-
-    }
 
     const fetchAuthor = async () => {
         let response = await axios.get(ProfileAuthorID, {
@@ -76,7 +49,6 @@ export const AdminProfileScreen = () => {
             <div className="row mx-5">
                 {Object.keys(author).length != 0 ? (
                 <>
-                    {/* <Profile author={author}></Profile> */}
                     <div className="containerProfile col-4 mx-4">
                         <div>
                             <div className='headerProfile'>
@@ -94,9 +66,6 @@ export const AdminProfileScreen = () => {
                             </div>
                         </div>  
                     </div>
-                    {/* <div className='headerProfile'>
-                        <h1>{author.displayName}</h1>
-                    </div> */}
                     <div className="PostList col my-5">
                     {posts.map((post) => (
                         <div style={{textAlign: 'left', color: "white", padding:"20px",margin:"10px", backgroundColor:"#1E2F41", borderRadius:"10px"}}>

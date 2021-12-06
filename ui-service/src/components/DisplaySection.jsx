@@ -1,23 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { useStoreActions, useStoreState } from 'easy-peasy';
-import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 
 Modal.setAppElement('#root');
 
 export const DisplaySection = (props) => {
     
-    const authorInfo = useStoreState((state) => state.author)
-    const restHost = useStoreState((state) => state.restHost)
-
-
     const PostContentComponent = ({contentType, content}) => {
-        // const [previewImg, setPreviewImg] = useState(null) 
-    
-        // useEffect(() => {
-        // }, [])
-        // console.log(contentType)
         switch (contentType){
             case "text/plain":
                 return (
@@ -39,11 +29,6 @@ export const DisplaySection = (props) => {
                     </>
                 )
             case "image/jpeg;base64":
-                // setPreviewImg(`data:image/jpeg;base64,${content}`)
-
-                // console.log("Content!!",content)
-                // URL.createObjectURL(blob)
-                // axios.
                 if(!content) return <></>
                 return (
                     <>
@@ -51,11 +36,6 @@ export const DisplaySection = (props) => {
                     </>
                 )
             case "image/png;base64":
-                // setPreviewImg(`data:image/png;base64,${content}`)
-
-                // console.log("Content!!",content)
-                // console.log(new Buffer.from(content).toString("base64"))
-                // console.log(new Buffer.from(content.data).toString("base64"))
                 if(!content) return <></>
                 return (
                     <>
@@ -75,11 +55,6 @@ export const DisplaySection = (props) => {
                 {/* Content Section */}
                 <div>
                 <PostContentComponent contentType={props.post.contentType} content={props.post.content}/>
-
-                {/* {props.post.contentType === "text/markdown" ? 
-                    <ReactMarkdown>{props.post.content}</ReactMarkdown>
-                :
-                    props.post.content} */}
                 </div>
                 {/* Tag Section */}
                 <div className="row my-1">
