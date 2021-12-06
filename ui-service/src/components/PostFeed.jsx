@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap'
 import { WithContext as ReactTags } from 'react-tag-input';
 import { useStoreActions, useStoreState } from 'easy-peasy'
 import { CommentSection } from './CommentSection';
+import { ReactionSection } from './ReactionSection';
 
 import { Link } from 'react-router-dom'
 import axios from 'axios'
@@ -252,7 +253,7 @@ export const PostFeed = (props) => {
             })
         } catch(err) {
             console.log(err)
-            alert(err)
+            alert("Like Error:" + err)
             //alert(url)
         }
         fetchPosts();
@@ -292,20 +293,7 @@ export const PostFeed = (props) => {
                         : post.contentType === "text/plain" ? (post.content) : "awoo"}
                 </div>
                 {/* React Section */}
-                <div className="row my-2">
-                  <div class="btn-group-sm shadow-0 col" role="group">
-                        {post.visibility !== "FRIENDS" || likes[i] === undefined ? "" : "Likes: " + likes[i].length }
-                         <button type="button" class="btn btn-dark shadow-0" style={{backgroundColor: "rgb(30,47,65)"}}data-mdb-color="dark"
-                            onClick={() => {
-                                reactionClickHandler(post.id, post.author.id)
-                            }}>
-                            <i className="far fa-thumbs-up fa-1x"></i>+{post.Likes}
-                        </button>
-                        <button className="btn" onClick={() => {
-                                sharePostHandler(post)
-                        }}>Share</button>
-                    </div>
-                </div>
+                <ReactionSection post={post} likes={likes[i]} clickHandler={reactionClickHandler} shareHandler={sharePostHandler}></ReactionSection>
                 {/* Tag Section */}
                 <div className="row my-1">
                         <p className="text-grey">
