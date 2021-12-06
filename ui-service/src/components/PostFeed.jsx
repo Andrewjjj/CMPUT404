@@ -62,7 +62,7 @@ export const PostFeed = (props) => {
         
         for(var i = 0; i < posts.length; i++){
             try{
-                let likesResponse = await axios.get(`${posts[i].id}/likes????`)
+                let likesResponse = await axios.get(`${posts[i].id}/likes`)
                 newLikes[i] = likesResponse.data;
             }
             catch(err){
@@ -244,9 +244,8 @@ export const PostFeed = (props) => {
         try {
             await axios.post(url,{
                 type: "like",
-                senderName: authorInfo.displayName,
                 object: postID,
-                author: authorInfo
+                id: authorInfo.id
             })
             .then(res => {
                 alert("success")
