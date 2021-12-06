@@ -16,6 +16,7 @@ import { useStoreActions, useStoreState, useStoreRehydrated } from 'easy-peasy'
 import { useEffect } from 'react';
 import { AuthorForeignScreen } from './screens/AuthorForeignScreen';
 import { PostFeed } from './components/PostFeed';
+import { ServerFeed} from './components/ServerFeed'
 
 function App() {
   const isLoggedIn = useStoreState((state) => state.isLoggedIn)
@@ -58,10 +59,10 @@ function App() {
                 path="/Profile"
                 name="Profile Screen"
                 element={<ProfilePage /> }/>
-              {/* <Route
-                path="/Profile"
-                name="Profile Screen"
-                element={<ProfilePage /> }/> */}
+              { <Route
+                path="/Server"
+                name="Server Screen"
+                element={<ServerFeed /> }/> }
               <Route
                 path="/Friends"
                 name="Friend Screen"

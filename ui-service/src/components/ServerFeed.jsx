@@ -24,13 +24,12 @@ const customStyles = {
 };
 
 
-export const PostFeed = (props) => {
+export const ServerFeed = (props) => {
     
     const [posts, setPosts] = useState([]);
     const [comments, setComments] = useState([]);
     const [likes, setLikes] = useState([]); 
     const [commentInputField, setCommentInputField] = useState({});
-    const [commentMarkdownField, setCommentMarkdownField] = useState({});
     const [editBodyField, setEditBodyField] = useState({});
     const [editTitleField, setEditTitleField] = useState({});
     const [editPost, setEditPost] = useState({});
@@ -46,15 +45,17 @@ export const PostFeed = (props) => {
 
     const fetchPosts = async () => {
         try{
-            let response = await axios.get(`${restHost}/author/${authorInfo.id}/posts`)
+            let response = await axios.get(`${restHost}/authors`)
             // let response = await axios.get("http://localhost:8080/post")
-            let posts = response.data
-            console.log("Posts: ", posts)
-            // posts = await posts.map(async post => {
-            //     if(post.contentType != "image/png;base64" || post.contentType != "image/png;base64") return post;
-            //     // await axios.get("")
-            // })
-            console.log("POST", posts)
+            let authors = response.data.items
+            console.log("Authors: ", authors)
+
+            let posts = []
+            for(var i = 0; i < authors.length; i++){
+                let authorResponse = await axios.get(`${authors[i].id}/posts`);
+                posts = posts.concat(authorResponse.data)
+            }
+
             setPosts(posts);
             fetchComments(posts);
             fetchLikes(posts);
@@ -111,15 +112,6 @@ export const PostFeed = (props) => {
         })
         console.log(commentInputField)
     }
-
-    const commentMarkdownHandler = (postID, value) => {
-        //console.log(postID, value)
-        setCommentMarkdownField({
-            ...commentMarkdownField,
-            [postID]: value,
-        })
-        console.log(commentMarkdownField)
-    } 
 
     const editTitleHandler = (postID, edit) => {
         console.log(postID, edit)
@@ -231,11 +223,6 @@ export const PostFeed = (props) => {
         let newComment = commentInputField[postID];
         let currentDate = new Date();
         let url = `${postID}/comments`
-        let useMarkdown = commentMarkdownField[postID];
-        let contentType = "text/plain"
-        if(useMarkdown === true){
-            contentType = "text/markdown"
-        }
         currentDate = currentDate.toString();
         console.log(newComment)
         try{
@@ -245,7 +232,7 @@ export const PostFeed = (props) => {
                     publishedTime: currentDate, //TODO: ADD MORE FIELDS
                     authorID: authorInfo.id,
                     content: commentInputField[postID],
-                    contentType: contentType, //TODO: ALLOW TEXT/MARKDOWN
+                    contentType: "text/plain", //TODO: ALLOW TEXT/MARKDOWN
                 }
                 // id: "1234",
                 //published: currentDate
@@ -280,74 +267,8 @@ export const PostFeed = (props) => {
         fetchPosts();
     }
 
-
-    const createNewPostHandler = () => {
-
-    }
-
-    // const PostContentComponent = ({contentType, content}) => {
-    //     // const [previewImg, setPreviewImg] = useState(null) 
-    
-    //     // useEffect(() => {
-    //     // }, [])
-    //     console.log(contentType)
-    //     switch (contentType){
-    //         case "text/plain":
-    //             return (
-    //                 <>
-    //                 {content}
-    //                 </>
-    //             )
-    //         case "text/markdown":
-    //             return (
-    //                 <>
-    //                 {content}
-    //                 </>
-    //             )
-    //         case "application/base64":
-    //             return (
-    //                 <>
-    //                 {content}
-    //                 </>
-    //             )
-    //         case "image/jpeg;base64":
-    //             // setPreviewImg(`data:image/jpeg;base64,${content}`)
-
-    //             console.log("Content!!",content)
-    //             // URL.createObjectURL(blob)
-    //             // axios.
-    //             if(!content) return <></>
-    //             return (
-    //                 <>
-    //                 <img src={`data:image/jpeg;base64,${content}`} />
-    //                 </>
-    //             )
-    //         case "image/png;base64":
-    //             // setPreviewImg(`data:image/png;base64,${content}`)
-
-    //             console.log("Content!!",content)
-    //             // console.log(new Buffer.from(content).toString("base64"))
-    //             // console.log(new Buffer.from(content.data).toString("base64"))
-    //             if(!content) return <></>
-    //             return (
-    //                 <>
-    //                 <img src={`data:image/png;base64,${content}`} />
-    //                 </>
-    //             )
-    //         default:
-    //             return <>????</>
-    //     }
-    // }   
-
-
     return (
-        <div id={PostFeed}>
-            <CreatePostModal isVisible={showModal} setVisible={setShowModal} refresh={fetchPosts} submitPostHandler={createNewPostHandler} ></CreatePostModal>
-
-            <div>
-                This is a Post Screen!
-            </div>
-            <Button onClick={() => setShowModal(true)}>Create New Post</Button>
+        <div id={ServerFeed}>
             {posts.map((post, i) => 
             <div className=" w-50 mt-3 mx-auto border p-4 rounded-5 z-depth-2 text-white"
             style={{backgroundColor: "rgb(30,47,65)"}} key={"post"+i}>
@@ -362,7 +283,7 @@ export const PostFeed = (props) => {
                 {/* React Section */}
                 <ReactionSection post={post} likes={likes[i]} clickHandler={reactionClickHandler} shareHandler={sharePostHandler}></ReactionSection>
                 {/* Comment Section */}
-                <CommentSection post={post} comments={comments[i]} submitHandler={submitCommentHandler} changeHandler={commentChangeHandler} checkHandler={commentMarkdownHandler}></CommentSection>
+                <CommentSection post={post} comments={comments[i]} submitHandler={submitCommentHandler} changeHandler={commentChangeHandler}></CommentSection>
             </div>
             )}
         </div>

@@ -490,11 +490,19 @@ async function rejectRegisterRequest(registerID){
 async function createImage(imgType, blob) {
     let imgID = generateNewId();
     return await promisePool.execute(`
-    INSERT INTO image (ImageID, ImageType, Blob)
-    VALUES (?, ?, ?)`,
+    INSERT INTO image (ImageID, ImageType, BlobContent) VALUES (?, ?, ?)`,
     [imgID, imgType, blob])
     .then(() => {
         return imgID;
+    })
+}
+
+async function getImage(imgID) {
+    return await promisePool.execute(`
+    SELECT * FROM image WHERE ImageID = ?`,
+    [imgID])
+    .then(([res]) => {
+        return res;
     })
 }
 
@@ -558,3 +566,4 @@ module.exports.approveRegisterRequest = approveRegisterRequest;
 module.exports.rejectRegisterRequest = rejectRegisterRequest;
 
 module.exports.createImage = createImage;
+module.exports.getImage = getImage;

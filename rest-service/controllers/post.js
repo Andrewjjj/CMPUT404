@@ -1,5 +1,15 @@
 const db = require("../database/database");
 const WEB_HOST = process.env.WEB_HOST
+const b2a = require('base64-arraybuffer')
+
+function toArrayBuffer(buf) {
+    const ab = new ArrayBuffer(buf.length);
+    const view = new Uint8Array(ab);
+    for (let i = 0; i < buf.length; ++i) {
+        view[i] = buf[i];
+    }
+    return ab;
+}
 
 module.exports.getPost = async(req, res, next) => {
     try {
@@ -95,6 +105,12 @@ module.exports.getAuthorPosts = async (req, res, next) => {
 
         let postsInfo = await Promise.all(posts.map(async (post) => {
             let categories = await db.getPostCategories(post.id);
+            if(post.contentType == "image/png;base64" || post.contentType == "image/jpeg;base64"){
+                let imageContent = await db.getImage(post.content)
+                if(imageContent.length != 0)
+                    post.content = new Buffer.from(imageContent[0].BlobContent).toString("base64")
+                    // post.content = imageContent[0].BlobContent
+            }
             let categoryArr = categories.map(category => {
                 return category.category;
             })
@@ -126,15 +142,16 @@ module.exports.getAuthorPosts = async (req, res, next) => {
 module.exports.createAuthorPost = async (req, res, next) => {
     try {
         const { authorID } = req.params;
-        console.log(req.file, req.files)
-        console.log(authorID)
-        console.log(req.body)
-        const { title, source, origin, description, 
+        // console.log(req.file, req.files)
+        // console.log(authorID)
+        // console.log(req.body)
+        let { title, source, origin, description, 
             contentType, content, categories, published, 
-            visibility, unlisted, blob } = req.body;
-        console.log(title, source, origin, description, 
-            contentType, content, categories, published, 
-            visibility, unlisted)
+            visibility, unlisted } = req.body;
+        // console.log(title, source, origin, description, 
+        //     contentType, content, categories, published, 
+        //     visibility, unlisted)
+        // console.log(b2a.encode(content))
         switch(contentType) {
             case "text/plain":
                 break;
@@ -143,24 +160,42 @@ module.exports.createAuthorPost = async (req, res, next) => {
             case "application/base64":
                 break;
             case "image/jpeg;base64":
-                content = await db.createImage("JPEG", blob)
+                content = await db.createImage("JPEG", content)
                 break;
             case "image/png;base64":
-                content = await db.createImage("PNG", blob)
+                content = await db.createImage("PNG", content)
                 break;
         }
 
+        // console.log(authorID, title, source, origin, description)
+        // console.log("TPYE")
+        // console.log(contentType, content, published, visibility, unlisted)
         let postID = await db.createPost(authorID, title, source, origin, description, contentType, 
             content, published, visibility, unlisted);
-
+        categories = JSON.parse(categories)
         let categoryArr = categories.map(category => {
             return [postID, category.text]
         })
 
-        await db.addPostCategories(categoryArr)
+        if(categoryArr.length)
+            await db.addPostCategories(categoryArr)
 
         res.status(200).send("Success")
     } catch(err) {
         next(err);
+    }
+}
+
+exports.getImage = async (req, res, next) => {
+    try{
+        const { imageID } = req.params;
+        let image = await db.getImage(imageID)
+        if(image.length == 0) res.status(400).send("Resource Not Found")
+        image = image[0]
+        res.type(image.ImageType)
+        res.status(200).send(image.BlobContent)
+    }
+    catch(err){
+        next(err)
     }
 }

@@ -85,7 +85,7 @@ export const MainScreen = () => {
                         {/* <Button className="Buttons" style={{backgroundColor: "rgb(255,122,0)"}} onClick={() => setShowModal(true)}>Create New Post</Button> */}
                         {/* <Link to="/Inbox"> */}
                         <Button className="Buttons mx-2" onClick={() => {navigate("/Posts")}}>Posts</Button>
-
+                        <Button className="Buttons mx-2" onClick={() => {navigate("/Server")}}>Server</Button>
                     </div>
                     
                     <div style={{backgroundColor: "rgb(21,32,43)", marginTop: "0"}}>
