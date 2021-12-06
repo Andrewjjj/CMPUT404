@@ -245,9 +245,8 @@ export const PostFeed = (props) => {
         try {
             await axios.post(url,{
                 type: "like",
-                senderName: authorInfo.displayName,
                 object: postID,
-                author: authorInfo
+                id: authorInfo.id
             })
             .then(res => {
                 alert("success")

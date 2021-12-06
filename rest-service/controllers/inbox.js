@@ -49,17 +49,21 @@ module.exports.getInbox = async (req, res, next) => {
 module.exports.postInbox = async (req, res, next) => {
     try {
         const { authorID } = req.params;
-        const { id, type } = req.body;
+        const { id, type, object } = req.body;
 
-        if (type == "post") {
-            await db.postInbox(authorID, "post", id);
-        } else if (type == "follow") {
-            await db.postInbox(authorID, "follow", id);
-        } else if (type == "like") {
-            await db.postInbox(authorID, "like", id);
-        } else {
+        if (type == "like") {
+            let postID = object.split("/");
+            postID = postID[postID.length-1];
+            await db.addLikesOnPost(postID, id);
+        }
+
+
+        if (type != "post" && type != "comment" && type != "follow" && type != "friendRequest" && type != "like") {
             return res.status(400).send(`Bad Data - Unsupported Type: ${type}`)
         }
+
+        await db.postInbox(authorID, type, id);
+
         return res.status(200).send("success")
         
     }  catch(err) {
