@@ -115,15 +115,6 @@ export const ProfilePage = () => {
             })
             console.log(response.data)
             setIsRequested(response.data.isRequested)
-            // console.log("1", response.data.isRequested)
-            // let friendIdArr = response.data.map(friend => friend.id)
-            // console.log(friendIdArr, `${restHost}/author/${authorInfo.AuthorID}`)
-            // if(friendIdArr.includes(`${restHost}/author/${authorInfo.AuthorID}`)){
-                // setIsRequested(true)
-            // }
-            // else setIsRequested(false)
-            // console.log(response.data)
-            // setIsFollowing(response.data.isFollowing)
         }
         catch(err){
             console.log(err)
@@ -161,12 +152,12 @@ export const ProfilePage = () => {
 
     const clickUnfollowHandler = async () => {
         try{
-            await axios.put(`${ProfileAuthorID}/followers/${authorInfo.id}`, {
+            await axios.delete(`${ProfileAuthorID}/followers/${authorInfo.id}`, {
                 headers: {
                     "Authorization": `Basic ${Token}`
                 }
             })
-            alert("Following Successful!")
+            alert("Un-follow Successful!")
             fetchFollowing()
         }
         catch(err){
