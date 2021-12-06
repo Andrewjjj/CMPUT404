@@ -190,6 +190,14 @@ async function checkIfFriendRequested(targetID, requesterID){
 
 
 // Comments
+async function getCommentByCommentID(commentID) {
+    return await promisePool.execute(`
+    SELECT * FROM comment WHERE CommentID = ?`,[commentID])
+    .then(([res]) => {
+        return res;
+    })
+}
+
 async function getAllCommentsByPostID(postID){
     return await promisePool.execute(`
     SELECT CommentID as id, comment.Content as comment, comment.ContentType as contentType, PublishedTime as published, comment.AuthorID
@@ -511,6 +519,7 @@ module.exports.rejectFriendRequest = rejectFriendRequest;
 module.exports.getAllFriendRequestFromID = getAllFriendRequestFromID;
 module.exports.checkIfFriendRequested = checkIfFriendRequested;
 
+module.exports.getCommentByCommentID = getCommentByCommentID;
 module.exports.getAllCommentsByPostID = getAllCommentsByPostID;
 module.exports.addCommentsToPost = addCommentsToPost;
 
