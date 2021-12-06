@@ -76,7 +76,7 @@ export const AdminFriendsScreen = (props) => {
             </div>
             <div className='friendDivLeft'>
               <div>
-                <button className='friendDivButton' onClick={() => { navigate(`/Profile?authorID=${follower.id}`) }} rel="noreferrer noopener" target="_blank"> Visit Profile </button>
+                <button className='friendDivButton' onClick={() => { navigate(`/Admin/Authors/Profile?authorID=${follower.id}`) }} rel="noreferrer noopener" target="_blank"> Visit Profile </button>
               </div>
               <div>
                 <button className='friendDivButton' onClick={() => { openInNewTab(follower.github) }} rel="noreferrer noopener" target="_blank" target="_blank"> Visit Github </button>

@@ -51,7 +51,7 @@ export const AdminAuthorScreen = (props) => {
                     <div>
                         <img className= 'profileImage' src= {author["profileImage"]} alt=""></img>
                         {author.displayName}
-                        <Button className="Buttons mx-2" onClick={() => {navigate("/Admin/Authors")}}>Edit Profile</Button>
+                        <Button className="Buttons mx-2" onClick={() => {navigate(`/Admin/Authors/Profile?authorID=${author.id}`)}}>Edit Profile</Button>
                         <Button className="Buttons mx-2" onClick={() => {navigate(`/Admin/Authors/Friends?authorID=${author.id}`)}}>View Friends</Button>
                         <Button className="Buttons mx-2" onClick={() => {deleteAuthorHandler(author)}}>Delete Author</Button>
                     </div>
