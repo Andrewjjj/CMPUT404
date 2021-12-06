@@ -19,6 +19,30 @@ export const AdminProfileScreen = () => {
 
     const restHost = useStoreState((state) => state.restHost)
 
+    const fetchPosts = async () => {
+        try{
+            let response = await axios.get(`${ProfileAuthorID}/posts`, {
+                headers: {
+                    "Authorization": `Basic ${Token}`
+                }
+            })
+        if(Array.isArray(response.data)) {
+            setPosts(response.data)
+        }
+        else{
+            console.log(response.data)
+            alert("Wrong Format Receieved")
+        }
+        // console.log("Post", response.data)
+        // setPosts(response.data)
+        }
+        catch(err){
+        console.log(err)
+        alert(err)
+        }
+        
+    }
+
     const fetchAuthor = async () => {
         let response = await axios.get(ProfileAuthorID, {
             headers: {
@@ -34,9 +58,6 @@ export const AdminProfileScreen = () => {
         console.log("ProfileAuthorID", ProfileAuthorID)
         fetchAuthor()
     }, [])
-
- 
-
 
     const openInNewTab = (url) => {
         console.log(url)

@@ -135,7 +135,6 @@ export const PostFeed = (props) => {
                 })
             }
             catch(err){
-                success = false
                 console.log(err)
                 alert(`Share error: ${err}`)
             }
