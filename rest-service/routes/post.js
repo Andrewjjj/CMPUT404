@@ -13,7 +13,8 @@ router.get("/author/:authorID/posts", postController.getAuthorPosts);
 router.post("/author/:authorID/posts", upload.fields([{name: 'file', maxCount: 1}]),
     (req, res, next) => {
         // console.log("Files: ", req.files.file[0].buffer)
-        if(req.files){
+        if(req.files.file != undefined){
+            console.log(req.files.file)
             req.body.content = req.files.file[0].buffer
             // console.log("REQ.BODY 1: " , req.body)
             next()

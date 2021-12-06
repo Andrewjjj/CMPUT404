@@ -64,6 +64,7 @@ exports.approveFriendRequest = async (req, res, next) => {
     const { authorID, requesterID } = req.params
     try {
         await db.approveFriendRequest(authorID, requesterID)
+        await db.removeInboxByFriendRequest(authorID, requesterID);
         res.status(200).end()
     }
     catch(err){
@@ -75,6 +76,7 @@ exports.rejectFriendRequest = async (req, res, next) => {
     const { authorID, requesterID } = req.params
     try {
         await db.rejectFriendRequest(authorID, requesterID)
+        await db.removeInboxByFriendRequest(authorID, requesterID);
         res.status(200).end()
     }
     catch(err){

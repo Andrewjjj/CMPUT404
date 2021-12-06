@@ -148,6 +148,11 @@ async function approveFriendRequest(targetID, requesterID){
         INSERT INTO friend (TargetID, FriendID)
         VALUES (?, ?)`, 
         [targetID, requesterID])
+
+        await promisePool.query(`
+        INSERT INTO friend (TargetID, FriendID)
+        VALUES (?, ?)`, 
+        [requesterID, targetID])
         
         await connection.commit()
         return;
@@ -396,6 +401,13 @@ async function removeInbox(authorID) {
     [authorID])
 }
 
+async function removeInboxByFriendRequest(authorID, requesterID) {
+    return await promisePool.execute(`
+    DELETE FROM inbox
+    WHERE AuthorID = ? AND ID = ? AND Type = "friendRequest"`,
+    [authorID, requesterID])
+}
+
 // login
 async function loginAuthor(username, password) {
     return await promisePool.execute(`
@@ -551,6 +563,7 @@ module.exports.removePostCategories = removePostCategories;
 module.exports.getInbox = getInbox;
 module.exports.postInbox = postInbox;
 module.exports.removeInbox = removeInbox;
+module.exports.removeInboxByFriendRequest = removeInboxByFriendRequest; 
 
 module.exports.loginAuthor = loginAuthor;
 module.exports.loginAdmin = loginAdmin;

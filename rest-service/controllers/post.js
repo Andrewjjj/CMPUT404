@@ -158,9 +158,9 @@ module.exports.createAuthorPost = async (req, res, next) => {
                 break;
         }
 
-        // console.log(authorID, title, source, origin, description)
-        // console.log("TPYE")
-        // console.log(contentType, content, published, visibility, unlisted)
+        console.log(authorID, title, source, origin, description)
+        console.log("TPYE")
+        console.log(contentType, content, published, visibility, unlisted)
         let postID = await db.createPost(authorID, title, source, origin, description, contentType, 
             content, published, visibility, unlisted);
         categories = JSON.parse(categories)

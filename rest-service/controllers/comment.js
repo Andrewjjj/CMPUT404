@@ -64,7 +64,7 @@ exports.addComments = async (req, res, next) => {
             return res.status(400).send("Bad Request")
         }
         const { content, contentType, publishedTime } = comment;
-        await db.addCommentsToPost(postID, authorID, content, contentType, publishedTime)
+        await db.addCommentsToPost(postID, comment.authorID, content, contentType, publishedTime)
         res.status(200).end()
     }
     catch(err){
