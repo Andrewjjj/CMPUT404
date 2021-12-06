@@ -145,7 +145,8 @@ export const ServerFeed = (props) => {
 
         //TODO: CHECK THAT THE USER IS ALLOWED TO SHARE THIS POST
         let success = true;
-        let friends = await axios.get(`${restHost}/author/${authorInfo.id}/followers`);
+        let friendsResponse = await axios.get(`${restHost}/author/${authorInfo.id}/followers`);
+        let friends = friendsResponse.data.items
         for(var i = 0; i < friends.length; i++){
             try{
                 axios.post(`${friends[i].id}/inbox`, post).then(res => {
@@ -162,7 +163,7 @@ export const ServerFeed = (props) => {
             success = false
         }
         if(success == true){
-            alert('Shared successfully')
+            //alert('Shared successfully')
         }
     }
 
