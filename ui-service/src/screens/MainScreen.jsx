@@ -53,21 +53,21 @@ export const MainScreen = () => {
         }
     }*/
 
-    const createNewPostHandler = async (title, content, tags) => {
-        console.log("Clicked?!")
-        alert("Create New Post Clicked!")
-        console.log(title)
+    // const createNewPostHandler = async (title, content, tags) => {
+    //     console.log("Clicked?!")
+    //     alert("Create New Post Clicked!")
+    //     console.log(title)
 
-        await axios.post(`http://localhost:8080/post/`, {
-            title: title,
-            content: content,
-            tags: tags,
-        }).then(res => {
-            alert(res)
-            setShowModal(false);
-            //fetchPosts();
-        })
-    }
+    //     await axios.post(`http://localhost:8080/post/`, {
+    //         title: title,
+    //         content: content,
+    //         tags: tags,
+    //     }).then(res => {
+    //         alert(res)
+    //         setShowModal(false);
+    //         //fetchPosts();
+    //     })
+    // }
 
     
     return(
@@ -85,8 +85,8 @@ export const MainScreen = () => {
                             {/* </Link> */}
                             {/* <Button className="Buttons" style={{backgroundColor: "rgb(255,122,0)"}} onClick={() => setShowModal(true)}>Create New Post</Button> */}
                             {/* <Link to="/Inbox"> */}
-                            <Button className="Buttons mx-2" onClick={() => {navigate("/Posts")}}>Posts</Button>
-                            <Button className="Buttons mx-2" onClick={() => {navigate("/Server")}}>Server</Button>
+                            <Button className="Buttons mx-2" onClick={() => {navigate("/Posts")}}>My Posts</Button>
+                            <Button className="Buttons mx-2" onClick={() => {navigate("/Server")}}>All Posts</Button>
                         </div>
                         
                         <div style={{backgroundColor: "rgb(21,32,43)", marginTop: "0"}}>
@@ -100,18 +100,10 @@ export const MainScreen = () => {
                             <Button className="Buttons mx-2" onClick={() => {logOutHandler()}}>Logout</Button>
                 
                         </div>
-                        
                         {/* </Link>   */}
-                    
-                    
                 </div> 
-                
-                    
             </div>
         </body>
-       
- 
-        
         </>
     )
 }
