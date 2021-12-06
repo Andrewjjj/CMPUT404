@@ -88,8 +88,11 @@ export const AdminScreen = (props) => {
     }
 
     return (
-
         <div className="container">
+            <div  align="center">
+                <Button className="Buttons mx-2" onClick={() => {navigate("/Admin/Authors")}}>View Authors</Button>
+                <Button className="Buttons mx-2" onClick={() => {logOutHandler()}}>Logout</Button>
+            </div>
             <div className="row">
                 <div className="col">
                     <div>
@@ -140,9 +143,6 @@ export const AdminScreen = (props) => {
                     </div>
                 </div>
 
-            </div>
-            <div  align="center">
-                <Button className="Buttons mx-2" onClick={() => {logOutHandler()}}>Logout</Button>
             </div>
         </div>
     )

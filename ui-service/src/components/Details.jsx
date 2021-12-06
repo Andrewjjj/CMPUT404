@@ -18,7 +18,6 @@ export const Details = ( {author}) => {
                 <button className= 'profileDivButton' onClick={() => {window.location.href=author.github}} rel="noreferrer noopener" target="_blank"> Add as Friend </button>
             </div> 
             
-            
         </div>
 
 
