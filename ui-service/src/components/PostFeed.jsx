@@ -47,7 +47,11 @@ export const PostFeed = (props) => {
             // let response = await axios.get("http://localhost:8080/post")
             let posts = response.data
             console.log("Posts: ", posts)
-
+            // posts = await posts.map(async post => {
+            //     if(post.contentType != "image/png;base64" || post.contentType != "image/png;base64") return post;
+            //     // await axios.get("")
+            // })
+            console.log("POST", posts)
             setPosts(posts);
             fetchComments(posts);
             fetchLikes(posts);
@@ -265,6 +269,60 @@ export const PostFeed = (props) => {
 
     }
 
+    const PostContentComponent = ({contentType, content}) => {
+        // const [previewImg, setPreviewImg] = useState(null) 
+    
+        // useEffect(() => {
+        // }, [])
+        console.log(contentType)
+        switch (contentType){
+            case "text/plain":
+                return (
+                    <>
+                    {content}
+                    </>
+                )
+            case "text/markdown":
+                return (
+                    <>
+                    {content}
+                    </>
+                )
+            case "application/base64":
+                return (
+                    <>
+                    {content}
+                    </>
+                )
+            case "image/jpeg;base64":
+                // setPreviewImg(`data:image/jpeg;base64,${content}`)
+
+                console.log("Content!!",content)
+                // URL.createObjectURL(blob)
+                // axios.
+                if(!content) return <></>
+                return (
+                    <>
+                    <img src={`data:image/jpeg;base64,${content}`} />
+                    </>
+                )
+            case "image/png;base64":
+                // setPreviewImg(`data:image/png;base64,${content}`)
+
+                console.log("Content!!",content)
+                // console.log(new Buffer.from(content).toString("base64"))
+                // console.log(new Buffer.from(content.data).toString("base64"))
+                if(!content) return <></>
+                return (
+                    <>
+                    <img src={`data:image/png;base64,${content}`} />
+                    </>
+                )
+            default:
+                return <>????</>
+        }
+    }   
+
 
     return (
         <div id={PostFeed}>
@@ -284,14 +342,14 @@ export const PostFeed = (props) => {
                     :
                         <h5><b>{post.title}</b></h5>
                     }
-                    <h6 style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>{post.author["displayName"]} </h6>
+                    <h6 style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>{post.author?.["displayName"]} </h6>
                 </div>
                 {/* Content Section */}
                 <div className="row rounded rounded-5 py-2 px-4" style={{backgroundColor: "rgb(30,47,65)"}}>
                     {post.id === editingPostID ?
                          <input type="text" id={"edit_body_"+post.id} className="form-control-sm" onInput={(e) => editBodyHandler(post.id, e.target.value)}></input>
                         
-                        : post.contentType === "text/plain" ? (post.content) : "awoo"}
+                        : <PostContentComponent contentType={post.contentType} content={post.content}/> }
                 </div>
                 {/* Tag Section */}
                 <div className="row my-1">
