@@ -103,7 +103,7 @@ export const PostOutsourceScreen = (props) => {
                 </div>
                 <div>
                     {posts.map((post, i) => (
-                        <PostComponent />
+                        <PostComponent post={post}/>
                     ))}
                 </div>
             </div>

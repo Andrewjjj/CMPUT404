@@ -3,16 +3,18 @@ import { useEffect, useState } from "react"
 
 export const PostComponent = (props) => {
 
-    const [post, setPost] = useState()
+    // const [post, setPost] = useState()
 
-    useEffect(() => {
-        setPost(props.post)
-        // const post = props.post;
-    }, [])
+    // useEffect(() => {
+    //     setPost(props.post)
+    //     // const post = props.post;
+    // }, [])
 
     const likeClickHandler = (postID) => {
-
+        alert("success")
     }
+
+    const post = props.post;
 
     return (
         <div className=" w-50 mt-3 mx-auto border p-4 rounded-5 z-depth-2 text-white"

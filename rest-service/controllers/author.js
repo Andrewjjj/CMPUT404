@@ -3,6 +3,7 @@ const WEB_HOST = process.env.WEB_HOST
 
 module.exports.loginAuthor = async (req, res, next) => {
     try {
+        console.log("HERE")
         const {username, password } = req.body;
         if (username == null || password == null) return res.status(400).send("Invalid Login Credentials")
         
