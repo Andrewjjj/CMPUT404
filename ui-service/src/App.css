@@ -14,9 +14,11 @@
 }
 
  .background{
+ 
   background-color: rgb(21,32,43);
-  height: 10vh;
+  height: 100%;
   width: 100%; 
+  
   
 } 
 
@@ -48,7 +50,7 @@
 .container {
   max-width: 1050px;
   margin: 10px auto;
-  min-height: 700px;
+  min-height: 1000px;
   
   background-color: rgb(21, 32, 43);
   padding: 10px;

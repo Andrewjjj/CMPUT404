@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useStoreState } from 'easy-peasy'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { Button } from 'react-bootstrap'
 
 export const InboxScreen = (props) => {
 
@@ -159,7 +160,7 @@ export const InboxScreen = (props) => {
         const i = props.idx
 
         return  (
-        <div className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2 bg-white" key={"post"+i}>
+        <div id="colortheme" className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2" key={"post"+i}>
             <button className='btn btn-light' onClick={() => { navigate(`/Profile?authorID=${request.id}`) }} rel="noreferrer noopener" target="_blank">{request.displayName}</button> wants to be friends!
             <br></br>
             <button className = "btn btn-primary" onClick={() => {acceptFriendRequest(request.targetID, request.id)}}> Accept friend request </button> <button className="btn btn-danger" onClick = {() => {rejectFriendRequest(request.targetID, request.id)}}> Reject Friend Request</button>
@@ -175,11 +176,14 @@ export const InboxScreen = (props) => {
 
         //TODO: ADD A REAL LINK TO THE POST THAT WAS LIKED
         return  (
-            <div className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2 bg-white" key={"post"+i}>
+            
+            <div id="colortheme" className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2" key={"post"+i}>
                 <button className='btn btn-light' onClick={() => { navigate(`/Profile?authorID=${like.id}`) }} rel="noreferrer noopener" target="_blank">{like.displayName}</button> liked your post!
                 <br></br>
                 {/* <button className = "btn btn-primary"> Goto liked post </button> <button className="btn btn-danger"> Dismiss </button> */}
             </div>
+            
+           
         )
     }
 
@@ -189,7 +193,7 @@ export const InboxScreen = (props) => {
         const i = props.idx
         //TODO: ADD A REAL LINK TO THE COMMENT
         return  (
-            <div className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2 bg-white" key={"post"+i}>
+            <div id="colortheme" className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2" key={"post"+i}>
                 <button className='btn btn-light' onClick={() => { navigate(`/Profile?authorID=${comment.author.id}`) }} rel="noreferrer noopener" target="_blank">{comment.author.displayName}</button> commented <h4>'{comment.comment}'</h4> on your post!
                 <br></br>
                 {/* <button className="btn btn-primary"> Goto commented post </button> <button className="btn btn-danger"> Dismiss </button> */}
@@ -202,7 +206,7 @@ export const InboxScreen = (props) => {
         const i = props.idx;
 
         return (
-            <div className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2 bg-white" key={"post"+i}>
+            <div id="colortheme" className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2" key={"post"+i}>
                 <button className='btn btn-light' onClick={() => { navigate(`/Profile?authorID=${follow.id}`) }} rel="noreferrer noopener" target="_blank">{follow.displayName}</button> has followed you!
                 <br></br>
             </div>        
@@ -214,7 +218,7 @@ export const InboxScreen = (props) => {
         const i = props.idx;
 
         return (
-            <div className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2 bg-white" key={"post"+i}>
+            <div id="colortheme" className="shadow w-75 mb-5 mt-3 mx-auto border p-5 rounded rounded-5 z-depth-2" key={"post"+i}>
                 <h3> There is a post of your interest </h3>
                 {/* Title Section */}
                 <div className="row" style={{textAlign: 'left'}}>
@@ -250,12 +254,15 @@ export const InboxScreen = (props) => {
 
     return (
         <>
-            <div className="bg-grey">
-            {inbox.items && inbox.items.map((content, i) => (
-                <InboxComponent {...content} key={`InboxComponent_${i}`} />
-            ))}
-            </div>
-            <button className="btn btn-danger" onClick = {() => {clearInbox(author.id)}}>Clear Inbox</button>
+            <body className="background">
+                <div id="colortheme" className="bg-grey">
+                {inbox.items && inbox.items.map((content, i) => (
+                    <InboxComponent {...content} key={`InboxComponent_${i}`} />
+                ))}
+                </div>
+                <Button className="CreativeButton" onClick = {() => {clearInbox(author.id)}}>Clear Inbox</Button>
+            </body>
+           
         </>
     )
 }
