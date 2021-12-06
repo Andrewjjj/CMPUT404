@@ -75,6 +75,7 @@ export const PostOutsourceScreen = (props) => {
 
 
     return (
+        <>
         <div className="w-50 mx-auto my-5 border shadow-2 p-3">
             <div className="p-3">
                 <CreatePostModal isVisible={showModal} setVisible={setShowModal} submitPostHandler={createNewPostHandler}></CreatePostModal>
@@ -102,12 +103,13 @@ export const PostOutsourceScreen = (props) => {
                     </div>
                 </div>
                 <div>
-                    {posts.map((post, i) => (
-                        <PostComponent post={post}/>
-                    ))}
                 </div>
             </div>
         </div>
+        {posts.map((post, i) => (
+            <PostComponent post={post} token={btoa(`${username}:${password}`)}/>
+        ))}
+        </>
 
     )
 }
