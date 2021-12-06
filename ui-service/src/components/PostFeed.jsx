@@ -65,7 +65,7 @@ export const PostFeed = (props) => {
         
         for(var i = 0; i < posts.length; i++){
             try{
-                let likesResponse = await axios.get(`${posts[i].id}/likes????`)
+                let likesResponse = await axios.get(`${posts[i].id}/likes`)
                 newLikes[i] = likesResponse.data;
             }
             catch(err){
@@ -247,9 +247,8 @@ export const PostFeed = (props) => {
         try {
             await axios.post(url,{
                 type: "like",
-                senderName: authorInfo.displayName,
                 object: postID,
-                author: authorInfo
+                id: authorInfo.id
             })
             .then(res => {
                 alert("success")
@@ -270,7 +269,7 @@ export const PostFeed = (props) => {
 
     return (
         <div id={PostFeed}>
-            <CreatePostModal isVisible={showModal} setVisible={setShowModal} submitPostHandler={createNewPostHandler}></CreatePostModal>
+            <CreatePostModal isVisible={showModal} setVisible={setShowModal} refresh={fetchPosts} submitPostHandler={createNewPostHandler} ></CreatePostModal>
 
             <div>
                 This is a Post Screen!

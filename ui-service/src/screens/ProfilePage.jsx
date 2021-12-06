@@ -26,8 +26,8 @@ export const ProfilePage = () => {
     const [isFriend, setIsFriend] = useState(false)
     const [isRequested, setIsRequested] = useState(false)
 
-    const authorInfo = useStoreState((store) => store.author)
-    const restHost = useStoreState((store) => store.restHost)
+    const authorInfo = useStoreState((state) => state.author)
+    const restHost = useStoreState((state) => state.restHost)
 
     const fetchPosts = async () => {
         try{

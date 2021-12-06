@@ -214,6 +214,14 @@ async function addCommentsToPost(postID, authorID, content, contentType, publish
 }
 
 // Likes
+async function addLikesOnPost(postID, authorID) {
+    return await promisePool.execute(`
+    INSERT INTO post_like
+    (PostID, AuthorID)
+    VALUES (?, ?)`,
+    [postID, authorID])
+}
+
 async function getLikesOnPost(postID){
     return await promisePool.execute(`
     SELECT * FROM post_like
@@ -506,6 +514,7 @@ module.exports.checkIfFriendRequested = checkIfFriendRequested;
 module.exports.getAllCommentsByPostID = getAllCommentsByPostID;
 module.exports.addCommentsToPost = addCommentsToPost;
 
+module.exports.addLikesOnPost = addLikesOnPost;
 module.exports.getLikesOnPost = getLikesOnPost;
 module.exports.getLikesOnComment = getLikesOnComment;
 module.exports.addAuthorLikes = addAuthorLikes;
