@@ -214,7 +214,7 @@ export const ProfilePage = () => {
     }
     
     return (
-        <div style={{ backgroundColor: "rgb(21, 32, 43)", height: "753px" }}>
+        <div>
             <div className="row mx-5">
                 {Object.keys(author).length != 0 ? (
                 <>
