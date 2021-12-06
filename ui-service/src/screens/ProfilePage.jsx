@@ -60,6 +60,7 @@ export const ProfilePage = () => {
                 "Authorization": `Basic ${Token}`
             }
         })
+        console.log("AUthor Data:", response.data)
         setAuthor(response.data)
         fetchPosts()
     }
@@ -77,7 +78,7 @@ export const ProfilePage = () => {
         }
         catch(err){
             console.log(err)
-            alert(err)
+            // alert(err)
         }
     }
 
@@ -100,7 +101,7 @@ export const ProfilePage = () => {
         }
         catch(err){
             console.log(err)
-            alert(err)
+            // alert(err)
         }
     }
 
@@ -125,7 +126,7 @@ export const ProfilePage = () => {
         }
         catch(err){
             console.log(err)
-            alert(err)
+            // alert(err)
         }
     }
 
