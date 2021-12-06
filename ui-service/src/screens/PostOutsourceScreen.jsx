@@ -103,7 +103,15 @@ export const PostOutsourceScreen = (props) => {
                 </div>
                 <div>
                     {posts.map((post, i) => (
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
                         <PostComponent post={post}/>
+=======
+                        <PostComponent post={post} />
+>>>>>>> Stashed changes
+=======
+                        <PostComponent post={post} />
+>>>>>>> Stashed changes
                     ))}
                 </div>
             </div>
