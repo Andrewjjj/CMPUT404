@@ -30,6 +30,7 @@ export const ServerFeed = (props) => {
     const [comments, setComments] = useState([]);
     const [likes, setLikes] = useState([]); 
     const [commentInputField, setCommentInputField] = useState({});
+    const [commentMarkdownField, setCommentMarkdownField] = useState({});
     const [editBodyField, setEditBodyField] = useState({});
     const [editTitleField, setEditTitleField] = useState({});
     const [editPost, setEditPost] = useState({});
@@ -112,6 +113,15 @@ export const ServerFeed = (props) => {
         })
         console.log(commentInputField)
     }
+
+    const commentMarkdownHandler = (postID, value) => {
+        //console.log(postID, value)
+        setCommentMarkdownField({
+            ...commentMarkdownField,
+            [postID]: value,
+        })
+        console.log(commentMarkdownField)
+    } 
 
     const editTitleHandler = (postID, edit) => {
         console.log(postID, edit)
@@ -223,6 +233,11 @@ export const ServerFeed = (props) => {
         let newComment = commentInputField[postID];
         let currentDate = new Date();
         let url = `${postID}/comments`
+        let useMarkdown = commentMarkdownField[postID];
+        let contentType = "text/plain"
+        if(useMarkdown === true){
+            contentType = "text/markdown"
+        }
         currentDate = currentDate.toString();
         console.log(newComment)
         try{
@@ -232,7 +247,7 @@ export const ServerFeed = (props) => {
                     publishedTime: currentDate, //TODO: ADD MORE FIELDS
                     authorID: authorInfo.id,
                     content: commentInputField[postID],
-                    contentType: "text/plain", //TODO: ALLOW TEXT/MARKDOWN
+                    contentType: contentType, //TODO: ALLOW TEXT/MARKDOWN
                 }
                 // id: "1234",
                 //published: currentDate
@@ -283,7 +298,7 @@ export const ServerFeed = (props) => {
                 {/* React Section */}
                 <ReactionSection post={post} likes={likes[i]} clickHandler={reactionClickHandler} shareHandler={sharePostHandler}></ReactionSection>
                 {/* Comment Section */}
-                <CommentSection post={post} comments={comments[i]} submitHandler={submitCommentHandler} changeHandler={commentChangeHandler}></CommentSection>
+                <CommentSection post={post} comments={comments[i]} submitHandler={submitCommentHandler} changeHandler={commentChangeHandler} checkHandler={commentMarkdownHandler}></CommentSection>
             </div>
             )}
         </div>
