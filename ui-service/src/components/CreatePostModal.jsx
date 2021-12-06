@@ -271,7 +271,7 @@ export const CreatePostModal = (props) => {
 
                         <Dropdown.Menu onSelect={() => { console.log("4") }}>
                             <Dropdown.Item onClick={() => { setDropdownText("Plain Text (text/plain)"); setContentType("text/plain") }}>Plain Text (text/plain)</Dropdown.Item>
-                            <Dropdown.Item onClick={() => { setDropdownText("Plain Text (text/markdown)"); setContentType("text/markdown") }}>Markdonw Text (text/markdown)</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { setDropdownText("Plain Text (text/markdown)"); setContentType("text/markdown") }}>Markdown Text (text/markdown)</Dropdown.Item>
                             <Dropdown.Item onClick={() => { setDropdownText("Plain Text (application/plain)"); setContentType("application/base64") }}>Bitmap</Dropdown.Item>
                             <Dropdown.Item onClick={() => { setDropdownText("Image (JPEG)"); setContentType("image/jpeg;base64") }}>Image - JPEG</Dropdown.Item>
                             <Dropdown.Item onClick={() => { setDropdownText("Image (PNG)"); setContentType("image/png;base64") }}>Image - PNG</Dropdown.Item>
