@@ -37,9 +37,11 @@ export const ReactionSection = (props) => {
                             }}>
                             <i className="far fa-thumbs-up fa-1x"></i>
                         </button>
+                    {props.post.visibility !== "PRIVATE" ?
                         <button className="btn" onClick={() => {
                                 props.shareHandler(props.post)
-                        }}>Share</button>
+                        }}>Share</button> : ""
+                    }
                 </div>
             </div>
         </div>

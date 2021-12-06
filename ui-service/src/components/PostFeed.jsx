@@ -7,6 +7,8 @@ import { useStoreActions, useStoreState } from 'easy-peasy'
 import { CommentSection } from './CommentSection';
 import { ReactionSection } from './ReactionSection';
 import { EditSection } from './EditSection';
+import { DisplaySection } from './DisplaySection';
+import { UpperEditSection } from './UpperEditSection';
 
 import { Link } from 'react-router-dom'
 import axios from 'axios'
@@ -277,30 +279,11 @@ export const PostFeed = (props) => {
             <div className=" w-50 mt-3 mx-auto border p-4 rounded-5 z-depth-2 text-white"
             style={{backgroundColor: "rgb(30,47,65)"}} key={"post"+i}>
                 {/* Title Section */}
-                <div className="row" style={{textAlign: 'left'}}>
-                    {post.id === editingPostID ? 
-                        <input type="text" id={"edit_title_"+post.id} className="form-control-sm" onInput={(e) => editTitleHandler(post.id, e.target.value)}></input>
-                    :
-                        <h5><b>{post.title}</b></h5>
-                    }
-                    <h6 style={{fontStyle: "italic",color: "rgb(255,122,0)"}}>{post.author["displayName"]} </h6>
-                </div>
-                {/* Content Section */}
-                <div className="row rounded rounded-5 py-2 px-4" style={{backgroundColor: "rgb(30,47,65)"}}>
-                    {post.id === editingPostID ?
-                         <input type="text" id={"edit_body_"+post.id} className="form-control-sm" onInput={(e) => editBodyHandler(post.id, e.target.value)}></input>
-                        
-                        : post.contentType === "text/plain" ? (post.content) : "awoo"}
-                </div>
-                {/* Tag Section */}
-                <div className="row my-1">
-                        <p className="text-grey">
-                        Tags: 
-                        {post.categories.map((tag, i) => 
-                            <span> {tag}</span>
-                        )}
-                        </p>
-                </div>
+                {post.id ===editingPostID ? 
+                    <UpperEditSection post={post} bodyHandler={editBodyHandler} titleHandler={editTitleHandler}></UpperEditSection>
+                :
+                    <DisplaySection post={post} ></DisplaySection>
+                }
                 {/* Edit Section */}
                 <EditSection post={post} editingPostID={editingPostID} editHandler = {editPostHandler} submitHandler = {submitEditHandler} deleteHandler = {deletePostHandler}></EditSection>
                 {/* React Section */}
