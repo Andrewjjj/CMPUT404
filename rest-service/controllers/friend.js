@@ -13,7 +13,7 @@ exports.getAllFriendsByAuthor = async (req, res, next) => {
                 type: "author",
             }
         })
-        console.log(friendsList)
+        // console.log(friendsList)
         res.status(200).json(friendsList)
     }
     catch(err){

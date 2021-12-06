@@ -93,6 +93,7 @@ export const PostFeed = (props) => {
         // console.log("Post Likes", newLikes)
         //alert(toString(comments))
         setLikes(newLikes)
+        console.log(newLikes)
         //setLikes([[1, 2],[1]])
     }
 
@@ -155,12 +156,14 @@ export const PostFeed = (props) => {
 
         //TODO: CHECK THAT THE USER IS ALLOWED TO SHARE THIS POST
         let success = true;
-        let friendsResponse = await axios.get(`${restHost}/author/${authorInfo.id}/followers`);
-        let friends = friendsResponse.data.items
-        for(var i = 0; i < friends.length; i++){
+        let friendsResponse = await axios.get(`${restHost}/author/${authorInfo.id}/friends`);
+        let friends = friendsResponse.data;
+        console.log("friends", friends)
+
+        await Promise.all(friends.map(async friend => {
             try{
-                axios.post(`${friends[i].id}/inbox`, post).then(res => {
-                    console.log(`Successfully shared with ${friends[i].name}`)
+                await axios.post(`${friend.id}/inbox`, post).then(() => {
+                    console.log(`Successfully shared with ${friend.displayName}`)
                 })
             }
             catch(err){
@@ -168,13 +171,8 @@ export const PostFeed = (props) => {
                 console.log(err)
                 // alert(`Share error: ${err}`)
             }
-        }
-        if(friends.length < 1){
-            success = false
-        }
-        if(success == true){
-            //alert('Shared successfully')
-        }
+        }))
+        alert("successfully shared")
     }
 
     const editPostHandler = (post) => {
@@ -229,7 +227,7 @@ export const PostFeed = (props) => {
         try{
             let response = await axios.delete(post.id, post).then(res => {
                 alert("Successful deletion")
-            })
+        })
             fetchPosts();
 
         }
